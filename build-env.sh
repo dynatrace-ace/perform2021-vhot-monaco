@@ -96,6 +96,11 @@ helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator -
 echo "Dynatrace OneAgent - Waiting for Dynatrace resources to be available..."
 kubectl wait --for=condition=ready pod --all -n dynatrace --timeout=60s
 
+# Allow Dynatrace access to create tags from labels and annotations in each NS
+kubectl -n app-one create rolebinding default-view --clusterrole=view --serviceaccount=app-one:default
+kubectl -n app-two create rolebinding default-view --clusterrole=view --serviceaccount=app-two:default
+kubectl -n app-three create rolebinding default-view --clusterrole=view --serviceaccount=app-three:default
+
 ##############################
 # Install ingress-nginx      #
 ##############################
@@ -205,74 +210,3 @@ sed \
     -e "s|GITEA_PAT_PLACEHOLDER|{{ $gitea_pat|g" \
     -e "s|DYNATRACE_TENANT_PLACEHOLDER|$DT_TENANT|g"\
     /vagrant/docker/dashboard/index.html > /vagrant/docker/dashboard/index-gen.html
-
-
-
-# Deploy Customers A, B and C
-#echo "Deploying customer resources..."
-#kubectl apply -f deploy-customer-a.yaml -f deploy-customer-b.yaml -f deploy-customer-c.yaml
-
-# Deploy Istio Gateway
-# #kubectl apply -f istio-gateway.yaml
-
-# # Deploy Production Istio VirtualService
-# # Provides routes to customers from http://customera.VMIP.nip.io, http://customerb.VMIP.nip.io and http://customerc.VMIP.nip.io
-# sed -i "s@- \"customera.INGRESSPLACEHOLDER\"@- \"customera.$VM_IP.nip.io\"@g" production-istio-vs.yaml
-# sed -i "s@- \"customerb.INGRESSPLACEHOLDER\"@- \"customerb.$VM_IP.nip.io\"@g" production-istio-vs.yaml
-# sed -i "s@- \"customerc.INGRESSPLACEHOLDER\"@- \"customerc.$VM_IP.nip.io\"@g" production-istio-vs.yaml
-# kubectl apply -f production-istio-vs.yaml
-
-# # Deploy Staging Istio VirtualService
-# # Provides routes to customers from http://staging.customera.VMIP.nip.io, http://staging.customerb.VMIP.nip.io and http://staging.customerc.VMIP.nip.io
-# sed -i "s@- \"staging.customera.INGRESSPLACEHOLDER\"@- \"staging.customera.$VM_IP.nip.io\"@g" staging-istio-vs.yaml
-# sed -i "s@- \"staging.customerb.INGRESSPLACEHOLDER\"@- \"staging.customerb.$VM_IP.nip.io\"@g" staging-istio-vs.yaml
-# sed -i "s@- \"staging.customerc.INGRESSPLACEHOLDER\"@- \"staging.customerc.$VM_IP.nip.io\"@g" staging-istio-vs.yaml
-# kubectl apply -f staging-istio-vs.yaml
-
-# # Deploy Keptn Istio VirtualService
-# # Provides routes to http://keptn.VMIP.nip.io/api and http://keptn.VMIP.nip.io/bridge
-# sed -i "s@- \"keptn.INGRESSPLACEHOLDER\"@- \"keptn.$VM_IP.nip.io\"@g" keptn-vs.yaml
-# kubectl apply -f keptn-vs.yaml
-
-# # Authorise Keptn
-# export KEPTN_API_TOKEN=$(kubectl get secret keptn-api-token -n keptn -ojsonpath={.data.keptn-api-token} | base64 --decode)
-# export KEPTN_ENDPOINT=http://keptn.127.0.0.1.nip.io/api
-# keptn auth --endpoint=$KEPTN_ENDPOINT --api-token=$KEPTN_API_TOKEN
-
-# # Configure Bridge Credentials
-# keptn configure bridge --user=keptn --password=dynatrace
-
-# # Allow Dynatrace access to create tags from labels and annotations in each NS
-# kubectl -n customer-a create rolebinding default-view --clusterrole=view --serviceaccount=customer-a:default
-# kubectl -n customer-b create rolebinding default-view --clusterrole=view --serviceaccount=customer-b:default
-# kubectl -n customer-c create rolebinding default-view --clusterrole=view --serviceaccount=customer-c:default
-
-# # Scale deployments to create tags from k8s labels (tags only created during pod startup)
-# kubectl scale deployment staging-web -n customer-a --replicas=0 && kubectl scale deployment staging-web -n customer-a --replicas=1
-# kubectl scale deployment prod-web -n customer-a --replicas=0 && kubectl scale deployment prod-web -n customer-a --replicas=1
-# kubectl scale deployment staging-web -n customer-b --replicas=0 && kubectl scale deployment staging-web -n customer-b --replicas=1
-# kubectl scale deployment prod-web -n customer-b --replicas=0 && kubectl scale deployment prod-web -n customer-b --replicas=1
-# kubectl scale deployment staging-web -n customer-c --replicas=0 && kubectl scale deployment staging-web -n customer-c --replicas=1
-# kubectl scale deployment prod-web -n customer-c --replicas=0 && kubectl scale deployment prod-web -n customer-c --replicas=1
-
-# # Start Load Gen against customer sites
-# echo "Starting Load Generator for Customers A, B & C"
-# chmod +x $home_folder/apac-mac-hot/box/loadGen.sh
-# nohup $home_folder/apac-mac-hot/box/loadGen.sh &
-# echo
-
-# # Print output
-# echo "----------------------------" >> $home_folder/installOutput.txt
-# echo "INSTALLATION COMPLETED" >> $home_folder/installOutput.txt
-# echo "Customer A Staging Environment available at: http://staging.customera.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Customer A Production Environment available at: http://customera.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Customer B Staging Environment available at: http://staging.customerb.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Customer B Production Environment available at: http://customerb.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Customer C Staging Environment available at: http://staging.customerc.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Customer C Production Environment available at: http://customerc.$VM_IP.nip.io" >> $home_folder/installOutput.txt
-# echo "Keptn's API available at: http://keptn.$VM_IP.nip.io/api" >> $home_folder/installOutput.txt
-# echo "Keptn's Bridge available at: http://keptn.$VM_IP.nip.io/bridge" >> $home_folder/installOutput.txt
-# echo "Keptn's API Token: $KEPTN_API_TOKEN" >> $home_folder/installOutput.txt
-# echo "Keptn's Bridge Username: keptn" >> $home_folder/installOutput.txt
-# echo "Keptn's Bridge Password: dynatrace" >> $home_folder/installOutput.txt
-# echo "----------------------------" >> $home_folder/installOutput.txt
