@@ -158,7 +158,7 @@ if [ ! -f "$activegate_download_location" ]; then
     wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_TOKEN" -O $activegate_download_location 
 fi
 echo "Dynatrace ActiveGate - Install Private Synthetic"
-#DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
+DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
 
 ##############################
