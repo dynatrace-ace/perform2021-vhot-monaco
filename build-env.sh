@@ -24,7 +24,9 @@ shell_user="dtu_training"
 home_folder="/home/$shell_user"
 
 echo "Installing packages"
-sudo snap install jq
+sudo snap install jq 
+sudo snap install docker
+sudo chmod 777 /var/run/docker.sock
 
 echo "Retrieving Dynatrace Environment details"
 # Retrieve token  management token
@@ -217,7 +219,7 @@ kubectl apply -f $home_folder/$clone_folder/box/app-manifests/application-3-gen.
 sed \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|g" \
     -e "s|GITEA_USER_PLACEHOLDER|$git_user|g" \
-    -e "s|GITEA_PAT_PLACEHOLDER|{{ $gitea_pat|g" \
+    -e "s|GITEA_PAT_PLACEHOLDER|$gitea_pat|g" \
     -e "s|DYNATRACE_TENANT_PLACEHOLDER|$DT_TENANT|g"\
     $home_folder/$clone_folder/box/dashboard/index.html > $home_folder/$clone_folder/box/dashboard/index-gen.html
 
@@ -225,4 +227,4 @@ sed -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" $home_folder/$clone_folder/box/h
 
 docker build -t localhost:32000/dashboard $home_folder/$clone_folder/box/dashboard && docker push localhost:32000/dashboard
 
-#helm upgrade -i ace-dashboard $home_folder/$clone_folder/box/helm/dashboard -f $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml --namespace dashboard --create-namespace
+helm upgrade -i ace-dashboard $home_folder/$clone_folder/box/helm/dashboard -f $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml --namespace dashboard --create-namespace
