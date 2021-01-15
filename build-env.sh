@@ -167,6 +167,12 @@ DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --
 
 
 ##############################
+# Deploy Registry            #
+##############################
+kubectl create ns registry
+kubectl create -f $home_folder/$clone_folder/box/helm/registry.yml
+
+##############################
 # Install Jenkins            #
 ##############################
 echo "Jenkins - Install"
@@ -204,9 +210,19 @@ kubectl apply -f $home_folder/$clone_folder/box/app-manifests/application-1-gen.
 kubectl apply -f $home_folder/$clone_folder/box/app-manifests/application-2-gen.yml
 kubectl apply -f $home_folder/$clone_folder/box/app-manifests/application-3-gen.yml
 
+##############################
+# Deploy Dashboard           #
+##############################
+
 sed \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|g" \
     -e "s|GITEA_USER_PLACEHOLDER|$git_user|g" \
     -e "s|GITEA_PAT_PLACEHOLDER|{{ $gitea_pat|g" \
     -e "s|DYNATRACE_TENANT_PLACEHOLDER|$DT_TENANT|g"\
-    /vagrant/docker/dashboard/index.html > /vagrant/docker/dashboard/index-gen.html
+    $home_folder/$clone_folder/box/dashboard/index.html > $home_folder/$clone_folder/box/dashboard/index-gen.html
+
+sed -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" $home_folder/$clone_folder/box/helm/dashboard/values.yaml > $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml
+
+docker build -t localhost:32000/dashboard $home_folder/$clone_folder/box/dashboard && docker push localhost:32000/dashboard
+
+#helm upgrade -i ace-dashboard $home_folder/$clone_folder/box/helm/dashboard -f $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml --namespace dashboard --create-namespace
