@@ -129,7 +129,7 @@ master:
               jenkinsUrl: "http://jenkins:8080"
               maxRequestsPerHostStr: "32"
               name: "kubernetes"
-              namespace: "ace"
+              namespace: "jenkins"
               serverUrl: "https://kubernetes.default"
               templates:
               - containers:
