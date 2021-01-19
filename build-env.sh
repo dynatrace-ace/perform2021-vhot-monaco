@@ -81,7 +81,9 @@ sudo snap install helm --classic
 helm repo add stable https://charts.helm.sh/stable
 helm repo add incubator https://charts.helm.sh/incubator
 
-kubectl create ns app-one app-two app-three
+kubectl create ns app-one
+kubectl create ns app-two
+kubectl create ns app-three
 
 ##############################
 # Install Dynatrace OneAgent #
