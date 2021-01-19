@@ -9,7 +9,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/projects"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
                     }
                 }
 			}
@@ -18,7 +18,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/projects"
+				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
                     }
                 }
 			}
@@ -27,7 +27,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/projects"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
                     }
                 }
 			}
@@ -36,7 +36,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/projects"
+				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
                     }
                 }
 			}
