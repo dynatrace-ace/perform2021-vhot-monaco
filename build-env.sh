@@ -174,7 +174,8 @@ echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
 
-#curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[] | select(.hostname==\"$HOSTNAME\") | .entityId"
+private_node_id=$(curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[0] | .entityId")
+echo "PRIVAE NODE ID: $private_node_id"
 
 ##############################
 # Deploy Registry            #
@@ -198,6 +199,7 @@ sed \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" \
     -e "s|GIT_REPO_PLACEHOLDER|$git_repo|" \
     -e "s|GIT_DOMAIN_PLACEHOLDER|gitea.$ingress_domain|" \
+    -e "s|SYNTH_NODE_ID_PLACEHOLDER|$private_node_id|" \
     $home_folder/$clone_folder/box/helm/jenkins-values.yml > $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml
 
 kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:jenkins
