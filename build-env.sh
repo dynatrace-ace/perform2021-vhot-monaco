@@ -24,9 +24,9 @@ shell_user="dtu_training"
 home_folder="/home/$shell_user"
 
 echo "Installing packages"
-sudo snap install jq 
-sudo snap install docker
-sudo chmod 777 /var/run/docker.sock
+snap install jq 
+snap install docker
+chmod 777 /var/run/docker.sock
 
 echo "Retrieving Dynatrace Environment details"
 # Retrieve token  management token
@@ -74,10 +74,11 @@ k3s kubectl wait --for=condition=ready nodes --all --timeout=60s
 kubectl get nodes
 # Configure kubectl so we can use "kubectl" and not "k3 kubectl"
 cp /etc/rancher/k3s/k3s.yaml $home_folder/.kube/config
+cp /etc/rancher/k3s/k3s.yaml /root/.kube/config
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 echo "Installing Helm"
-sudo snap install helm --classic
+snap install helm --classic
 helm repo add stable https://charts.helm.sh/stable
 helm repo add incubator https://charts.helm.sh/incubator
 
@@ -171,6 +172,8 @@ fi
 echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
+
+#curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes"
 
 ##############################
 # Deploy Registry            #
