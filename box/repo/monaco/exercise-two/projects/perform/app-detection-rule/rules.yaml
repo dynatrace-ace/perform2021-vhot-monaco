@@ -1,17 +1,17 @@
 
 config:
-  - app-detect-simplenode-staging: "rule.json"
-  - app-detect-simplenode-prod: "rule.json"
+  - app-detect-app-one: "rule.json"
+  - app-detect-app-two: "rule.json"
   
-app-detect-simplenode-staging:
-  - name: "/ace/application/app-simplenode-staging.name"
-  - applicationId: "/ace/application/app-simplenode-staging.id"
-  - pattern: "http://simplenode.staging.192.168.50.10.nip.io"
+app-detect-app-one:
+  - name: "/perform/application/app-app-one.name"
+  - applicationId: "/perform/application/app-app-one.id"
+  - pattern: "http://simplenode.app-one.{{ .Env.VM_IP }}.nip.io"
 
-app-detect-simplenode-prod:
-  - name: "/ace/application/app-simplenode-prod.name"
-  - applicationId: "/ace/application/app-simplenode-prod.id"
-  - pattern: "http://simplenode.production.192.168.50.10.nip.io"
+app-detect-app-two:
+  - name: "/perform/application/app-app-two.name"
+  - applicationId: "/perform/application/app-app-two.id"
+  - pattern: "http://simplenode.app-two.{{ .Env.VM_IP }}.nip.io"
 
   
 # Below examples to apply certain configuration on a tenant basis

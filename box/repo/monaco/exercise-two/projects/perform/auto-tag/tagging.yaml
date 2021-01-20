@@ -1,11 +1,11 @@
 config:
-    - tagging-staging: "tagging.json"
-    - tagging-prod: "tagging.json"
+    - tagging-app-one: "tagging.json"
+    - tagging-app-two: "tagging.json"
   
-tagging-staging:
-    - name: "mac-staging"
-    - namespace: "staging"
+tagging-app-one:
+    - name: "app-one"
+    - namespace: "app-one"
 
-tagging-prod:
-    - name: "mac-prod"
-    - namespace: "production"
+tagging-app-two:
+    - name: "app-two"
+    - namespace: "app-two"

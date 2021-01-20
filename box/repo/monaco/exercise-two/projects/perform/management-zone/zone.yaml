@@ -1,12 +1,12 @@
 config:
-    - management-zone-staging: "management-zone.json"
-    - management-zone-prod: "management-zone.json"
+    - management-zone-app-one: "management-zone.json"
+    - management-zone-app-two: "management-zone.json"
 
-management-zone-staging:
-    - environment: "staging"
-    - name: "mac-mz-staging"
+management-zone-app-one:
+    - environment: "app-one"
+    - name: "app-one"
 
-management-zone-prod:
-    - environment: "production"
-    - name: "mac-mz-production"
+management-zone-app-two:
+    - environment: "app-two"
+    - name: "app-two"
 

@@ -1,23 +1,23 @@
 config:
-    - health-staging: "health-check-monitor.json"
-    - health-prod: "health-check-monitor.json"
+    - health-app-one: "health-check-monitor.json"
+    - health-app-two: "health-check-monitor.json"
   
-health-staging:
-    - name: "mac.simplenode.staging"
-    - url: "http://simplenode.staging.192.168.50.10.nip.io/api/invoke?url=https://www.dynatrace.com"
-    - description: "Health Check for simplenode in staging"
+health-app-one:
+    - name: "app-one-healthcheck"
+    - url: "http://simplenode.app-one.{{ .Env.VM_IP }}.nip.io/api/invoke?url=https://www.dynatrace.com"
+    - description: "Health Check for app-one"
     - location: "/global/synthetic-location/acebox.id"
-    - managementZoneId: "/ace/management-zone/management-zone-staging.id"
-    - tag: "/ace/auto-tag/tagging-staging.name"
-    - applicationId: "/ace/application/app-simplenode-staging.id"
+    - managementZoneId: "/perform/management-zone/management-zone-app-one.id"
+    - tag: "/perform/auto-tag/tagging-app-one.name"
+    - applicationId: "/perform/application/app-app-one.id"
     - enabled: "true"
 
-health-prod:
-    - name: "mac.simplenode.production"
-    - url: "http://simplenode.production.192.168.50.10.nip.io/api/invoke?url=https://www.dynatrace.com"
-    - description: "Health Check for simplenode in production"
+health-app-two:
+    - name: "app-two-healthcheck"
+    - url: "http://simplenode.app-two.{{ .Env.VM_IP }}.nip.io/api/invoke?url=https://www.dynatrace.com"
+    - description: "Health Check for app-two"
     - location: "/global/synthetic-location/acebox.id"
-    - managementZoneId: "/ace/management-zone/management-zone-prod.id"
-    - tag: "/ace/auto-tag/tagging-prod.name"
-    - applicationId: "/ace/application/app-simplenode-prod.id"
+    - managementZoneId: "/perform/management-zone/management-zone-app-two.id"
+    - tag: "/perform/auto-tag/tagging-app-two.name"
+    - applicationId: "/perform/application/app-app-two.id"
     - enabled: "true"

@@ -1,9 +1,9 @@
 config:
-    - app-simplenode-staging: "application.json"
-    - app-simplenode-prod: "application.json"
+    - app-app-one: "application.json"
+    - app-app-two: "application.json"
   
-app-simplenode-staging:
-    - name: "simplenode.staging"
+app-app-one:
+    - name: "app-one"
 
-app-simplenode-prod:
-    - name: "simplenode.production"
+app-app-two:
+    - name: "app-two"
