@@ -37,8 +37,9 @@ echo "Retrieving Dynatrace Environment details"
 DT_TENANT=https://$DYNATRACE_ENVIRONMENT_ID.sprint.dynatracelabs.com
 
 VM_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/hostname)
 echo "Virtual machine IP: $VM_IP"
-
+echo "Virtual machine Hostname: $HOSTNAME"
 ingress_domain="$VM_IP.$domain"
 echo "Ingress domain: $ingress_domain"
 
@@ -173,7 +174,7 @@ echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
 
-#curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes"
+#curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[] | select(.hostname==\"$HOSTNAME\") | .entityId"
 
 ##############################
 # Deploy Registry            #
@@ -200,6 +201,9 @@ sed \
     $home_folder/$clone_folder/box/helm/jenkins-values.yml > $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml
 
 kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:jenkins
+
+helm repo add stable https://charts.helm.sh/stable
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 helm install jenkins stable/jenkins --values $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml --version $jenkins_chart_version --namespace jenkins --wait 
 
