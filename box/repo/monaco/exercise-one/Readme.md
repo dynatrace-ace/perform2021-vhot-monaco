@@ -144,6 +144,8 @@ Next we'll use the GET for /autoTags/{id} endpoint
 3. Remove the placeholder
 4. Copy the contents below and paste into the YAML file. Commit changes
 
+NOTE: Monaco will require the configuration YAML to always contain a `name` attribute.
+
 ```
 config:
     - tag-owner: "auto-tag.json"
@@ -156,6 +158,7 @@ tag-owner:
 The Config YAML tells monaco which configuration JSON to apply. You can supply addtional configuration names with seperate JSON files. Each config name has a set of properties to apply to the JSON template. In our case we're telling Monaco to use the auto-tag.json file for our tag-owner configuration. Then the tag-owner configuration has a value called name.
 
 Next we will update our auto-tag.json file to be more dynamic and use environment variables to populate the tag name. This way we could structure our config Yaml to iterate through multiple tag names and configurations. 
+
 
 ## Step Five - Modify Auto-Tag.json
 
