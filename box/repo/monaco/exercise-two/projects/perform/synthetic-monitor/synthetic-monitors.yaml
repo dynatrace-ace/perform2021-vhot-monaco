@@ -9,7 +9,6 @@ health-app-one:
     - location: "/global/synthetic-location/acebox.id"
     - managementZoneId: "/perform/management-zone/management-zone-app-one.id"
     - tag: "/perform/auto-tag/tagging-app-one.name"
-    - applicationId: "/perform/application/app-app-one.id"
     - enabled: "true"
 
 health-app-two:
@@ -19,5 +18,4 @@ health-app-two:
     - location: "/global/synthetic-location/acebox.id"
     - managementZoneId: "/perform/management-zone/management-zone-app-two.id"
     - tag: "/perform/auto-tag/tagging-app-two.name"
-    - applicationId: "/perform/application/app-app-two.id"
     - enabled: "true"
