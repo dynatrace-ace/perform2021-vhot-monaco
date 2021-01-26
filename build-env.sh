@@ -200,6 +200,7 @@ sed \
     -e "s|GIT_REPO_PLACEHOLDER|$git_repo|" \
     -e "s|GIT_DOMAIN_PLACEHOLDER|gitea.$ingress_domain|" \
     -e "s|SYNTH_NODE_ID_PLACEHOLDER|$private_node_id|" \
+    -e "s|VM_IP_PLACEHOLDER|$VM_IP|" \
     $home_folder/$clone_folder/box/helm/jenkins-values.yml > $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml
 
 kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:jenkins
