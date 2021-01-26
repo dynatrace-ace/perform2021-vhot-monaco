@@ -61,7 +61,7 @@ Navigate, in gitea, the contents of `monaco/project-two`, and see which configur
 
 ### Jenkins pipeline
 Using gitea, open the file [jenkins/exercise-two.Jenkinsfile](../../jenkins/exercise-two.Jenkinsfile)
-```
+```groovy
 ENVS_FILE = "monaco/exercise-two/environments.yaml"
 
 pipeline {
@@ -111,12 +111,12 @@ pipeline {
 ```
 A few important sections are noted:
 ### The monaco-runner
-```
+```groovy
 agent {
     label 'monaco-runner'
 }
 ```
-```
+```groovy
 ...
 container('monaco')
 ...
@@ -135,7 +135,7 @@ On the first line of the Jenkinsfile we find the following:
 ENVS_FILE = "monaco/exercise-two/environments.yaml"
 ```
 This file looks like this (you can verify this using Gitea):
-```
+```yaml
 perform:
   - name: "perform"
   - env-url: "{{ .Env.DT_TENANT_URL }}" 
@@ -153,7 +153,7 @@ Monaco, when running, will load and replace all environment variables where it c
 
 ### Dry-run vs deploy
 For each project, notice there are two stages:
-```
+```groovy
 stage('Dynatrace global config - Validate') {
     steps {
         container('monaco') {
@@ -201,5 +201,9 @@ In the **Console Output** you can track the progress and changes that Monaco mad
 ## Step 3 - View results in Dynatrace
 
 As a last step, go to your Dynatrace environment and verify that Monaco created all the configurations as described in the two Monaco projects.
+
+## Step 4 - Change configuration and re-apply
+
+Take one of the configuration items that were created and make a change in the JSON file (apart from the name!). Re-run the pipeline and see the changes taking effect in Dynatrace.
 
 That concludes this lab.

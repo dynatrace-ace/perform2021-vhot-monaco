@@ -48,9 +48,13 @@ Using gitea, explore the contents of the `monaco/project-four` folder. It is the
             `-- synthetic-monitors.yaml
 ```
 ### Application configuration
-Navigate, in gitea, to the **application** definitions stored within the **perform** project.
+Navigate, in gitea, to the **application** definitions stored within the **perform** project in `monaco/exercise-four/projects/perform/application`.
 
 The `application.json` file or the **configuration template**:
+<details>
+<summary>Click to expand</summary>
+
+```json
 {
     "name": "{{ .name }}",
     "realUserMonitoringEnabled": true,
@@ -58,42 +62,42 @@ The `application.json` file or the **configuration template**:
     "loadActionKeyPerformanceMetric": "VISUALLY_COMPLETE",
     "xhrActionKeyPerformanceMetric": "VISUALLY_COMPLETE",
     "loadActionApdexSettings": {
-      "threshold": 1,
-      "toleratedThreshold": 1000,
-      "frustratingThreshold": 3000,
-      "toleratedFallbackThreshold": 1300,
-      "frustratingFallbackThreshold": 3300,
-      "considerJavaScriptErrors": true
+    "threshold": 1,
+    "toleratedThreshold": 1000,
+    "frustratingThreshold": 3000,
+    "toleratedFallbackThreshold": 1300,
+    "frustratingFallbackThreshold": 3300,
+    "considerJavaScriptErrors": true
     },
     "xhrActionApdexSettings": {
-      "threshold": 3,
-      "toleratedThreshold": 3000,
-      "frustratingThreshold": 12000,
-      "toleratedFallbackThreshold": 3000,
-      "frustratingFallbackThreshold": 12000,
-      "considerJavaScriptErrors": true
+    "threshold": 3,
+    "toleratedThreshold": 3000,
+    "frustratingThreshold": 12000,
+    "toleratedFallbackThreshold": 3000,
+    "frustratingFallbackThreshold": 12000,
+    "considerJavaScriptErrors": true
     },
     "customActionApdexSettings": {
-      "threshold": 3,
-      "toleratedThreshold": 3000,
-      "frustratingThreshold": 12000,
-      "toleratedFallbackThreshold": 3000,
-      "frustratingFallbackThreshold": 12000,
-      "considerJavaScriptErrors": true
+    "threshold": 3,
+    "toleratedThreshold": 3000,
+    "frustratingThreshold": 12000,
+    "toleratedFallbackThreshold": 3000,
+    "frustratingFallbackThreshold": 12000,
+    "considerJavaScriptErrors": true
     },
     "waterfallSettings": {
-      "uncompressedResourcesThreshold": 860,
-      "resourcesThreshold": 100000,
-      "resourceBrowserCachingThreshold": 50,
-      "slowFirstPartyResourcesThreshold": 200000,
-      "slowThirdPartyResourcesThreshold": 200000,
-      "slowCdnResourcesThreshold": 200000,
-      "speedIndexVisuallyCompleteRatioThreshold": 50
+    "uncompressedResourcesThreshold": 860,
+    "resourcesThreshold": 100000,
+    "resourceBrowserCachingThreshold": 50,
+    "slowFirstPartyResourcesThreshold": 200000,
+    "slowThirdPartyResourcesThreshold": 200000,
+    "slowCdnResourcesThreshold": 200000,
+    "speedIndexVisuallyCompleteRatioThreshold": 50
     },
     "monitoringSettings": {
-      "fetchRequests": true,
-      "xmlHttpRequest": true,
-      "javaScriptFrameworkSupport": {
+    "fetchRequests": true,
+    "xmlHttpRequest": true,
+    "javaScriptFrameworkSupport": {
         "angular": true,
         "dojo": false,
         "extJS": false,
@@ -102,33 +106,33 @@ The `application.json` file or the **configuration template**:
         "mooTools": false,
         "prototype": false,
         "activeXObject": false
-      },
-      "contentCapture": {
+    },
+    "contentCapture": {
         "resourceTimingSettings": {
-          "w3cResourceTimings": true,
-          "nonW3cResourceTimings": false,
-          "nonW3cResourceTimingsInstrumentationDelay": 50,
-          "resourceTimingCaptureType": "CAPTURE_FULL_DETAILS",
-          "resourceTimingsDomainLimit": 10
+        "w3cResourceTimings": true,
+        "nonW3cResourceTimings": false,
+        "nonW3cResourceTimingsInstrumentationDelay": 50,
+        "resourceTimingCaptureType": "CAPTURE_FULL_DETAILS",
+        "resourceTimingsDomainLimit": 10
         },
         "javaScriptErrors": true,
         "timeoutSettings": {
-          "timedActionSupport": false,
-          "temporaryActionLimit": 0,
-          "temporaryActionTotalTimeout": 100
+        "timedActionSupport": false,
+        "temporaryActionLimit": 0,
+        "temporaryActionTotalTimeout": 100
         },
         "visuallyCompleteAndSpeedIndex": true
-      },
-      "excludeXhrRegex": "",
-      "injectionMode": "JAVASCRIPT_TAG",
-      "libraryFileLocation": "",
-      "monitoringDataPath": "",
-      "customConfigurationProperties": "",
-      "serverRequestPathId": "",
-      "secureCookieAttribute": false,
-      "cookiePlacementDomain": "",
-      "cacheControlHeaderOptimizations": true,
-      "advancedJavaScriptTagSettings": {
+    },
+    "excludeXhrRegex": "",
+    "injectionMode": "JAVASCRIPT_TAG",
+    "libraryFileLocation": "",
+    "monitoringDataPath": "",
+    "customConfigurationProperties": "",
+    "serverRequestPathId": "",
+    "secureCookieAttribute": false,
+    "cookiePlacementDomain": "",
+    "cacheControlHeaderOptimizations": true,
+    "advancedJavaScriptTagSettings": {
         "syncBeaconFirefox": false,
         "syncBeaconInternetExplorer": false,
         "instrumentUnsupportedAjaxFrameworks": false,
@@ -136,188 +140,112 @@ The `application.json` file or the **configuration template**:
         "maxActionNameLength": 100,
         "maxErrorsToCapture": 10,
         "additionalEventHandlers": {
-          "userMouseupEventForClicks": false,
-          "clickEventHandler": false,
-          "mouseupEventHandler": false,
-          "blurEventHandler": false,
-          "changeEventHandler": false,
-          "toStringMethod": false,
-          "maxDomNodesToInstrument": 5000
+        "userMouseupEventForClicks": false,
+        "clickEventHandler": false,
+        "mouseupEventHandler": false,
+        "blurEventHandler": false,
+        "changeEventHandler": false,
+        "toStringMethod": false,
+        "maxDomNodesToInstrument": 5000
         },
         "eventWrapperSettings": {
-          "click": false,
-          "mouseUp": false,
-          "change": false,
-          "blur": false,
-          "touchStart": false,
-          "touchEnd": false
+        "click": false,
+        "mouseUp": false,
+        "change": false,
+        "blur": false,
+        "touchStart": false,
+        "touchEnd": false
         },
         "globalEventCaptureSettings": {
-          "mouseUp": true,
-          "mouseDown": true,
-          "click": true,
-          "doubleClick": true,
-          "keyUp": true,
-          "keyDown": true,
-          "scroll": true,
-          "additionalEventCapturedAsUserInput": ""
+        "mouseUp": true,
+        "mouseDown": true,
+        "click": true,
+        "doubleClick": true,
+        "keyUp": true,
+        "keyDown": true,
+        "scroll": true,
+        "additionalEventCapturedAsUserInput": ""
         }
-      }
+    }
     },
     "userActionNamingSettings": {
-      "placeholders": [],
-      "loadActionNamingRules": [],
-      "xhrActionNamingRules": [],
-      "ignoreCase": true,
-      "splitUserActionsByDomain": true
+    "placeholders": [],
+    "loadActionNamingRules": [],
+    "xhrActionNamingRules": [],
+    "ignoreCase": true,
+    "splitUserActionsByDomain": true
     },
     "metaDataCaptureSettings": [],
     "conversionGoals": []
-  }
+}
+```
+</details>
 
 The `application.yaml` file or the **configuration instances**:
+<details>
+<summary> Click to expand </summary>
 
-### Jenkins pipeline
-Using gitea, open the file [jenkins/exercise-two.Jenkinsfile](../../jenkins/exercise-two.Jenkinsfile)
-```
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
+```yaml
+config:
+    - app-app-one: "application.json"
+    - app-app-two: "application.json"
+  
+app-app-one:
+    - name: "app-one"
 
-pipeline {
-    agent {
-        label 'monaco-runner'
-    }
-    stages {
-        stage('Dynatrace global config - Validate') {
-			steps {
-                container('monaco') {
-                    script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
-                    }
-                }
-			}
-		}
-        stage('Dynatrace global config - Deploy') {
-			steps {
-                container('monaco') {
-                    script {
-				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
-                        sh "sleep 60"
-                    }
-                }
-			}
-		}       
-        stage('Dynatrace Perform project - Validate') {
-			steps {
-                container('monaco') {
-                    script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
-                    }
-                }
-			}
-		}
-        stage('Dynatrace Perform project - Deploy') {
-			steps {
-                container('monaco') {
-                    script {
-				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
-                    }
-                }
-			}
-		}       
-    }
-}
+app-app-two:
+    - name: "app-two"
 ```
-A few important sections are noted:
-### The monaco-runner
-```
-agent {
-    label 'monaco-runner'
-}
-```
-```
-...
-container('monaco')
-...
-```
-This section refers to the `monaco-runner`, a container that was precreated by the Dynatrace ACE services team that can be used within a CI/CD pipeline.
-Within the `monaco` container, we now have the `monaco` CLI available. For more information, visit https://github.com/dynatrace-ace/monaco-runner.
+</details>
 
-Go to **Manage Jenkins** >> **Configure System** >> **Cloud configuration page** (bottom of settings page) >> **Pod Templates** >> **Pod Template monaco-runner** >> **Pod Template details...** and look at the configuration.
-![](resources/pod_template.png).
+## Step 2 - Introduce variable
+The first task to use variables into Monaco is by replacing the value in the JSON object that we want to turn into a variable with `{{ VARIABLE_NAME }}`. In our example, we want to turn UEM coverage percentage, represented in the `application.json` by the field `costControlUserSessionPercentage` in a variable called `uemPercentage`.
 
-By using this pod template in our Jenkins pipeline, we make the `monaco` command from within the pod available within our pipeline.
+To do so, using gitea, find the file and edit it.
 
-### The environments.yaml file
-On the first line of the Jenkinsfile we find the following:
-```
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
-```
-This file looks like this (you can verify this using Gitea):
-```
-perform:
-  - name: "perform"
-  - env-url: "{{ .Env.DT_TENANT_URL }}" 
-  - env-token-name: "DT_API_TOKEN" 
-```
-We defined a Dynatrace environment for Monaco to handle called `perform`.
-The attributes `env-url` and `env-token-name` contain the names of **environment variable** that contain the environment url and API token respectively. Note the difference in notation. Within Monaco it is possible to use environment variables anywhere, by using the format `{{ .Env.YOUR_ENV_VAR_NAME }}`. For the token, it is slightly different as this was historically always the name of an environment variable, so here you just put the format `YOUR_ENV_VAR_NAME` to load your token.
+On line 4, find the field `costControlUserSessionPercentage` and see that the value is hardcoded to `10`:
 
-So the question is: **Where are those variables stored?**
-
-Jenkins always passes all environment variables that are defined in its system to all the pipelines that are running. If we open **Manage Jenkins** >> **Configure System** and we scroll down a bit we see all the environment variables that are defined, including the Dynatrace Environment URL and Dynatrace API Tokens:
-![](resources/jenkins_envvars.png).
-
-Monaco, when running, will load and replace all environment variables where it can. If an environment variable is not set, it will throw a validation error.
-
-### Dry-run vs deploy
-For each project, notice there are two stages:
-```
-stage('Dynatrace global config - Validate') {
-    steps {
-        container('monaco') {
-            script{
-                sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
-            }
-        }
-    }
-}
-stage('Dynatrace global config - Deploy') {
-    steps {
-        container('monaco') {
-            script {
-                sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
-                sh "sleep 60"
-            }
-        }
-    }
-}       
+```json 
+"costControlUserSessionPercentage": 10,
 ```
 
-For the first stage, we add an extra argument, `-dry-run`, which will only validate the structure of our project (and dependant projects). It is similar to a `terraform plan`.
+Turn the value of that field (`10`) into a variable:
 
-## Step 2 - Trigger pipeline
-Once we are familiar with the project structure and the contents, it is time to trigger our pipeline.
+```json 
+"costControlUserSessionPercentage": "{{ uemPercentage }}",
+```
+**Note**: we need to surround the variable placeholders with double quotes `"`, even if it is not a string value.
 
-Navigate to the **Jenkins Dashboard**, open the pipeline **Exercise 2 - Apply all**, and click on **Build Now**.
+Commit the changes.
 
-![](resources/jenkins_exercise-two.png)
+## Step 3 - Reference value and assign a value
 
-The pipeline will now run and apply the two Monaco projects - **Global** and **Perform** - to the Dynatrace Environment.
+Now that we have defined our variable in the JSON template, we can assign values for it in the YAML file that contains the instances of the template to be created. Open the `application.yaml` file and for each instance of the application add the variable and assign a value to it:
 
-Wait until the pipeline has finished, you will be able to see it if all stages completed succesfully:
+```yaml
+config:
+    - app-app-one: "application.json"
+    - app-app-two: "application.json"
+  
+app-app-one:
+    - name: "app-one"
+    - uemPercentage: "100"
 
-![](resources/jenkins_exercise-two_run.png)
+app-app-two:
+    - name: "app-two"
+    - uemPercentage: "50"
+```
 
-Click on the build number, in the screenshot above it will be **#12**, this brings you to the build details. Click on **Console Output**
+Commit the changes.
 
-![](resources/jenkins_exercise-two_rundetails.png)
+## Step 4 - Run the pipeline
 
-In the **Console Output** you can track the progress and changes that Monaco made.
+In Jenkins, launch the pipeline `Exercise 4 - Update config`.
 
-![](resources/jenkins_exercise-two_console.png)
+The pipeline will now update the two application configurations and will change the `costControlUserSessionPercentage` from a fixed value to a parametrized value using Monaco.
 
-## Step 3 - View results in Dynatrace
+## Step 5 - View results in Dynatrace
 
-As a last step, go to your Dynatrace environment and verify that Monaco created all the configurations as described in the two Monaco projects.
+As a last step, go to your Dynatrace environment and verify that Monaco updated the application definition.
 
 That concludes this lab.
