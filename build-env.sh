@@ -1,7 +1,7 @@
 ##########################################
 #  VARIABLES                             #
 ##########################################
-monaco_version="v1.1.0" 
+monaco_version="v1.2.0" 
 source_repo="https://github.com/dynatrace-ace/perform2021-vhot-monaco" 
 clone_folder="bootstrap"
 domain="nip.io"
