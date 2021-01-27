@@ -160,7 +160,7 @@ master:
                 slaveConnectTimeoutStr: "300"
                 yamlMergeStrategy: "override"
               - containers:
-                - alwaysPullImage: true
+                - alwaysPullImage: false
                   args: "cat"
                   command: "/bin/sh -c"
                   image: "dynatraceace/monaco-runner:release-v1.2.0"
