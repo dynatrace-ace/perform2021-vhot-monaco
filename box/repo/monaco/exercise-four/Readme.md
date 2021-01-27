@@ -212,9 +212,10 @@ On line 4, find the field `costControlUserSessionPercentage` and see that the va
 Turn the value of that field (`10`) into a variable:
 
 ```json 
-"costControlUserSessionPercentage": "{{ uemPercentage }}",
+"costControlUserSessionPercentage": "{{ .uemPercentage }}",
 ```
 **Note**: we need to surround the variable placeholders with double quotes `"`, even if it is not a string value.
+**Note**: the `.` in front of `uemPercentage` is required
 
 Commit the changes.
 
