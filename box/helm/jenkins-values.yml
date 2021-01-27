@@ -266,6 +266,23 @@ master:
                   }
                 }
               }
+          - script: >
+              pipelineJob('Exercise 7 - Update config') {
+                definition {
+                  cpsScm {
+                    scriptPath('jenkins/exercise-seven.Jenkinsfile')
+                    scm {
+                      git {
+                          remote { 
+                            url('${GIT_PROTOCOL}://${GIT_DOMAIN}/${GITHUB_ORGANIZATION}/${GIT_REPO}')
+                          }
+                          branch('*/master')
+                      }
+                    }
+                    lightweight()
+                  }
+                }
+              }
 persistence:
   enabled: true
   existingClaim: "jenkins-pvc"
