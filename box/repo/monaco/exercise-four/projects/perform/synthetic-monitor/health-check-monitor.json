@@ -60,5 +60,8 @@
     ],
     "managementZones": [
       "{{.managementZoneId}}"
+    ],
+    "manuallyAssignedApps": [
+        "{{.applicationId}}"
     ]
   }

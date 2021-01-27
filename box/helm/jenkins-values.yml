@@ -35,8 +35,6 @@ master:
       value: GIT_DOMAIN_PLACEHOLDER
     - name: GIT_PROTOCOL
       value: http
-    - name: DOCKER_REGISTRY_URL
-      value: DOCKER_REGISTRY_URL_PLACEHOLDER
     - name: DT_TENANT_URL
       value: DT_TENANT_URL_PLACEHOLDER
     - name: DT_API_TOKEN
@@ -86,8 +84,6 @@ master:
           globalNodeProperties:
           - envVars:
               env:
-              - key: "DOCKER_REGISTRY_URL"
-                value: ${DOCKER_REGISTRY_URL} #Load from Environment Variable
               - key: "GITHUB_USER_EMAIL"
                 value: ${GITHUB_USER_EMAIL} #Load from Environment Variable
               - key: "GITHUB_ORGANIZATION"
@@ -147,83 +143,6 @@ master:
               - containers:
                 - args: "cat"
                   command: "/bin/sh -c"
-                  image: "maven:3.3.9-jdk-8-alpine"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "maven"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "docker:rc"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "docker"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "lachlanevenson/k8s-kubectl:v1.18.0"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "kubectl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "quay.io/dtacmworkshop/jmeter"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "jmeter"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "dynatraceacm/apline-curl"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "curl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                idleMinutes: 10
-                idleMinutesStr: "10"
-                label: "maven"
-                name: "maven-docker-k8s-jmeter"
-                nodeUsageMode: NORMAL
-                slaveConnectTimeout: 300
-                slaveConnectTimeoutStr: "300"
-                volumes:
-                - hostPathVolume:
-                    hostPath: "/var/run/docker.sock"
-                    mountPath: "/var/run/docker.sock"
-                - persistentVolumeClaim:
-                    claimName: "maven-repo"
-                    mountPath: "/root/.m2/repository"
-                    readOnly: false
-                yamlMergeStrategy: "override"
-              - containers:
-                - args: "cat"
-                  command: "/bin/sh -c"
                   image: "alpine/git"
                   livenessProbe:
                     failureThreshold: 0
@@ -234,18 +153,6 @@ master:
                   name: "git"
                   ttyEnabled: true
                   workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "quay.io/dtacmworkshop/jmeter"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "jmeter"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
                 label: "git"
                 name: "Git"
                 nodeUsageMode: NORMAL
@@ -253,118 +160,10 @@ master:
                 slaveConnectTimeoutStr: "300"
                 yamlMergeStrategy: "override"
               - containers:
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "node:8"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "nodejs"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "docker:rc"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "docker"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                idleMinutes: 10
-                idleMinutesStr: "10"
-                label: "nodejs"
-                name: "nodejs"
-                nodeUsageMode: NORMAL
-                slaveConnectTimeout: 300
-                slaveConnectTimeoutStr: "300"
-                volumes:
-                - hostPathVolume:
-                    hostPath: "/var/run/docker.sock"
-                    mountPath: "/var/run/docker.sock"
-                yamlMergeStrategy: "override"
-              - containers:
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "dynatraceacm/gobuilder"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "gobuilder"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "docker:rc"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "docker"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "lachlanevenson/k8s-kubectl:v1.18.0"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "kubectl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "quay.io/dtacmworkshop/jmeter"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "jmeter"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "dynatraceacm/apline-curl"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "curl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                label: "golang2"
-                name: "golang2"
-                nodeUsageMode: NORMAL
-                slaveConnectTimeout: 300
-                slaveConnectTimeoutStr: "300"
-                volumes:
-                - hostPathVolume:
-                    hostPath: "/var/run/docker.sock"
-                    mountPath: "/var/run/docker.sock"
-                yamlMergeStrategy: "override"
-              - containers:
                 - alwaysPullImage: true
                   args: "cat"
                   command: "/bin/sh -c"
-                  image: "dynatraceace/monaco-runner:release-v1.1.0"
+                  image: "dynatraceace/monaco-runner:release-v1.2.0"
                   livenessProbe:
                     failureThreshold: 0
                     initialDelaySeconds: 0
@@ -397,61 +196,6 @@ master:
                 slaveConnectTimeout: 300
                 slaveConnectTimeoutStr: "300"
                 yamlMergeStrategy: "override"
-              - containers:
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "lachlanevenson/k8s-kubectl:v1.18.0"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "kubectl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "alpine/git"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "git"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "quay.io/dtacmworkshop/jmeter"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "jmeter"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                - args: "cat"
-                  command: "/bin/sh -c"
-                  image: "dynatraceacm/apline-curl"
-                  livenessProbe:
-                    failureThreshold: 0
-                    initialDelaySeconds: 0
-                    periodSeconds: 0
-                    successThreshold: 0
-                    timeoutSeconds: 0
-                  name: "curl"
-                  ttyEnabled: true
-                  workingDir: "/home/jenkins/agent"
-                label: "kubegit"
-                name: "kubegit"
-                nodeUsageMode: NORMAL
-                slaveConnectTimeout: 300
-                slaveConnectTimeoutStr: "300"
-                yamlMergeStrategy: "override"
         credentials:
           system:
             domainCredentials:
@@ -464,10 +208,10 @@ master:
                     scope: GLOBAL
         jobs:
           - script: >
-              pipelineJob('Monitoring as Code') {
+              pipelineJob('Exercise 2 - Apply all') {
                 definition {
                   cpsScm {
-                    scriptPath('jenkins/monaco.Jenkinsfile')
+                    scriptPath('jenkins/exercise-two.Jenkinsfile')
                     scm {
                       git {
                           remote { 
@@ -481,10 +225,10 @@ master:
                 }
               }
           - script: >
-              pipelineJob('Exercise 2 - Apply all') {
+              pipelineJob('Exercise 4 - Update config') {
                 definition {
                   cpsScm {
-                    scriptPath('jenkins/exercise-two.Jenkinsfile')
+                    scriptPath('jenkins/exercise-four.Jenkinsfile')
                     scm {
                       git {
                           remote { 

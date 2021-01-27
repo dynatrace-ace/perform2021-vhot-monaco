@@ -1,7 +1,7 @@
 ##########################################
 #  VARIABLES                             #
 ##########################################
-monaco_version="v1.1.0" 
+monaco_version="v1.2.0" 
 source_repo="https://github.com/dynatrace-ace/perform2021-vhot-monaco" 
 clone_folder="bootstrap"
 domain="nip.io"
@@ -48,7 +48,7 @@ cd
 ##############################
 # Download Monaco + add PATH #
 ##############################
-wget https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/releases/download/v1.0.1/monaco-linux-amd64 -O $home_folder/monaco
+wget https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/releases/download/$monaco_version/monaco-linux-amd64 -O $home_folder/monaco
 chmod +x $home_folder/monaco
 cp $home_folder/monaco /usr/local/bin
 
@@ -200,6 +200,7 @@ sed \
     -e "s|GIT_REPO_PLACEHOLDER|$git_repo|" \
     -e "s|GIT_DOMAIN_PLACEHOLDER|gitea.$ingress_domain|" \
     -e "s|SYNTH_NODE_ID_PLACEHOLDER|$private_node_id|" \
+    -e "s|VM_IP_PLACEHOLDER|$VM_IP|" \
     $home_folder/$clone_folder/box/helm/jenkins-values.yml > $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml
 
 kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:jenkins

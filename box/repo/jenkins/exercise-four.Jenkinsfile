@@ -1,4 +1,4 @@
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
+ENVS_FILE = "monaco/exercise-four/environments.yaml"
 
 pipeline {
     agent {
