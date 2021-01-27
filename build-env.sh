@@ -152,6 +152,8 @@ echo "Gitea - Create repo $git_repo..."
 curl -k -d '{"name":"'$git_repo'", "private":false, "auto-init":true}' -H "Content-Type: application/json" -X POST "http://gitea.$ingress_domain/api/v1/org/$git_org/repos?access_token=$gitea_pat"
 echo "Gitea - Git config..."
 git config --global user.email "$git_email" && git config --global user.name "$git_user" && git config --global http.sslverify false
+runuser -l $shell_user -c 'git config --global user.email $git_email && git config --global user.name $git_user && git config --global http.sslverify false'
+
 cd $home_folder
 echo "Gitea - Adding resources to repo $git_org/$git_repo"
 git clone http://$git_user:$gitea_pat@gitea.$ingress_domain/$git_org/$git_repo
@@ -163,7 +165,7 @@ cd $home_folder/$git_repo && git push http://$git_user:$gitea_pat@gitea.$ingress
 ##############################
 # Install ActiveGate         #
 ##############################
-
+cd $home_folder
 echo "Dynatrace ActiveGate - Download"
 activegate_download_location=$home_folder/Dynatrace-ActiveGate-Linux-x86-latest.sh
 if [ ! -f "$activegate_download_location" ]; then
@@ -242,3 +244,5 @@ sed -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" $home_folder/$clone_folder/box/h
 docker build -t localhost:32000/dashboard $home_folder/$clone_folder/box/dashboard && docker push localhost:32000/dashboard
 
 helm upgrade -i ace-dashboard $home_folder/$clone_folder/box/helm/dashboard -f $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml --namespace dashboard --create-namespace
+
+chown -R $shell_user $home_folder/$git_repo/
