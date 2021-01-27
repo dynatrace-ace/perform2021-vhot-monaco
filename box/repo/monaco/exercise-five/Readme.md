@@ -28,7 +28,7 @@ health_check_url: http://simplenode.app-three.<YOUR-IP-HERE>.nip.io
 Skip_synthetic_monitor_deployment: should be unchecked
 ```
 
-![alt text](https://raw.githubusercontent.com/evanderbent/perform2021-vhot-monaco/master/box/repo/monaco/exercise-five/Screenshot%202021-01-27%20at%2011.44.51.png "Templates step 1")
+![alt text](resources/ex5_pipeline.png "Templates step 1")
 
 
 **Press build**. In case of any issues (the build is RED, or nothing was created in Dynatrace), please don't hesitate to ask for assistance.
@@ -41,13 +41,13 @@ Let's take a look at some of the configurations that we apply.
 
 First of all, let's look at the management zone. The zone.yaml file accesses the environment variable **{{.Env.Kubernetes_Namespace}}**, which we previously specified in our build pipeline. This is then setup to provide the name and apply the correct filter for the management zone in the management zone json.
 
-![alt text](https://raw.githubusercontent.com/evanderbent/perform2021-vhot-monaco/master/box/repo/monaco/exercise-five/Screenshot%202021-01-27%20at%2014.06.13.png "Templates MZ")
+![alt text](resources/ex5_mzYAML.png "Templates MZ")
 
 If we take a look at the synthetic monitor, we can see it has a parameter "skipDeployment". This parameter allows us to skip certain parts from being applied.
 
-![alt text](https://raw.githubusercontent.com/evanderbent/perform2021-vhot-monaco/master/box/repo/monaco/exercise-five/Screenshot%202021-01-27%20at%2014.06.33.png "Templates synthetic Monitor")
+![alt text](resources/ex5_synthYAML.png "Templates synthetic Monitor")
 
-![alt text](https://raw.githubusercontent.com/evanderbent/perform2021-vhot-monaco/master/box/repo/monaco/exercise-five/Screenshot%202021-01-27%20at%2011.45.03.png "Templates step 2")
+![alt text](resources/ex5_skipInPipeline.png "Templates step 2")
 
 **Run the pipeline with defaults but tick the box Skip_synthetic_monitor_deployment. Check in Dynatrace that all configuration items were created, except for the synthetic monitor**.
 
@@ -61,7 +61,7 @@ It can also be checked by inspecting the Jenkins console output:
 
 **Make a change in the app-three Production application (set the capture rate to 10%)**:
 
-![alt text](https://raw.githubusercontent.com/evanderbent/perform2021-vhot-monaco/master/box/repo/monaco/exercise-five/Screenshot%202021-01-27%20at%2011.49.05.png "Templates step 2")
+![alt text](resources/ex5_appSettings.png "Templates step 2")
 
 To navigate here, go to Applications > app-three - Production > click on the three dots in the top-right corner of the application page (...) > click edit.
 
