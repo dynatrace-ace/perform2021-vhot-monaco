@@ -8,7 +8,7 @@ email-app-one:
     - alertingProfile: ""
 
 
-email-app-one:
-    - name: "email-app-one"
+email-app-two:
+    - name: "email-app-two"
     - recipient: ""
     - alertingProfile: ""

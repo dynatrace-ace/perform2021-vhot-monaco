@@ -100,7 +100,7 @@ Similarly as in step 2, modify the `notification` to link to the `alerting-profi
 
 ### Step 4 - Trigger the pipeline
 
-In Jenkins, trigger the pipeline Exercise 7
+In Jenkins, trigger the pipeline **Exercise 7 - Linking configuration**
 
 ### Step 5 - View results in Dynatrace
 

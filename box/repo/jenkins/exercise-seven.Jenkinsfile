@@ -19,7 +19,6 @@ pipeline {
                 container('monaco') {
                     script {
 				        sh "monaco -v -e=$ENVS_FILE monaco/exercise-seven/projects/"
-                        sh "sleep 60"
                     }
                 }
 			}

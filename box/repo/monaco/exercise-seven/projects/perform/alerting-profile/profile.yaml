@@ -7,5 +7,5 @@ alerting-profile-app-one:
     - mzId: ""
 
 alerting-profile-app-two:
-    - name: "profile-app-one"
+    - name: "profile-app-two"
     - mzId: ""

@@ -267,7 +267,7 @@ master:
                 }
               }
           - script: >
-              pipelineJob('Exercise 7 - Update config') {
+              pipelineJob('Exercise 7 - Linking configuration') {
                 definition {
                   cpsScm {
                     scriptPath('jenkins/exercise-seven.Jenkinsfile')
