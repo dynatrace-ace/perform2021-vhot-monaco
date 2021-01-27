@@ -1,4 +1,5 @@
-## Monaco HOT - Exercise Four
+## Monaco HOT - Exercise Four - Variables
+
 Exercise four builds on top of Exercise two - where we used a Jenkins pipeline to manage our Dynatrace configuration using Monaco.
 
 Envision a scenario where you have similar application configurations multiple times - either in the same or in a different Dynatrace environment. You want to uniformily configure these applications so you use the same JSON template. How can you handle a requirement where one of the settings of this application should be different across all the instances of this template - for example UEM coverage percentage.
