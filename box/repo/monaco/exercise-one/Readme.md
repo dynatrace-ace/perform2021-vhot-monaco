@@ -1,4 +1,4 @@
-# Monaco Exercise One
+# Monaco HOT - Exercise One
 
 Dynatrace OneAgent is already installed to the VM and is monitoring 3 applications. In this exercise we will begin by creating an automatic tagging rule inside of our Dynatrace tenant UI. We will then use the Dynatrace API to pull down the configuration of this tag to build our project files. Once our project structure is complete we will remove our automatic tagging rule within the Dynatrace UI and re-apply the rule using Monaco!
 
@@ -100,7 +100,7 @@ Next we'll use the GET for /autoTags/{id} endpoint
 
 10. remove the placeholder and paste the copied response body from the Dynatrace API output.
 11. Once the JSON is pasted into the file, remove lines 2-8. Lines 2-8 are identifiers of the existing configuration that are not accepted when creating a new configuration in the next step. The desired file contents can also be copied from these instructions below.
-```
+```json
 {
   "name": "Owner",
   "rules": [
@@ -146,7 +146,9 @@ Next we'll use the GET for /autoTags/{id} endpoint
 3. Remove the placeholder
 4. Copy the contents below and paste into the YAML file.
 
-```
+NOTE: Monaco will require the configuration YAML to always contain a `name` attribute.
+
+```yaml
 config:
     - tag-owner: "auto-tag.json"
   
@@ -159,18 +161,19 @@ The Config YAML tells monaco which configuration JSON to apply. You can supply a
 
 Next we will update our auto-tag.json file to be more dynamic and use environment variables to populate the tag name. This way we could structure our config Yaml to iterate through multiple tag names and configurations. 
 
+
 ## Step Five - Modify Auto-Tag.json
 
 1. Open and edit the auto-tag.json file under monaco -> exercise-one -> projects -> perform -> auto-tag
 2. On line 2 replace `Owner` with the snippit below. 
 
-```
+```json
 {{ .name }}
 ```
 Our JSON template is now using the property `name` dynamically that is defined in the Config YAML. This practice provides flexibility to define multiple configs or values from other sources and populate them dynamically.
 
 Expected JSON file contents:
-```
+```json
 {
   "name": "{{ .name }}",
   "rules": [
@@ -216,19 +219,19 @@ Now that our project files are defined for a tagging rule we'll need to manually
 3. Save changes
 4. Open the Dynatrace University Terminal
 5. Gain Root access
-```
+```bash
 $ sudo su
 ```
 6. cd into the peform directory
-```
+```bash
 $ cd ~/perform
 ```
 7. Execute the following command to pull down our changes to the remote repository.
-```
+```bash
 $ git pull
 ```
 8. cd into the monaco/exercise-one/projects folder
-```
+```bash
 $ cd ./monaco/exercise-one/projects
 ```
 
@@ -236,15 +239,24 @@ $ cd ./monaco/exercise-one/projects
 
 9. For the purposes of this training environment we'll use an environment variable to supply monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
 
+<<<<<<< HEAD
 10. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
+=======
+In case you need to get your API token again execute: (ensure not to copy the linux user)
 
+```bash
+$ kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
 ```
+10. Create a local environment variable called DT_API_TOKEN
+>>>>>>> eb191eec3c3c9e543a7b6d91fc43da39f9c77e88
+
+```bash
 $ export DT_API_TOKEN=[your token here]
 ```
 
 11.  Execute a DryRun of Monaco (-d is the dry run flag) which will validate our configuration is good before applying the configuration to the Dynatrace tenant. the -e flag tells monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to excplicitly specify a project directory.
 
-```
+```bash
 $ monaco -d -e ./environments.yaml
 ```
 Monaco should execute and you should not see any errors
@@ -253,7 +265,7 @@ Monaco should execute and you should not see any errors
 
 1.  Remove the -d flag to execute all configurations in the project!
 
-```
+```bash
 $ monaco -e environments.yaml
 ```
 13. Check your Dynatrace tenant for the `Owner` tag to be recreated.
