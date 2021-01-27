@@ -242,7 +242,7 @@ master:
                 }
               }
           - script: >
-              pipelineJob('5. Exercise five production') {
+              pipelineJob('Exercise 5 - Onboard app') {
                 parameters {
                   choiceParam('Environment', ['Staging','Production'], '')
                   stringParam('App_Name', 'demo-app', 'The name of the service to deploy.')
