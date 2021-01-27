@@ -54,6 +54,8 @@ We will review the monaco Project structure and will use Gitea to edit any neces
 ## Step Three - Build the Monaco JSON from the Dynatrace API
 A great way to start building your monaco project is based off existing Dynatrace configuration. Even if you're starting with a fresh Dynatrace environment it may be worth creating a sample configuration in the UI first. This way we'll use the Dynatrace API to extract the properties of the configuration we'd like to use in monaco. From there you can use your configuration yaml file to add additional configuration.
 
+***If you already have a Dynatrace API token please skip ahead to item #4***
+
 1. To use the Dynatrace Swagger UI we need to aquire our API token which is stored in kubernetes secret. 
 2. From the Dynatrace University terminal execute the below command to retrieve your token.
 ```
@@ -142,7 +144,7 @@ Next we'll use the GET for /autoTags/{id} endpoint
 1. Navigate your repo to exercise-one -> projects -> perform -> auto-tag
 2. open the auto-tag.yaml and edit the file
 3. Remove the placeholder
-4. Copy the contents below and paste into the YAML file. Commit changes
+4. Copy the contents below and paste into the YAML file.
 
 ```
 config:
@@ -234,12 +236,7 @@ $ cd ./monaco/exercise-one/projects
 
 9. For the purposes of this training environment we'll use an environment variable to supply monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
 
-In case you need to get your API token again execute: (ensure not to copy the linux user)
-
-```
-$ kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
-```
-10. Create a local environment variable called DT_API_TOKEN
+10. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
 
 ```
 $ export DT_API_TOKEN=[your token here]
