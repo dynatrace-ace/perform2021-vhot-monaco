@@ -1,4 +1,4 @@
-## Exercise Four - Variables
+## Variables
 
 Exercise four builds on top of Exercise two - where we used a Jenkins pipeline to manage our Dynatrace configuration using Monaco.
 
@@ -206,13 +206,13 @@ To do so, using gitea, find the file and edit it.
 
 On line 4, find the field `costControlUserSessionPercentage` and see that the value is hardcoded to `10`:
 
-```json 
+```json
 "costControlUserSessionPercentage": 10,
 ```
 
 Turn the value of that field (`10`) into a variable:
 
-```json 
+```json
 "costControlUserSessionPercentage": "{{ .uemPercentage }}",
 ```
 **Note**: we need to surround the variable placeholders with double quotes `"`, even if it is not a string value.
