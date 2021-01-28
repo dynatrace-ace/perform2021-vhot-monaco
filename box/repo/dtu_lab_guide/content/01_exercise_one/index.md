@@ -1,8 +1,8 @@
-## Exercise One - First Apply
+## First introduction
 
 Dynatrace OneAgent is already installed to the VM and is monitoring 3 applications. In this exercise we will begin by creating an automatic tagging rule inside of our Dynatrace tenant UI. We will then use the Dynatrace API to pull down the configuration of this tag to build our project files. Once our project structure is complete we will remove our automatic tagging rule within the Dynatrace UI and re-apply the rule using Monaco!
 
-### Prerequisites
+## Prerequisites
 1. Log into https://university.dynatrace.com
 2. On your university dashboard you should see an event `Gitops for Observability With Monitoring As Code`
 3. Select the event and locate `Environments`
@@ -30,19 +30,24 @@ First we will create a tag that identifies the owners of specific process groups
 8. Check the box `Apply to all services provided by the process groups`
 9. Click `Create Tag Rule`
 10. Click `Save Changes`
-![Owner Tag Config](../../assets/images/TagRule-UI.png)
+![Owner Tag Config](Resources/TagRule-UI.png)
 
 You can now filter Process Groups by tag `Owner`
-![Owner PG](../../assets/images/Owner-PG.png)
+![Owner PG](Resources/Owner-PG.png)
 
 ### Step Two - Review Monaco Project structure in Gitea
 
 We will review the monaco Project structure and will use Gitea to edit any necessary files in later exercises.
-1. Open a new tab or duplicate your current.
-2. In the main exercise-one folder, open the `projects` folder.
-3. Open the `environments.yaml` file
-   1. Environments are defined in the environments.yaml consisting of the environment url and the name of the environment variable to use for the API token. Multiple environments can be specified. 
-   2. ![Environmentsyaml](../../assets/images/environmentsyaml.png)
+1. Open your Monaco HOT dashboard and open Gitea if you haven't already.
+2. Open the `perform` repo and navigate to monaco -> exercise-one, open the `projects` folder.
+3. Open and edit the `environments.yaml` file
+   1. Environments are defined in the environments.yaml consisting of the environment url and the name of the environment variable to use for the API token. Multiple environments can be specified. Remove all content in `environments.yaml` and copy the block below and paste into the empty file. 
+   2. ```
+      perform:
+        - name: "perform"
+        - env-url: "YOUR_TENANT_URL_GOES_HERE"
+        - env-token-name: "DT_API_TOKEN"
+      ```
    3. For security reasons you should not place your environment token directly in a file.
    4. Update the env-url value to your Dynatrace Tenant address (ensure there is no trailing `/` on the end of the URL)
    5. Commit the changes
@@ -66,11 +71,11 @@ NOTE: The browser terminal may not display the token in it's own line. Be sure t
 3. Paste your token into a notepad for later reference.
 4. Open your Dynatrace tenant. Select your profile icon and choose `Configuration API`
 5. Once in the Dynatrace Config API UI, select `authorize`
-![Tokenauth](../../assets/images/Tokenauth.png)
+    ![Tokenauth](Resources/Tokenauth.png)
 6. Paste your token into the token field and authorize. Click close.
 7. Find the Automatically Applied Tags endpoint and select it to expand.
 
-![Auto-tagendpoints](../../assets/images/autotagendpoints.png)
+    ![Auto-tagendpoints](Resources/autotagendpoints.png)
 
 Next we need to get the Tag ID of `Owner` we manually created earlier.
 
@@ -79,7 +84,7 @@ Next we need to get the Tag ID of `Owner` we manually created earlier.
 3. click excute
 4. Scoll down to the response body. Copy the id of the `Owner` tag.
 
-![Tagid](../../assets/images/TagID.png)
+    ![Tagid](Resources/TagID.png)
 
 Next we'll use the GET for /autoTags/{id} endpoint
 
@@ -90,50 +95,50 @@ Next we'll use the GET for /autoTags/{id} endpoint
 5. Click execute
 6. Scroll down to the response body
 
-![Tagconfigjson](../../assets/images/Tagconfigjson.png)
+    ![Tagconfigjson](Resources/Tagconfigjson.png)
 
 7. Copy the entire Response body to your clipboard.
 8. Open Gitea and navigate to monaco -> exercise-one -> projects -> perform ->  auto-tag and open the auto-tag.json file.
 9. Edit the file
 
-![editjson](../../assets/images/Editjson.png)
+    ![editjson](Resources/Editjson.png)
 
 10. remove the placeholder and paste the copied response body from the Dynatrace API output.
 11. Once the JSON is pasted into the file, remove lines 2-8. Lines 2-8 are identifiers of the existing configuration that are not accepted when creating a new configuration in the next step. The desired file contents can also be copied from these instructions below.
-```json
-{
-  "name": "Owner",
-  "rules": [
+    ```json
     {
-      "type": "PROCESS_GROUP",
-      "enabled": true,
-      "valueFormat": "{ProcessGroup:Environment:owner}",
-      "propagationTypes": [
-        "PROCESS_GROUP_TO_SERVICE"
-      ],
-      "conditions": [
+      "name": "Owner",
+      "rules": [
         {
-          "key": {
-            "attribute": "PROCESS_GROUP_CUSTOM_METADATA",
-            "dynamicKey": {
-              "source": "ENVIRONMENT",
-              "key": "owner"
-            },
-            "type": "PROCESS_CUSTOM_METADATA_KEY"
-          },
-          "comparisonInfo": {
-            "type": "STRING",
-            "operator": "EXISTS",
-            "value": null,
-            "negate": false,
-            "caseSensitive": null
-          }
+          "type": "PROCESS_GROUP",
+          "enabled": true,
+          "valueFormat": "{ProcessGroup:Environment:owner}",
+          "propagationTypes": [
+            "PROCESS_GROUP_TO_SERVICE"
+          ],
+          "conditions": [
+            {
+              "key": {
+                "attribute": "PROCESS_GROUP_CUSTOM_METADATA",
+                "dynamicKey": {
+                  "source": "ENVIRONMENT",
+                  "key": "owner"
+                },
+                "type": "PROCESS_CUSTOM_METADATA_KEY"
+              },
+              "comparisonInfo": {
+                "type": "STRING",
+                "operator": "EXISTS",
+                "value": null,
+                "negate": false,
+                "caseSensitive": null
+              }
+            }
+          ]
         }
       ]
     }
-  ]
-}
-```
+    ```
 
 
 
@@ -146,15 +151,15 @@ Next we'll use the GET for /autoTags/{id} endpoint
 3. Remove the placeholder
 4. Copy the contents below and paste into the YAML file.
 
-NOTE: Monaco will require the configuration YAML to always contain a `name` attribute.
+    NOTE: Monaco will require the configuration YAML to always contain a `name` attribute.
 
-```yaml
-config:
-    - tag-owner: "auto-tag.json"
-  
-tag-owner:
-    - name: "Owner"
-```
+    ```yaml
+    config:
+        - tag-owner: "auto-tag.json"
+      
+    tag-owner:
+        - name: "Owner"
+    ```
 5. Commit your changes
 
 The Config YAML tells monaco which configuration JSON to apply. You can supply addtional configuration names with seperate JSON files. Each config name has a set of properties to apply to the JSON template. In our case we're telling Monaco to use the auto-tag.json file for our tag-owner configuration. Then the tag-owner configuration has a value called name.
@@ -167,46 +172,46 @@ Next we will update our auto-tag.json file to be more dynamic and use environmen
 1. Open and edit the auto-tag.json file under monaco -> exercise-one -> projects -> perform -> auto-tag
 2. On line 2 replace `Owner` with the snippit below. 
 
-```json
-{{ .name }}
-```
-Our JSON template is now using the property `name` dynamically that is defined in the Config YAML. This practice provides flexibility to define multiple configs or values from other sources and populate them dynamically.
+    ```json
+    {{ .name }}
+    ```
+    Our JSON template is now using the property `name` dynamically that is defined in the Config YAML. This practice provides flexibility to define multiple configs or values from other sources and populate them dynamically.
 
-Expected JSON file contents:
-```json
-{
-  "name": "{{ .name }}",
-  "rules": [
+    Expected JSON file contents:
+    ```json
     {
-      "type": "PROCESS_GROUP",
-      "enabled": true,
-      "valueFormat": "{ProcessGroup:Environment:owner}",
-      "propagationTypes": [
-        "PROCESS_GROUP_TO_SERVICE"
-      ],
-      "conditions": [
+      "name": "{{ .name }}",
+      "rules": [
         {
-          "key": {
-            "attribute": "PROCESS_GROUP_CUSTOM_METADATA",
-            "dynamicKey": {
-              "source": "ENVIRONMENT",
-              "key": "owner"
-            },
-            "type": "PROCESS_CUSTOM_METADATA_KEY"
-          },
-          "comparisonInfo": {
-            "type": "STRING",
-            "operator": "EXISTS",
-            "value": null,
-            "negate": false,
-            "caseSensitive": null
-          }
+          "type": "PROCESS_GROUP",
+          "enabled": true,
+          "valueFormat": "{ProcessGroup:Environment:owner}",
+          "propagationTypes": [
+            "PROCESS_GROUP_TO_SERVICE"
+          ],
+          "conditions": [
+            {
+              "key": {
+                "attribute": "PROCESS_GROUP_CUSTOM_METADATA",
+                "dynamicKey": {
+                  "source": "ENVIRONMENT",
+                  "key": "owner"
+                },
+                "type": "PROCESS_CUSTOM_METADATA_KEY"
+              },
+              "comparisonInfo": {
+                "type": "STRING",
+                "operator": "EXISTS",
+                "value": null,
+                "negate": false,
+                "caseSensitive": null
+              }
+            }
+          ]
         }
       ]
     }
-  ]
-}
-```
+    ```
 
 3. Commit your changes
 
@@ -219,56 +224,56 @@ Now that our project files are defined for a tagging rule we'll need to manually
 3. Save changes
 4. Open the Dynatrace University Terminal
 5. Gain Root access
-```bash
-$ sudo su
-```
+    ```bash
+    $ sudo su
+    ```
 6. cd into the peform directory
-```bash
-$ cd ~/perform
-```
+    ```bash
+    $ cd /home/dtu_training/perform
+    ```
 7. Execute the following command to pull down our changes to the remote repository.
-```bash
-$ git pull
-```
+    ```bash
+    $ git pull
+    ```
 8. cd into the monaco/exercise-one/projects folder
-```bash
-$ cd ./monaco/exercise-one/projects
-```
+    ```bash
+    $ cd ./monaco/exercise-one/projects
+    ```
 
-***We're now ready to see Monaco in action!*** 
+    ***We're now ready to see Monaco in action!*** 
 
 9. For the purposes of this training environment we'll use an environment variable to supply monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
 
 10. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
 In case you need to get your API token again execute: (ensure not to copy the linux user)
 
-```bash
-$ kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
-```
-Set the variable with the token
-```bash
-$ export DT_API_TOKEN=[your token here]
-```
+    ```bash
+    $ kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
+    ```
+    Set the variable with the token
+    ```bash
+    $ export DT_API_TOKEN=[your token here]
+    ```
 
-1.   Execute a DryRun of Monaco (-d is the dry run flag) which will validate our configuration is good before applying the configuration to the Dynatrace tenant. the -e flag tells monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to excplicitly specify a project directory.
+11. Execute a DryRun of Monaco (-d is the dry run flag) which will validate our configuration is good before applying the configuration to the Dynatrace tenant. the -e flag tells monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to excplicitly specify a project directory.
 
-```bash
-$ monaco -d -e ./environments.yaml
-```
-Monaco should execute and you should not see any errors
+    ```bash
+    $ monaco -d -e ./environments.yaml
+    ```
+    Monaco should execute and you should not see any errors
 
-![monacodryrun](../../assets/images/monacodryrun.png)
+    ![monacodryrun](Resources/monacodryrun.png)
 
-1.  Remove the -d flag to execute all configurations in the project!
+12. Remove the -d flag to execute all configurations in the project!
 
-```bash
-$ monaco -e environments.yaml
-```
-13. Check your Dynatrace tenant for the `Owner` tag to be recreated.
+    ```bash
+    $ monaco -e environments.yaml
+    ```
+13.  Check your Dynatrace tenant for the `Owner` tag to be recreated.
 
-![Owner Tag](../../assets/images/Ownertagui.png)
+      ![Owner Tag](Resources/Ownertagui.png)
 
-### ***Congratulations on completing Exercise-one!***
+## ***Congratulations on completing Exercise-one!***
 
 
 
