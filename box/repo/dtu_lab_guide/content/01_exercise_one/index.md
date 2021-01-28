@@ -30,10 +30,10 @@ First we will create a tag that identifies the owners of specific process groups
 8. Check the box `Apply to all services provided by the process groups`
 9. Click `Create Tag Rule`
 10. Click `Save Changes`
-![Owner Tag Config](Resources/TagRule-UI.png)
+![Owner Tag Config](../../assets/images/TagRule-UI.png)
 
 You can now filter Process Groups by tag `Owner`
-![Owner PG](Resources/Owner-PG.png)
+![Owner PG](../../assets/images/Owner-PG.png)
 
 ### Step Two - Review Monaco Project structure in Gitea
 
@@ -71,11 +71,11 @@ NOTE: The browser terminal may not display the token in it's own line. Be sure t
 3. Paste your token into a notepad for later reference.
 4. Open your Dynatrace tenant. Select your profile icon and choose `Configuration API`
 5. Once in the Dynatrace Config API UI, select `authorize`
-    ![Tokenauth](Resources/Tokenauth.png)
+    ![Tokenauth](../../assets/images/Tokenauth.png)
 6. Paste your token into the token field and authorize. Click close.
 7. Find the Automatically Applied Tags endpoint and select it to expand.
 
-    ![Auto-tagendpoints](Resources/autotagendpoints.png)
+    ![Auto-tagendpoints](../../assets/images/autotagendpoints.png)
 
 Next we need to get the Tag ID of `Owner` we manually created earlier.
 
@@ -84,7 +84,7 @@ Next we need to get the Tag ID of `Owner` we manually created earlier.
 3. click excute
 4. Scoll down to the response body. Copy the id of the `Owner` tag.
 
-    ![Tagid](Resources/TagID.png)
+    ![Tagid](../../assets/images/TagID.png)
 
 Next we'll use the GET for /autoTags/{id} endpoint
 
@@ -95,13 +95,13 @@ Next we'll use the GET for /autoTags/{id} endpoint
 5. Click execute
 6. Scroll down to the response body
 
-    ![Tagconfigjson](Resources/Tagconfigjson.png)
+    ![Tagconfigjson](../../assets/images/Tagconfigjson.png)
 
 7. Copy the entire Response body to your clipboard.
 8. Open Gitea and navigate to monaco -> exercise-one -> projects -> perform ->  auto-tag and open the auto-tag.json file.
 9. Edit the file
 
-    ![editjson](Resources/Editjson.png)
+    ![editjson](../../assets/images/Editjson.png)
 
 10. remove the placeholder and paste the copied response body from the Dynatrace API output.
 11. Once the JSON is pasted into the file, remove lines 2-8. Lines 2-8 are identifiers of the existing configuration that are not accepted when creating a new configuration in the next step. The desired file contents can also be copied from these instructions below.
@@ -262,7 +262,7 @@ In case you need to get your API token again execute: (ensure not to copy the li
     ```
     Monaco should execute and you should not see any errors
 
-    ![monacodryrun](Resources/monacodryrun.png)
+    ![monacodryrun](../../assets/images/monacodryrun.png)
 
 12. Remove the -d flag to execute all configurations in the project!
 
@@ -271,7 +271,7 @@ In case you need to get your API token again execute: (ensure not to copy the li
     ```
 13.  Check your Dynatrace tenant for the `Owner` tag to be recreated.
 
-      ![Owner Tag](Resources/Ownertagui.png)
+      ![Owner Tag](../../assets/images/Ownertagui.png)
 
 ## ***Congratulations on completing Exercise-one!***
 
