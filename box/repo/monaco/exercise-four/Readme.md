@@ -247,6 +247,6 @@ The pipeline will now update the two application configurations and will change 
 
 ## Step 5 - View results in Dynatrace
 
-As a last step, go to your Dynatrace environment and verify that Monaco updated the application definition.
+As a last step, go to your Dynatrace environment and verify that Monaco updated the application "app-two" cost and traffic control % to 50 and "app-one" to 100.
 
 That concludes this lab.
