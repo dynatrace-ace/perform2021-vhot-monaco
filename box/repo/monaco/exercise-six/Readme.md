@@ -1,7 +1,7 @@
 # Monaco HOT - Exercise Six
 
 ## Delete Configuration
-Configuration which is not needed anymore can also be deleted in automated fashion. This tool is looking for delete.yaml file located in projects root folder and deletes all configurations defined in this file after finishing deployment. In delete.yaml you have to specify then `name` (not id) of configuration to be deleted.
+Configuration which is not needed anymore can also be deleted in automated fashion. This tool is looking for delete.yaml file located in projects root folder and deletes all configurations defined in this file after finishing deployment. In delete.yaml you have to specify the ***name of the configuration how it exists in Dynatrace** (not id) of configuration to be deleted.
 
 Here is one example of delete.yaml with multiple configurations:
 ```yaml
@@ -24,12 +24,12 @@ You have successfully completed exercise-one
 
 
 1. create new delete.yaml file from gitea repo under perform/monaco/exercise-one
-![Owner delete yaml](Resources/delete_yaml.png)
+    ![Owner delete yaml](Resources/delete_yaml.png)
 2. add the following to delete.yaml file
-```yaml
-delete:
-  - "auto-tag/owner"
-```
+    ```yaml
+    delete:
+      - "auto-tag/owner"
+    ```
 3. Commit your changes
 
 ## Step Two - Verify the target object ("owner" tagging rule) exist
@@ -37,35 +37,35 @@ delete:
 2. Open tags -> automatically applied tags
 3. verify tagging rule "owner" exist
 
-![Owner Tag](Resources/Ownertagui.png)
+    ![Owner Tag](Resources/Ownertagui.png)
 
 ## Step Three - Pull delete.yaml file and execute Monaco command
 
 1. Open the Dynatrace University Terminal
-2. Gain Root access
-```bash
-$ sudo su
-```
-3. cd into the exercise-one directory
-```bash
-$ cd ~/perform/monaco/exercise-one
-```
+2. cd into the exercise-one directory
+    ```bash
+    $ cd /home/dtu_training/perform/monaco/exercise-one
+    ```
+3. Gain Root access
+    ```bash
+    $ sudo su
+    ```
 4. Execute the following command to pull down our changes from the remote repository.
-```bash
-$ git pull
-```
-Make sure delete.yaml is pulled into the current directory (for example:)
+    ```bash
+    $ git pull
+    ```
+    Make sure delete.yaml is pulled into the current directory (for example:)
 
-![Owner git pull yaml](Resources/git_pull.png)
+    ![Owner git pull yaml](Resources/git_pull.png)
 
 5. Run Monaco commandline
 
-```bash
-$ monaco -e ./environments.yaml
-```
-Monaco should execute and you should not see any errors
+    ```bash
+    $ monaco -e ./environments.yaml
+    ```
+    Monaco should execute and you should not see any errors
 
-![Owner git pull yaml](Resources/delete_console.png)
+    ![Owner git pull yaml](Resources/delete_console.png)
 
 6. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
 
