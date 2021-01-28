@@ -23,12 +23,12 @@ You have successfully completed exercise-one
 ## Step One - create a delete.yaml file
 
 
-1. create new delete.yaml file from gitea repo under perform/monaco/exercise-one
+1. create new delete.yaml file from gitea repo under perform/monaco/exercise-one/projects
     ![Owner delete yaml](Resources/delete_yaml.png)
 2. add the following to delete.yaml file
     ```yaml
     delete:
-      - "auto-tag/owner"
+      - "auto-tag/Owner"
     ```
 3. Commit your changes
 
@@ -61,7 +61,7 @@ You have successfully completed exercise-one
 5. Run Monaco commandline
 
     ```bash
-    $ monaco -e ./environments.yaml
+    $ monaco -v -e projects/environments.yaml projects/
     ```
     Monaco should execute and you should not see any errors
 
