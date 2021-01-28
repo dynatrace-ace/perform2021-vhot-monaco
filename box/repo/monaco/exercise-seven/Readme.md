@@ -12,11 +12,11 @@ You will find a standard monaco setup:
 └── projects
     └── perform
         ├── alerting-profile
-        │   ├── profile.json
-        │   └── profile.yaml
+        │   ├── profile.json
+        │   └── profile.yaml
         ├── management-zone
-        │   ├── management-zone.json
-        │   └── zone.yaml
+        │   ├── management-zone.json
+        │   └── zone.yaml
         └── notification
             ├── notification.json
             └── notification.yaml

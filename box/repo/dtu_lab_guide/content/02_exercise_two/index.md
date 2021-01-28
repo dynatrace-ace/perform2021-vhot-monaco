@@ -8,7 +8,7 @@ The pipeline is divided in two projects:
    - Auto tagging rules
    - Request attributes
    - Synthetic locations
-1. A **Perform** project that contains the configuration specifically for our project:
+2. A **Perform** project that contains the configuration specifically for our project:
    - Application definition
    - Application detection rules
    - Auto tagging rules
