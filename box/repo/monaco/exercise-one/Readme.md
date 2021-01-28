@@ -38,11 +38,16 @@ You can now filter Process Groups by tag `Owner`
 ## Step Two - Review Monaco Project structure in Gitea
 
 We will review the monaco Project structure and will use Gitea to edit any necessary files in later exercises.
-1. Open a new tab or duplicate your current.
-2. In the main exercise-one folder, open the `projects` folder.
-3. Open the `environments.yaml` file
-   1. Environments are defined in the environments.yaml consisting of the environment url and the name of the environment variable to use for the API token. Multiple environments can be specified. 
-   2. ![Environmentsyaml](Resources/environmentsyaml.png)
+1. Open your Monaco HOT dashboard and open Gitea if you haven't already.
+2. Open the `perform` repo and navigate to monaco -> exercise-one, open the `projects` folder.
+3. Open and edit the `environments.yaml` file
+   1. Environments are defined in the environments.yaml consisting of the environment url and the name of the environment variable to use for the API token. Multiple environments can be specified. Remove all content in `environments.yaml` and copy the block below and paste into the empty file. 
+   2. ```
+      perform:
+        - name: "perform"
+        - env-url: "YOUR_TENANT_URL_GOES_HERE"
+        - env-token-name: "DT_API_TOKEN"
+      ```
    3. For security reasons you should not place your environment token directly in a file.
    4. Update the env-url value to your Dynatrace Tenant address (ensure there is no trailing `/` on the end of the URL)
    5. Commit the changes
@@ -224,7 +229,7 @@ $ sudo su
 ```
 6. cd into the peform directory
 ```bash
-$ cd ~/perform
+$ cd /home/dtu_training/perform
 ```
 7. Execute the following command to pull down our changes to the remote repository.
 ```bash
