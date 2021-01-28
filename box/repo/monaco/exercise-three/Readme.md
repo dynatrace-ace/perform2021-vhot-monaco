@@ -23,7 +23,7 @@ Open your ssh client and connect to the virtual machine that was provided to you
 
 Go to the perform folder in your home directory:
 ```bash
-cd ~/perform
+cd /home/dtu_training/perform
 ```
 
 Update the locally stored repo:
