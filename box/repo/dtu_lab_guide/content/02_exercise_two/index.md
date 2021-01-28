@@ -1,4 +1,4 @@
-## Monaco HOT - Exercise Two - Apply all
+## Exercise Two - Apply all
 During this exercise we will apply a large amount of configuration to our Dynatrace environment using a Jenkins pipeline:
 
 ![](../../assets/images/jenkins_pipeline.png)

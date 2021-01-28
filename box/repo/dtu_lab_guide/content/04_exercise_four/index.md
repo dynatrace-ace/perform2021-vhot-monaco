@@ -1,4 +1,4 @@
-## Monaco HOT - Exercise Four - Variables
+## Exercise Four - Variables
 
 Exercise four builds on top of Exercise two - where we used a Jenkins pipeline to manage our Dynatrace configuration using Monaco.
 

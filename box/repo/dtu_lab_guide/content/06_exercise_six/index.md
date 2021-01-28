@@ -1,4 +1,4 @@
-## Monaco HOT - Exercise Six - Delete
+## Exercise Six - Delete
 
 ### Delete Configuration
 Configuration which is not needed anymore can also be deleted in automated fashion. This tool is looking for delete.yaml file located in projects root folder and deletes all configurations defined in this file after finishing deployment. In delete.yaml you have to specify then `name` (not id) of configuration to be deleted.

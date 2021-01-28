@@ -1,4 +1,4 @@
-## Monaco HOT - Exercise Two - Download config
+## Exercise Three - Download config
 
 In this exercise we will show you how you can use Monaco to download an existing environment's configuration. This is particularely handy if you already have a lot of configuration that you want to use to start storing it in a repository, or if you want to have some sample configuration.
 
