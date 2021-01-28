@@ -1,4 +1,4 @@
-## Exercise 5 - Onboarding new apps
+## Onboarding new apps
 
 This is exercise-five and in this exercise we will be using templates to onboard new applications.
 

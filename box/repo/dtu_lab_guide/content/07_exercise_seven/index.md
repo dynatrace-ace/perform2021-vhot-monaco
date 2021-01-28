@@ -1,4 +1,4 @@
-## Exercise Seven - Linking configs
+## Linking configs
 
 In this exercise we will show how we can link multiple configurations together without having to manually figure out the IDs of the configurations.
 We will reference them using Monaco config instances and let Monaco figure out the IDs, dependencies and priorities!

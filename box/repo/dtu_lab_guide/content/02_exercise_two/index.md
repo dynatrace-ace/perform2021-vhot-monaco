@@ -1,4 +1,4 @@
-## Exercise Two - Apply all
+## Apply all
 During this exercise we will apply a large amount of configuration to our Dynatrace environment using a Jenkins pipeline:
 
 ![](../../assets/images/jenkins_pipeline.png)
@@ -9,13 +9,13 @@ The pipeline is divided in two projects:
    - Request attributes
    - Synthetic locations
 1. A **Perform** project that contains the configuration specifically for our project:
-    - Application definition
-    - Application detection rules
-    - Auto tagging rules
-    - Calculated services metrics
-    - Dashboards
-    - Management zones
-    - Synthetic monitors
+   - Application definition
+   - Application detection rules
+   - Auto tagging rules
+   - Calculated services metrics
+   - Dashboards
+   - Management zones
+   - Synthetic monitors
 
 ### Step 1 - Explore configuration
 #### Folder structure
