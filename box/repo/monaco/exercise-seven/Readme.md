@@ -88,7 +88,7 @@ alerting-profile-app-one:
     - mzId: "/perform/management-zone/management-zone-app-one.id"
 
 alerting-profile-app-two:
-    - name: "profile-app-one"
+    - name: "profile-app-two"
     - mzId: "/perform/management-zone/management-zone-app-two.id"
 ```
 
