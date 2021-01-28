@@ -28,7 +28,7 @@ You have successfully completed exercise-one
 2. add the following to delete.yaml file
     ```yaml
     delete:
-      - "auto-tag/owner"
+      - "auto-tag/Owner"
     ```
 3. Commit your changes
 
