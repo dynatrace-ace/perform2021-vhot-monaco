@@ -144,6 +144,7 @@ We plan to make this CLI GA in version 2.0.0
 We can now push this content back to our git repository:
 
 ```bash
+sudo su
 git add .
 git commit -m "my config"
 git push
