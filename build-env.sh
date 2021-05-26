@@ -11,11 +11,12 @@ git_repo="perform"
 git_user="dynatrace"
 git_pwd="dynatrace"
 git_email="perform2021@dt-perform.com"
-shell_user="dtu_training"
+shell_user="ace"
 
 # These need to be set as environment variables prior to launching the script
-#export DYNATRACE_ENVIRONMENT_ID=     # only the environmentid (abc12345) is needed. script assumes a sprint tenant 
-#export DYNATRACE_TOKEN=              # for Perform vHOT we get a token that is both an API and PaaS token
+#export DYNATRACE_ENVIRONMENT_URL=     # only the environmentid (abc12345) is needed. script assumes a sprint tenant 
+#export DYNATRACE_API_TOKEN=       
+#export DYNATRACE_PAAS_TOKEN=            
 
 ##########################################
 #  DO NOT MODIFY ANYTHING IN THIS SCRIPT #
@@ -24,6 +25,8 @@ shell_user="dtu_training"
 home_folder="/home/$shell_user"
 
 echo "Installing packages"
+apt-get update -y 
+apt-get install -y git
 snap install jq 
 snap install docker
 chmod 777 /var/run/docker.sock
@@ -34,10 +37,12 @@ echo "Retrieving Dynatrace Environment details"
 
 # Retrieve environment. Available from DTU pipeline as $DYNATRACE_ENVIRONMENT_ID
 # DT_TENANT MUST be set without leading https:// or trailing slashes
-DT_TENANT=https://$DYNATRACE_ENVIRONMENT_ID.sprint.dynatracelabs.com
+DT_TENANT=$DYNATRACE_ENVIRONMENT_URL
 
-VM_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/hostname)
+#VM_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+VM_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+#HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/hostname)
+HOSTNAME=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/hostname)
 echo "Virtual machine IP: $VM_IP"
 echo "Virtual machine Hostname: $HOSTNAME"
 ingress_domain="$VM_IP.$domain"
@@ -95,7 +100,8 @@ kubectl create namespace dynatrace
 helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
 sed \
     -e "s|DYNATRACE_ENVIRONMENT_PLACEHOLDER|$DT_TENANT|"  \
-    -e "s|DYNATRACE_TOKEN_PLACEHOLDER|$DYNATRACE_TOKEN|g"  \
+    -e "s|DYNATRACE_API_TOKEN_PLACEHOLDER|$DYNATRACE_API_TOKEN|g"  \
+    -e "s|DYNATRACE_PAAS_TOKEN_PLACEHOLDER|$DYNATRACE_PAAS_TOKEN|g"  \
     $home_folder/$clone_folder/box/helm/oneagent-values.yml > $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml
 
 helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator -n dynatrace --values $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml --wait
@@ -170,13 +176,13 @@ echo "Dynatrace ActiveGate - Download"
 activegate_download_location=$home_folder/Dynatrace-ActiveGate-Linux-x86-latest.sh
 if [ ! -f "$activegate_download_location" ]; then
     echo "$activegate_download_location does not exist. Downloading now..."
-    wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_TOKEN" -O $activegate_download_location 
+    wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_API_TOKEN" -O $activegate_download_location 
 fi
 echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
 
-private_node_id=$(curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[0] | .entityId")
+private_node_id=$(curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_API_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[0] | .entityId")
 echo "PRIVAE NODE ID: $private_node_id"
 
 ##############################
@@ -197,7 +203,7 @@ sed \
     -e "s|GITHUB_PERSONAL_ACCESS_TOKEN_PLACEHOLDER|$gitea_pat|" \
     -e "s|GITHUB_ORGANIZATION_PLACEHOLDER|$git_org|" \
     -e "s|DT_TENANT_URL_PLACEHOLDER|$DT_TENANT|" \
-    -e "s|DT_API_TOKEN_PLACEHOLDER|$DYNATRACE_TOKEN|" \
+    -e "s|DT_API_TOKEN_PLACEHOLDER|$DYNATRACE_API_TOKEN|" \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" \
     -e "s|GIT_REPO_PLACEHOLDER|$git_repo|" \
     -e "s|GIT_DOMAIN_PLACEHOLDER|gitea.$ingress_domain|" \

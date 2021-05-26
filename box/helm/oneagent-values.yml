@@ -21,5 +21,5 @@ oneagent:
   proxy: ""
   trustedCAs: ""
 secret:
-  apiToken: "DYNATRACE_TOKEN_PLACEHOLDER"
-  paasToken: "DYNATRACE_TOKEN_PLACEHOLDER"
+  apiToken: "DYNATRACE_API_TOKEN_PLACEHOLDER"
+  paasToken: "DYNATRACE_PAAS_TOKEN_PLACEHOLDER"
