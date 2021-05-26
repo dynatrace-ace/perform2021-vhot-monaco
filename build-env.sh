@@ -22,7 +22,13 @@ shell_user="ace"
 #  DO NOT MODIFY ANYTHING IN THIS SCRIPT #
 ##########################################
 
+echo "Dynatrace Environment : $DYNATRACE_ENVIRONMENT_URL"
+echo "Dynatrace API Token   : $DYNATRACE_API_TOKEN"
+echo "Dynatrace PAAS Token   : $DYNATRACE_PAAS_TOKEN"
+
 home_folder="/home/$shell_user"
+
+echo "$shell_user:$shell_user" | chpasswd
 
 echo "Installing packages"
 apt-get update -y 
@@ -176,7 +182,7 @@ echo "Dynatrace ActiveGate - Download"
 activegate_download_location=$home_folder/Dynatrace-ActiveGate-Linux-x86-latest.sh
 if [ ! -f "$activegate_download_location" ]; then
     echo "$activegate_download_location does not exist. Downloading now..."
-    wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_API_TOKEN" -O $activegate_download_location 
+    wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_PAAS_TOKEN" -O $activegate_download_location 
 fi
 echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
