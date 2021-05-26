@@ -43,6 +43,8 @@ master:
       value: SYNTH_NODE_ID_PLACEHOLDER
     - name: VM_IP
       value: VM_IP_PLACEHOLDER
+    - name: JAVA_OPTS
+      value: -Djenkins.install.runSetupWizard=false
   csrf:
     defaultCrumbIssuer:
       enabled: false
