@@ -62,7 +62,7 @@ A GCP account is needed.
 
     dynatrace_environments = {
         0 = {
-            url = "https://ymg648.managed-sprint.dynalabs.io/e/58cb4fc3-7870-4115-a525-577f0ad1bd01"
+            url = "https://env.live.dynatrace.com"
             paas_token = "xxx"
             api_token = "yyy"
         }
