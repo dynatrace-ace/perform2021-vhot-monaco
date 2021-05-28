@@ -1,7 +1,7 @@
 ## acebox requires public IP address
 resource "google_compute_address" "acebox" {
   name     = "${var.name_prefix}-${count.index}-ipv4-addr-${random_id.uuid.hex}"
-  count = 2
+  count = var.instance_count
 }
 
 ## Allow access to acebox via HTTPS
