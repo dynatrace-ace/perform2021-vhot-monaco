@@ -5,7 +5,7 @@ monaco_version="v1.5.3"
 source_repo="https://github.com/dynatrace-ace/perform2021-vhot-monaco" 
 clone_folder="bootstrap"
 domain="nip.io"
-jenkins_chart_version="1.27.0"
+jenkins_chart_version="3.3.18"
 git_org="perform"
 git_repo="perform"
 git_user="dynatrace"
@@ -32,7 +32,7 @@ echo "$shell_user:$shell_user" | chpasswd
 
 echo "Installing packages"
 apt-get update -y 
-apt-get install -y git
+apt-get install -y git vim
 snap install jq 
 snap install docker
 chmod 777 /var/run/docker.sock
@@ -201,8 +201,6 @@ kubectl create -f $home_folder/$clone_folder/box/helm/registry.yml
 # Install Jenkins            #
 ##############################
 echo "Jenkins - Install"
-kubectl create ns jenkins
-kubectl create -f $home_folder/$clone_folder/box/helm/jenkins-pvc.yml
 sed \
     -e "s|GITHUB_USER_EMAIL_PLACEHOLDER|$git_email|" \
     -e "s|GITHUB_USER_NAME_PLACEHOLDER|$git_user|" \
@@ -219,10 +217,11 @@ sed \
 
 kubectl create clusterrolebinding jenkins --clusterrole cluster-admin --serviceaccount=jenkins:jenkins
 
-helm repo add stable https://charts.helm.sh/stable
+helm repo add jenkins https://charts.jenkins.io
+helm repo update
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
-helm install jenkins stable/jenkins --values $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml --version $jenkins_chart_version --namespace jenkins --wait 
+helm upgrade -i jenkins jenkins/jenkins --create-namespace -f $home_folder/$clone_folder/box/helm/jenkins-values-gen.yml --version $jenkins_chart_version --namespace jenkins --wait 
 
 ##############################
 # Deploy App                 #
