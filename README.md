@@ -5,6 +5,7 @@ This repository will spin up an environment to conduct a Monaco HOT session base
 ## Contents
 
 The following will be deployed:
+
 - An Ubuntu VM in GCP with a public IP address
 - Monaco
 - k3s
@@ -55,7 +56,7 @@ A GCP account is needed.
 
     ```bash
     $ terraform init
-    ```    `
+    ```
 
 1. Create a `terraform.tfvars` file inside the *terraform* folder
    It needs to contain the following as a minimum:
@@ -82,7 +83,7 @@ A GCP account is needed.
     Check out `variables.tf` for a complete list of variables
 
 1.  Verify the configuration by running `terraform plan`
-    
+
     ```bash
     $ terraform plan
     ```
