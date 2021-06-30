@@ -4,10 +4,10 @@
 #     for instance in 
 #   }
 # }
-output "instances" {
+output "dashboard_url" {
   value = {
     for instance in google_compute_instance.acebox: 
-    instance.id => instance.network_interface[0].access_config[0].nat_ip
+    instance.id => "http://dashboard.${instance.network_interface[0].access_config[0].nat_ip}.nip.io"
   }
 }
 
