@@ -21,39 +21,46 @@ The following will be deployed:
 At the moment, only GCP is supported with a ready-made Terraform config.
 
 ### Requirements
+
 Terraform needs to be locally installed.
 A GCP account is needed.
 
 ### Instructions
 
+1. Set the following variables required for the `create-dt-env.sh` script.
+
+    ```bash
+    NUM_USERS=2
+    DT_ENV_NAME_PREFIX=ENVNAME-VHOT
+    DT_CLUSTER_URL=https://env.managed-sprint.dynalabs.io
+    DT_CLUSTER_TOKEN=your_cluster_api_token
+    DT_TAGS=owner:test@dynatrace.com
+    ```
+
+1. Run the `create-dt-env.sh` to create the necessary number of Dynatrace monitoring environments along with their tokens:
+
+    ```bash
+    $ sh create-dt-env.sh
+    ```
+
+1. The script will create a `dt_envs.txt` file containing the environments formatted strings that can be added to the `terraform.tfvars` in the following steps.
+
 1. Prepare Service Account and download JSON key credentials in GCP.
 
-    ```
+    ```bash
     https://cloud.google.com/iam/docs/creating-managing-service-accounts
     ```
 
-1. Navigate to the `terraform` folder
-
-    ```
-    $ cd microk8s/terraform
-    ```
-
-1. Create key pair for ssh authentication
-
-    ```
-    ssh-keygen -b 2048 -t rsa -f key
-    ```
-    Enter through the defaults.
-
 1. Initialize terraform
-    ```
+
+    ```bash
     $ terraform init
-    ```
+    ```    `
 
 1. Create a `terraform.tfvars` file inside the *terraform* folder
    It needs to contain the following as a minimum:
-    
-    ```
+
+    ```hcl
     gcloud_project    = "mygcpproject"
     gcloud_cred_file  = "location_of_creds.json"
     gcloud_zone       = "europe-west1-b"
@@ -74,18 +81,17 @@ A GCP account is needed.
 
     Check out `variables.tf` for a complete list of variables
 
-2.  Verify the configuration by running `terraform plan`
+1.  Verify the configuration by running `terraform plan`
     
-    ```
+    ```bash
     $ terraform plan
     ```
 
-3. Apply the configuration
+1. Apply the configuration
 
-    ```
+    ```bash
     $ terraform apply
     ```
-
 
 ### Using the environment
 
