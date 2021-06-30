@@ -42,15 +42,11 @@ You have successfully completed exercise-one
 ### Step Three - Pull delete.yaml file and execute Monaco command
 
 1. Open the Dynatrace University Terminal
-2. cd into the exercise-one directory
+1. cd into the exercise-one directory
     ```bash
-    $ cd /home/dtu_training/perform/monaco/exercise-one
+    $ cd ~/perform/monaco/exercise-one
     ```
-3. Gain Root access
-    ```bash
-    $ sudo su
-    ```
-4. Execute the following command to pull down our changes from the remote repository. 
+1. Execute the following command to pull down our changes from the remote repository.
     ```bash
     $ git pull
     ```
@@ -58,7 +54,7 @@ You have successfully completed exercise-one
 
     ![Owner git pull yaml](../../assets/images/git_pull.png)
 
-5. Run Monaco commandline
+1. Run Monaco commandline
 
     ```bash
     $ monaco -v -e projects/environments.yaml projects/
@@ -67,7 +63,7 @@ You have successfully completed exercise-one
 
     ![Owner git pull yaml](../../assets/images/delete_console.png)
 
-6. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
+1. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
 
 
 

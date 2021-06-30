@@ -19,7 +19,7 @@ The pipeline is divided in two projects:
 
 ### Step 1 - Explore configuration
 #### Folder structure
-Using gitea, explore the contents of the `monaco/project-two` folder. It looks like this:
+Using gitea, explore the contents of the `monaco/exercise-two` folder. It looks like this:
 ```
 |-- environments.yaml
 `-- projects

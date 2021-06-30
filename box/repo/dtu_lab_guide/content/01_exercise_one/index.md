@@ -66,7 +66,7 @@ A great way to start building your monaco project is based off existing Dynatrac
 ```
 kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
 ```
-NOTE: The browser terminal may not display the token in it's own line. Be sure to copy only the part prior to `dtu_training`
+NOTE: The browser terminal may not display the token in it's own line. Be sure to copy only the part prior to your username
 
 3. Paste your token into a notepad for later reference.
 4. Open your Dynatrace tenant. Select your profile icon and choose `Configuration API`
@@ -220,42 +220,34 @@ Next we will update our auto-tag.json file to be more dynamic and use environmen
 Now that our project files are defined for a tagging rule we'll need to manually delete our existing tag rule in the Dynatrace UI. Then we'll clone our Gitea repo to our VM and exectute monaco from our project structure to re-apply our tag.
 
 1. Open the Dynatrace UI and navigate to `settings`
-2. Open tags -> automatically applied tags and delete the tag called `owner`
-3. Save changes
-4. Open the Dynatrace University Terminal
-5. Gain Root access
+1. Open tags -> automatically applied tags and delete the tag called `owner`
+1. Save changes
+1. Open the Dynatrace University Terminal
+1. cd into the peform directory
     ```bash
-    $ sudo su
+    $ cd ~/perform
     ```
-6. cd into the peform directory
-    ```bash
-    $ cd /home/dtu_training/perform
-    ```
-7. Execute the following command to pull down our changes to the remote repository.
+1. Execute the following command to pull down our changes to the remote repository.
     ```bash
     $ git pull
     ```
-8. cd into the monaco/exercise-one/projects folder
+1. cd into the monaco/exercise-one/projects folder
     ```bash
     $ cd ./monaco/exercise-one/projects
     ```
 
-    ***We're now ready to see Monaco in action!*** 
+    ***We're now ready to see Monaco in action!***
 
-9. For the purposes of this training environment we'll use an environment variable to supply monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
+1. For the purposes of this training environment we'll use an environment variable to supply monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
 
-10. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
+1. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
 In case you need to get your API token again execute: (ensure not to copy the linux user)
 
     ```bash
-    $ kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
-    ```
-    Set the variable with the token
-    ```bash
-    $ export DT_API_TOKEN=[your token here]
+    $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
     ```
 
-11. Execute a DryRun of Monaco (-d is the dry run flag) which will validate our configuration is good before applying the configuration to the Dynatrace tenant. the -e flag tells monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to excplicitly specify a project directory.
+1. Execute a DryRun of Monaco (-d is the dry run flag) which will validate our configuration is good before applying the configuration to the Dynatrace tenant. the -e flag tells monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to excplicitly specify a project directory.
 
     ```bash
     $ monaco -d -e ./environments.yaml
@@ -264,12 +256,12 @@ In case you need to get your API token again execute: (ensure not to copy the li
 
     ![monacodryrun](../../assets/images/monacodryrun.png)
 
-12. Remove the -d flag to execute all configurations in the project!
+1. Remove the -d flag to execute all configurations in the project!
 
     ```bash
     $ monaco -e environments.yaml
     ```
-13.  Check your Dynatrace tenant for the `Owner` tag to be recreated.
+1.  Check your Dynatrace tenant for the `Owner` tag to be recreated.
 
       ![Owner Tag](../../assets/images/Ownertagui.png)
 

@@ -11,7 +11,7 @@ During this exercise we will apply a large amount of configuration to our Dynatr
 
 ### Step 1 - Explore configuration
 #### Folder structure
-Using gitea, explore the contents of the `monaco/project-four` folder. It is the same as the structure of `monaco/project-two` looks like this:
+Using gitea, explore the contents of the `monaco/exercise-four` folder. It is the same as the structure of `monaco/exercise-two` looks like this:
 ```
 |-- environments.yaml
 `-- projects
