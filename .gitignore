@@ -17,3 +17,4 @@ override.tf.json
 *_override.tf.json
 *tfplan*
 .terraform.lock.hcl
+dt_envs.txt
