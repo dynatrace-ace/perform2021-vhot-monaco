@@ -30,11 +30,11 @@ A GCP account is needed.
 1. Set the following variables required for the `create-dt-env.sh` script.
 
     ```bash
-    NUM_USERS=2
-    DT_ENV_NAME_PREFIX=ENVNAME-VHOT
-    DT_CLUSTER_URL=https://env.managed-sprint.dynalabs.io
-    DT_CLUSTER_TOKEN=your_cluster_api_token
-    DT_TAGS=owner:test@dynatrace.com
+    export NUM_USERS=2
+    export DT_ENV_NAME_PREFIX=ENVNAME-VHOT
+    export DT_CLUSTER_URL=https://env.managed-sprint.dynalabs.io
+    export DT_CLUSTER_TOKEN=your_cluster_api_token
+    export DT_TAGS=owner:test@dynatrace.com
     ```
 
 1. Run the `create-dt-env.sh` to create the necessary number of Dynatrace monitoring environments along with their tokens:
