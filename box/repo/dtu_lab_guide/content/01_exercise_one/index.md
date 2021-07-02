@@ -63,9 +63,11 @@ A great way to start building your monaco project is based off existing Dynatrac
 
 1. To use the Dynatrace Swagger UI we need to aquire our API token which is stored in kubernetes secret. 
 2. From the Dynatrace University terminal execute the below command to retrieve your token.
+
+```bash
+kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d | xargs echo
 ```
-kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d
-```
+
 NOTE: The browser terminal may not display the token in it's own line. Be sure to copy only the part prior to your username
 
 3. Paste your token into a notepad for later reference.
