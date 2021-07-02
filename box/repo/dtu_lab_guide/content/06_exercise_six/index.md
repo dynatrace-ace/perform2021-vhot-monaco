@@ -54,6 +54,12 @@ You have successfully completed exercise-one
 
     ![Owner git pull yaml](../../assets/images/git_pull.png)
 
+1. Set the `DT_API_TOKEN` env var
+
+    ```bash
+    $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
+    ```
+
 1. Run Monaco commandline
 
     ```bash
