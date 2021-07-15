@@ -13,8 +13,48 @@ git_pwd="dynatrace"
 git_email="perform2021@dt-perform.com"
 shell_user="ace"
 
+echo "Installing jq"
+snap install jq
+
+printf "Creating PAAS Token for Dynatrace Environment ${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID\n\n"
+
+paas_token_body='{
+                    "scopes": [
+                        "InstallerDownload"
+                    ],
+                    "name": "vhot-monaco-paas"
+                }'
+
+DT_PAAS_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID/api/v2/apiTokens" \
+--header "Authorization: Api-Token $DT_ENVIRONMENT_TOKEN" \
+--header "Content-Type: application/json" \
+--data-raw "${paas_token_body}")
+DYNATRACE_PAAS_TOKEN=$(echo $DT_PAAS_TOKEN_RESPONSE | jq -r '.token' )
+
+printf "Creating API Token for Dynatrace Environment ${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID\n\n"
+
+api_token_body='{
+                "scopes": [
+                    "DataExport", "PluginUpload", "DcrumIntegration", "AdvancedSyntheticIntegration", "ExternalSyntheticIntegration", 
+                    "LogExport", "ReadConfig", "WriteConfig", "DTAQLAccess", "UserSessionAnonymization", "DataPrivacy", "CaptureRequestData", 
+                    "Davis", "DssFileManagement", "RumJavaScriptTagManagement", "TenantTokenManagement", "ActiveGateCertManagement", "RestRequestForwarding", 
+                    "ReadSyntheticData", "DataImport", "auditLogs.read", "metrics.read", "metrics.write", "entities.read", "entities.write", "problems.read", 
+                    "problems.write", "networkZones.read", "networkZones.write", "activeGates.read", "activeGates.write", "credentialVault.read", "credentialVault.write", 
+                    "extensions.read", "extensions.write", "extensionConfigurations.read", "extensionConfigurations.write", "extensionEnvironment.read", "extensionEnvironment.write", 
+                    "metrics.ingest", "securityProblems.read", "securityProblems.write", "syntheticLocations.read", "syntheticLocations.write", "settings.read", "settings.write", 
+                    "tenantTokenRotation.write", "slo.read", "slo.write", "releases.read", "apiTokens.read", "apiTokens.write", "logs.read", "logs.ingest"
+                ],
+                "name": "vhot-monaco-api-token"
+                }'
+
+DT_API_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID/api/v2/apiTokens" \
+--header "Authorization: Api-Token $DT_ENVIRONMENT_TOKEN" \
+--header "Content-Type: application/json" \
+--data-raw "${api_token_body}")
+DYNATRACE_API_TOKEN=$(echo $DT_API_TOKEN_RESPONSE | jq -r '.token' )
+
 # These need to be set as environment variables prior to launching the script
-#export DYNATRACE_ENVIRONMENT_URL=     # only the environmentid (abc12345) is needed. script assumes a sprint tenant 
+export DYNATRACE_ENVIRONMENT_URL="${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID"     # only the environmentid (abc12345) is needed. script assumes a sprint tenant 
 #export DYNATRACE_API_TOKEN=       
 #export DYNATRACE_PAAS_TOKEN=            
 
@@ -33,7 +73,6 @@ echo "$shell_user:$shell_user" | chpasswd
 echo "Installing packages"
 apt-get update -y 
 apt-get install -y git vim
-snap install jq 
 snap install docker
 chmod 777 /var/run/docker.sock
 

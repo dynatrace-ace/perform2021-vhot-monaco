@@ -27,25 +27,6 @@ Terraform needs to be locally installed.
 A GCP account is needed.
 
 ### Instructions
-
-1. Set the following variables required for the `create-dt-env.sh` script.
-
-    ```bash
-    export NUM_USERS=2
-    export DT_ENV_NAME_PREFIX=ENVNAME-VHOT
-    export DT_CLUSTER_URL=https://env.managed-sprint.dynalabs.io
-    export DT_CLUSTER_TOKEN=your_cluster_api_token
-    export DT_TAGS=owner:test@dynatrace.com
-    ```
-
-1. Run the `create-dt-env.sh` to create the necessary number of Dynatrace monitoring environments along with their tokens:
-
-    ```bash
-    $ sh create-dt-env.sh
-    ```
-
-1. The script will create a `dt_envs.txt` file containing the environments formatted strings that can be added to the `terraform.tfvars` in the following steps.
-
 1. Prepare Service Account and download JSON key credentials in GCP.
 
     ```bash
@@ -55,43 +36,51 @@ A GCP account is needed.
 1. Initialize terraform
 
     ```bash
-    $ terraform init
+    terraform init
     ```
 
-1. Create a `terraform.tfvars` file inside the *terraform* folder
+1. Create a `terraform.tfvars` file inside the *terraform/gcloud* folder
    It needs to contain the following as a minimum:
 
     ```hcl
-    gcloud_project    = "mygcpproject"
-    gcloud_cred_file  = "location_of_creds.json"
-    gcloud_zone       = "europe-west1-b"
-    name_prefix       = "monaco-hot" 
-    instance_count    = 1
-
-    dynatrace_environments = {
-        0 = {
-            url = "https://env.live.dynatrace.com"
-            paas_token = "xxx"
-            api_token = "yyy"
-        }
+    name_prefix          = "example-vhot-monaco"
+    dt_cluster_url       = "https://{id}.managed-sprint.dynalabs.io" 
+    dt_cluster_api_token = "{your_cluser_api_token}"
+    gcloud_project       = "myGCPProject" # GCP Project you want to use
+    gcloud_zone          = "us-central1-a" # GCP zone name
+    gcloud_cred_file     = "/location/to/sakey.json" # location of the Service Account JSON created earlier
+    users = {
+      0 = {
+        email = "user1@example.com"
+        firstName = "John"
+        lastName = "Smith"
+      }
+      1 = {
+        email = "user2@example.com"
+        firstName = "James"
+        lastName = "Miner"
+      }
     }
     ```
 
-    > Note: the `instance_count` variable needs to be the same as the number of `dynatrace_environments`
-    > Note: the key of `dynatrace_environments` needs to be 0-based and incremental, so 0, 1, 2, 3, ...
-
     Check out `variables.tf` for a complete list of variables
 
-1.  Verify the configuration by running `terraform plan`
+1. Verify the configuration by running `terraform plan`
 
     ```bash
-    $ terraform plan
+    terraform plan
     ```
 
 1. Apply the configuration
 
     ```bash
-    $ terraform apply
+    terraform apply
+    ```
+
+1. All resouces can be destroyed with this command:
+
+    ```bash
+    terraform apply -var="environment_state=DISABLED" -auto-approve && terraform destroy -auto-approve
     ```
 
 ### Using the environment
