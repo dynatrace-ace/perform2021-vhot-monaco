@@ -80,7 +80,7 @@ A GCP account is needed.
 1. All resouces can be destroyed with this command:
 
     ```bash
-    terraform apply -var="environment_state=DISABLED" -auto-approve && terraform destroy -auto-approve
+    terraform apply -var="environment_state=DISABLED" -target=dynatrace_environment.vhot_env -auto-approve && terraform destroy
     ```
 
 ### Using the environment
