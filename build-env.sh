@@ -1,6 +1,8 @@
 ##########################################
 #  VARIABLES                             #
 ##########################################
+echo "Starting installation"
+printenv
 monaco_version="v1.5.3" 
 source_repo="https://github.com/dynatrace-ace/perform2021-vhot-monaco" 
 clone_folder="bootstrap"
@@ -11,83 +13,98 @@ git_repo="perform"
 git_user="dynatrace"
 git_pwd="dynatrace"
 git_email="perform2021@dt-perform.com"
-shell_user="ace"
-
-echo "Installing jq"
-snap install jq
-
-printf "Creating PAAS Token for Dynatrace Environment ${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID\n\n"
-
-paas_token_body='{
-                    "scopes": [
-                        "InstallerDownload"
-                    ],
-                    "name": "vhot-monaco-paas"
-                }'
-
-DT_PAAS_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID/api/v2/apiTokens" \
---header "Authorization: Api-Token $DT_ENVIRONMENT_TOKEN" \
---header "Content-Type: application/json" \
---data-raw "${paas_token_body}")
-DYNATRACE_PAAS_TOKEN=$(echo $DT_PAAS_TOKEN_RESPONSE | jq -r '.token' )
-
-printf "Creating API Token for Dynatrace Environment ${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID\n\n"
-
-api_token_body='{
-                "scopes": [
-                    "DataExport", "PluginUpload", "DcrumIntegration", "AdvancedSyntheticIntegration", "ExternalSyntheticIntegration", 
-                    "LogExport", "ReadConfig", "WriteConfig", "DTAQLAccess", "UserSessionAnonymization", "DataPrivacy", "CaptureRequestData", 
-                    "Davis", "DssFileManagement", "RumJavaScriptTagManagement", "TenantTokenManagement", "ActiveGateCertManagement", "RestRequestForwarding", 
-                    "ReadSyntheticData", "DataImport", "auditLogs.read", "metrics.read", "metrics.write", "entities.read", "entities.write", "problems.read", 
-                    "problems.write", "networkZones.read", "networkZones.write", "activeGates.read", "activeGates.write", "credentialVault.read", "credentialVault.write", 
-                    "extensions.read", "extensions.write", "extensionConfigurations.read", "extensionConfigurations.write", "extensionEnvironment.read", "extensionEnvironment.write", 
-                    "metrics.ingest", "securityProblems.read", "securityProblems.write", "syntheticLocations.read", "syntheticLocations.write", "settings.read", "settings.write", 
-                    "tenantTokenRotation.write", "slo.read", "slo.write", "releases.read", "apiTokens.read", "apiTokens.write", "logs.read", "logs.ingest"
-                ],
-                "name": "vhot-monaco-api-token"
-                }'
-
-DT_API_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID/api/v2/apiTokens" \
---header "Authorization: Api-Token $DT_ENVIRONMENT_TOKEN" \
---header "Content-Type: application/json" \
---data-raw "${api_token_body}")
-DYNATRACE_API_TOKEN=$(echo $DT_API_TOKEN_RESPONSE | jq -r '.token' )
+shell_user=${shell_user:="dtu_training"}
 
 # These need to be set as environment variables prior to launching the script
-export DYNATRACE_ENVIRONMENT_URL="${DT_CLUSTER_URL}/e/$DT_ENVIRONMENT_ID"     # only the environmentid (abc12345) is needed. script assumes a sprint tenant 
-#export DYNATRACE_API_TOKEN=       
-#export DYNATRACE_PAAS_TOKEN=            
+#export DT_ENV_URL=
+#export DT_API_TOKEN=       
+#export DT_PAAS_TOKEN=            
 
 ##########################################
 #  DO NOT MODIFY ANYTHING IN THIS SCRIPT #
 ##########################################
-
-echo "Dynatrace Environment : $DYNATRACE_ENVIRONMENT_URL"
-echo "Dynatrace API Token   : $DYNATRACE_API_TOKEN"
-echo "Dynatrace PAAS Token   : $DYNATRACE_PAAS_TOKEN"
-
-home_folder="/home/$shell_user"
-
-echo "$shell_user:$shell_user" | chpasswd
 
 echo "Installing packages"
 apt-get update -y 
 apt-get install -y git vim
 snap install docker
 chmod 777 /var/run/docker.sock
+snap install jq
 
-echo "Retrieving Dynatrace Environment details"
-# Retrieve token  management token
-# Comes from pipeline as $DYNATRACE_TOKEN
+#################################
+# Create Dynatrace Tokens       #
+#################################
 
-# Retrieve environment. Available from DTU pipeline as $DYNATRACE_ENVIRONMENT_ID
-# DT_TENANT MUST be set without leading https:// or trailing slashes
-DT_TENANT=$DYNATRACE_ENVIRONMENT_URL
+$DT_CREATE_ENV_TOKENS=${DT_CREATE_ENV_TOKENS:="false"}
+echo "Create Dynatrace Tokens? : $DT_CREATE_ENV_TOKENS"
 
-#VM_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
-VM_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
-#HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/hostname)
-HOSTNAME=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/hostname)
+if [ "$DT_CREATE_ENV_TOKENS" != "false" ]; then
+    printf "Creating PAAS Token for Dynatrace Environment ${DT_ENV_URL}\n\n"
+
+    paas_token_body='{
+                        "scopes": [
+                            "InstallerDownload"
+                        ],
+                        "name": "vhot-monaco-paas"
+                    }'
+
+    DT_PAAS_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_ENV_URL}/api/v2/apiTokens" \
+    --header "Authorization: Api-Token $DT_CLUSTER_TOKEN" \
+    --header "Content-Type: application/json" \
+    --data-raw "${paas_token_body}")
+    DT_PAAS_TOKEN=$(echo $DT_PAAS_TOKEN_RESPONSE | jq -r '.token' )
+
+    printf "Creating API Token for Dynatrace Environment ${DT_ENV_URL}\n\n"
+
+    api_token_body='{
+                    "scopes": [
+                        "DataExport", "PluginUpload", "DcrumIntegration", "AdvancedSyntheticIntegration", "ExternalSyntheticIntegration", 
+                        "LogExport", "ReadConfig", "WriteConfig", "DTAQLAccess", "UserSessionAnonymization", "DataPrivacy", "CaptureRequestData", 
+                        "Davis", "DssFileManagement", "RumJavaScriptTagManagement", "TenantTokenManagement", "ActiveGateCertManagement", "RestRequestForwarding", 
+                        "ReadSyntheticData", "DataImport", "auditLogs.read", "metrics.read", "metrics.write", "entities.read", "entities.write", "problems.read", 
+                        "problems.write", "networkZones.read", "networkZones.write", "activeGates.read", "activeGates.write", "credentialVault.read", "credentialVault.write", 
+                        "extensions.read", "extensions.write", "extensionConfigurations.read", "extensionConfigurations.write", "extensionEnvironment.read", "extensionEnvironment.write", 
+                        "metrics.ingest", "securityProblems.read", "securityProblems.write", "syntheticLocations.read", "syntheticLocations.write", "settings.read", "settings.write", 
+                        "tenantTokenRotation.write", "slo.read", "slo.write", "releases.read", "apiTokens.read", "apiTokens.write", "logs.read", "logs.ingest"
+                    ],
+                    "name": "vhot-monaco-api-token"
+                    }'
+
+    DT_API_TOKEN_RESPONSE=$(curl -k -s --location --request POST "${DT_ENV_URL}/api/v2/apiTokens" \
+    --header "Authorization: Api-Token $DT_CLUSTER_TOKEN" \
+    --header "Content-Type: application/json" \
+    --data-raw "${api_token_body}")
+    DT_API_TOKEN=$(echo $DT_API_TOKEN_RESPONSE | jq -r '.token' )
+fi
+
+
+echo "Dynatrace Environment : $DT_ENV_URL"
+echo "Dynatrace API Token   : $DT_API_TOKEN"
+echo "Dynatrace PAAS Token   : $DT_PAAS_TOKEN"
+
+home_folder="/home/$shell_user"
+
+echo "$shell_user:$shell_user" | chpasswd
+
+##############################
+# Retrieve Hostname and IP   #
+##############################
+
+# Get the IP and hostname depending on the cloud provider
+IS_AMAZON=$(curl -o /dev/null -s -w "%{http_code}\n" http://169.254.169.254/latest/meta-data/public-ipv4)
+if [ $IS_AMAZON -eq 200 ]; then
+    echo "This is an Amazon EC2 instance"
+    VM_IP=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+    HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/hostname)
+else
+    IS_GCP=$(curl -o /dev/null -s -w "%{http_code}\n" -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+    if [ $IS_GCP -eq 200 ]; then
+        echo "This is a GCP instance"
+        VM_IP=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)
+        HOSTNAME=$(curl -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/hostname)
+    fi
+fi
+
 echo "Virtual machine IP: $VM_IP"
 echo "Virtual machine Hostname: $HOSTNAME"
 ingress_domain="$VM_IP.$domain"
@@ -144,9 +161,9 @@ echo "Dynatrace OneAgent - Install"
 kubectl create namespace dynatrace
 helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
 sed \
-    -e "s|DYNATRACE_ENVIRONMENT_PLACEHOLDER|$DT_TENANT|"  \
-    -e "s|DYNATRACE_API_TOKEN_PLACEHOLDER|$DYNATRACE_API_TOKEN|g"  \
-    -e "s|DYNATRACE_PAAS_TOKEN_PLACEHOLDER|$DYNATRACE_PAAS_TOKEN|g"  \
+    -e "s|DYNATRACE_ENVIRONMENT_PLACEHOLDER|$DT_ENV_URL|"  \
+    -e "s|DYNATRACE_API_TOKEN_PLACEHOLDER|$DT_API_TOKEN|g"  \
+    -e "s|DYNATRACE_PAAS_TOKEN_PLACEHOLDER|$DT_PAAS_TOKEN|g"  \
     $home_folder/$clone_folder/box/helm/oneagent-values.yml > $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml
 
 helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator -n dynatrace --values $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml --wait
@@ -221,14 +238,14 @@ echo "Dynatrace ActiveGate - Download"
 activegate_download_location=$home_folder/Dynatrace-ActiveGate-Linux-x86-latest.sh
 if [ ! -f "$activegate_download_location" ]; then
     echo "$activegate_download_location does not exist. Downloading now..."
-    wget "$DT_TENANT/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DYNATRACE_PAAS_TOKEN" -O $activegate_download_location 
+    wget "$DT_ENV_URL/api/v1/deployment/installer/gateway/unix/latest?arch=x86&flavor=default" --header="Authorization: Api-Token $DT_PAAS_TOKEN" -O $activegate_download_location 
 fi
 echo "Dynatrace ActiveGate - Install Private Synthetic"
 DYNATRACE_SYNTHETIC_AUTO_INSTALL=true /bin/sh "$activegate_download_location" --enable-synthetic
 
 
-private_node_id=$(curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DYNATRACE_API_TOKEN" "$DT_TENANT/api/v1/synthetic/nodes" | jq ".nodes | .[0] | .entityId")
-echo "PRIVAE NODE ID: $private_node_id"
+private_node_id=$(curl -k -H "Content-Type: application/json" -H "Authorization: Api-token $DT_API_TOKEN" "$DT_ENV_URL/api/v1/synthetic/nodes" | jq ".nodes | .[0] | .entityId")
+echo "PRIVATE NODE ID: $private_node_id"
 
 ##############################
 # Deploy Registry            #
@@ -245,8 +262,8 @@ sed \
     -e "s|GITHUB_USER_NAME_PLACEHOLDER|$git_user|" \
     -e "s|GITHUB_PERSONAL_ACCESS_TOKEN_PLACEHOLDER|$gitea_pat|" \
     -e "s|GITHUB_ORGANIZATION_PLACEHOLDER|$git_org|" \
-    -e "s|DT_TENANT_URL_PLACEHOLDER|$DT_TENANT|" \
-    -e "s|DT_API_TOKEN_PLACEHOLDER|$DYNATRACE_API_TOKEN|" \
+    -e "s|DT_TENANT_URL_PLACEHOLDER|$DT_ENV_URL|" \
+    -e "s|DT_API_TOKEN_PLACEHOLDER|$DT_API_TOKEN|" \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" \
     -e "s|GIT_REPO_PLACEHOLDER|$git_repo|" \
     -e "s|GIT_DOMAIN_PLACEHOLDER|gitea.$ingress_domain|" \
@@ -286,7 +303,7 @@ sed \
     -e "s|INGRESS_PLACEHOLDER|$ingress_domain|g" \
     -e "s|GITEA_USER_PLACEHOLDER|$git_user|g" \
     -e "s|GITEA_PAT_PLACEHOLDER|$gitea_pat|g" \
-    -e "s|DYNATRACE_TENANT_PLACEHOLDER|$DT_TENANT|g"\
+    -e "s|DYNATRACE_TENANT_PLACEHOLDER|$DT_ENV_URL|g"\
     $home_folder/$clone_folder/box/dashboard/index.html > $home_folder/$clone_folder/box/dashboard/index-gen.html
 
 sed -e "s|INGRESS_PLACEHOLDER|$ingress_domain|" $home_folder/$clone_folder/box/helm/dashboard/values.yaml > $home_folder/$clone_folder/box/helm/dashboard/values-gen.yaml
