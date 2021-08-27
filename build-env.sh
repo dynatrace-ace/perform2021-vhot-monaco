@@ -185,7 +185,7 @@ echo "Installing ingress-nginx"
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace --wait
+helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace --wait --version 3.30.0
 
 ##############################
 # Install Gitea + config     #
