@@ -84,7 +84,7 @@ echo "Dynatrace PAAS Token   : $DT_PAAS_TOKEN"
 
 home_folder="/home/$shell_user"
 
-echo "$shell_user:$shell_user" | chpasswd
+# echo "$shell_user:$shell_user" | chpasswd
 
 ##############################
 # Retrieve Hostname and IP   #
@@ -110,7 +110,7 @@ echo "Virtual machine Hostname: $HOSTNAME"
 ingress_domain="$VM_IP.$domain"
 echo "Ingress domain: $ingress_domain"
 
-cd 
+# cd 
 
 ##############################
 # Download Monaco + add PATH #
