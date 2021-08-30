@@ -27,6 +27,7 @@ shell_user=${shell_user:="dtu_training"}
 echo "Installing packages"
 apt-get update -y 
 apt-get install -y git vim
+snap refresh snapd
 snap install docker
 chmod 777 /var/run/docker.sock
 snap install jq
