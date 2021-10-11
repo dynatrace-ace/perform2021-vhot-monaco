@@ -88,6 +88,7 @@ resource "google_compute_instance" "acebox" {
         "sudo sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config",
         "sudo service ssh restart",
         "sudo usermod -aG sudo ${var.acebox_user}",
+        "echo '${var.acebox_user}:${var.acebox_user}' | sudo chpasswd"
       ]
   }
 
