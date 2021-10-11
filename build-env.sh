@@ -27,6 +27,7 @@ shell_user=${shell_user:="dtu_training"}
 echo "Installing packages"
 apt-get update -y 
 apt-get install -y git vim
+snap refresh snapd
 snap install docker
 chmod 777 /var/run/docker.sock
 snap install jq
@@ -84,7 +85,7 @@ echo "Dynatrace PAAS Token   : $DT_PAAS_TOKEN"
 
 home_folder="/home/$shell_user"
 
-echo "$shell_user:$shell_user" | chpasswd
+# echo "$shell_user:$shell_user" | chpasswd
 
 ##############################
 # Retrieve Hostname and IP   #
@@ -110,7 +111,7 @@ echo "Virtual machine Hostname: $HOSTNAME"
 ingress_domain="$VM_IP.$domain"
 echo "Ingress domain: $ingress_domain"
 
-cd 
+# cd 
 
 ##############################
 # Download Monaco + add PATH #
@@ -166,7 +167,7 @@ sed \
     -e "s|DYNATRACE_PAAS_TOKEN_PLACEHOLDER|$DT_PAAS_TOKEN|g"  \
     $home_folder/$clone_folder/box/helm/oneagent-values.yml > $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml
 
-helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator -n dynatrace --values $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml --wait
+helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator -n dynatrace --values $home_folder/$clone_folder/box/helm/oneagent-values-gen.yml --wait --version 0.10.1
 
 # Wait for Dynatrace pods to signal Ready
 echo "Dynatrace OneAgent - Waiting for Dynatrace resources to be available..."
@@ -185,7 +186,7 @@ echo "Installing ingress-nginx"
 helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 helm repo update
 
-helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace --wait
+helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create-namespace --wait --version 3.30.0
 
 ##############################
 # Install Gitea + config     #
@@ -220,7 +221,6 @@ echo "Gitea - Create repo $git_repo..."
 curl -k -d '{"name":"'$git_repo'", "private":false, "auto-init":true}' -H "Content-Type: application/json" -X POST "http://gitea.$ingress_domain/api/v1/org/$git_org/repos?access_token=$gitea_pat"
 echo "Gitea - Git config..."
 git config --global user.email "$git_email" && git config --global user.name "$git_user" && git config --global http.sslverify false
-runuser -l $shell_user -c 'git config --global user.email $git_email && git config --global user.name $git_user && git config --global http.sslverify false'
 
 cd $home_folder
 echo "Gitea - Adding resources to repo $git_org/$git_repo"
