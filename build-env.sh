@@ -221,6 +221,7 @@ echo "Gitea - Create repo $git_repo..."
 curl -k -d '{"name":"'$git_repo'", "private":false, "auto-init":true}' -H "Content-Type: application/json" -X POST "http://gitea.$ingress_domain/api/v1/org/$git_org/repos?access_token=$gitea_pat"
 echo "Gitea - Git config..."
 git config --global user.email "$git_email" && git config --global user.name "$git_user" && git config --global http.sslverify false
+runuser -l $shell_user -c 'git config --global user.email $git_email && git config --global user.name $git_user && git config --global http.sslverify false'
 
 cd $home_folder
 echo "Gitea - Adding resources to repo $git_org/$git_repo"
