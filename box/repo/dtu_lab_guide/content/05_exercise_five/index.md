@@ -1,30 +1,36 @@
 ## Onboarding new apps
 
-This is exercise-five and in this exercise we will be using templates to onboard new applications.
+In exercise five we will be using templates to onboard new applications.
 
-When onboarding application teams, many of these teams might not be that familiar with Dynatrace, and don't really know what they would want from the product yet (besides great monitoring of course!). 
-A good way to onboard these teams (especially in a kubernetes environment) is to create a default set of configurations (dashboard, management zone, application, etc.), that the team can later adapt to suit it's own requirements.
+When onboarding application teams, many of these teams might not be that familiar with Dynatrace. Also they might not really know what they want from the product yet (besides great monitoring of course!). 
+A good way to onboard these teams (especially in a Kubernetes environment) is to create a set of default configurations (dashboard, management zone, application, etc.), that the team can later adapt to suit it's own requirements.
 
 As part of this exercise, we will create:
-Application - the team can later edit this with their own naming rules, properties, key actions, ...
-Management Zone - the team won't be able to edit this, but it can be used to give team members the correct edit permissions
-Synthetic Monitor - HTTP check to ensure availability - this is an optional deployment
-Dashboard - Dashboard already filtered on the correct management zone and with a few tiles
-A synthetic location & application detection rule - used to support the above configurations.
+
+- Application - the team can later edit this with their own naming rules, properties, key actions, ...
+- Management Zone - the team won't be able to edit this, but it can be used to give team members the correct edit permissions
+- Synthetic Monitor - HTTP check to ensure availability - this is an optional deployment
+- Dashboard - Dashboard already filtered on the correct management zone and with a few tiles
+- A synthetic location & application detection rule - used to support the above configurations.
 
 Of course much more configuration can be added as part of a deployment (e.g. alerting profile, notifications) but we will keep the exercise limited to the above.
 
-This exercise depends on the tag we created in exercise-two, please run the pipeline of exercise-two again in case the tag was deleted.
+This exercise depends on the tag we created in exercise two, please run the pipeline of exercise two again in case the tag was deleted.
 
 ### 1. Applying our first template
 
-To run the pipeline, go to jenkins, go to "exercise-five", press "Build with Parameters" and enter the following parameters (don't forget to replace the IP-address!):
+To run the pipeline, go to Jenkins, "Exercise 5 - Onboard app", click "Build with Parameters" and enter the following parameters (don't forget to replace the IP-address!):
 ```
 Environment: Production
+
 App_Name: app-three
+
 Application URL-pattern: simplenode.app-three.<YOUR-IP-HERE>.nip.io
+
 Kubernetes_Namespace: app-three
+
 health_check_url: http://simplenode.app-three.<YOUR-IP-HERE>.nip.io
+
 Skip_synthetic_monitor_deployment: should be unchecked
 ```
 
