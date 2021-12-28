@@ -1,4 +1,4 @@
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
+ENVS_FILE = "monaco/02_exercise_two/environments.yaml"
 
 pipeline {
     agent {
@@ -9,7 +9,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects/"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects/"
                     }
                 }
 			}
@@ -18,7 +18,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects/"
+				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects/"
                         sh "sleep 60"
                     }
                 }
@@ -28,7 +28,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/exercise-two/projects/"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/02_exercise_two/projects/"
                     }
                 }
 			}
@@ -37,7 +37,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/exercise-two/projects/"
+				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/02_exercise_two/projects/"
                     }
                 }
 			}

@@ -3,23 +3,27 @@ During this exercise we will apply a large amount of configuration to our Dynatr
 
 ![](../../assets/images/jenkins_pipeline.png)
 
-The pipeline is divided in two projects:
+The pipeline is divided into two projects:
+
 1. A **Global** project that contains cluster wide configurations:  
-   - Auto tagging rules
-   - Request attributes
-   - Synthetic locations
+   
+    - Auto tagging rules
+    - Request attributes
+    - Synthetic locations
+    
 2. A **Perform** project that contains the configuration specifically for our project:
-   - Application definition
-   - Application detection rules
-   - Auto tagging rules
-   - Calculated services metrics
-   - Dashboards
-   - Management zones
-   - Synthetic monitors
+   
+    - Application definition
+    - Application detection rules
+    - Auto tagging rules
+    - Calculated services metrics
+    - Dashboards
+    - Management zones
+    - Synthetic monitors
 
 ### Step 1 - Explore configuration
 #### Folder structure
-Using gitea, explore the contents of the `monaco/exercise-two` folder. It looks like this:
+Using gitea, explore the contents of the `monaco/02_exercise_two` folder. It looks like this:
 ```
 |-- environments.yaml
 `-- projects
@@ -56,13 +60,12 @@ Using gitea, explore the contents of the `monaco/exercise-two` folder. It looks 
             |-- health-check-monitor.json
             `-- synthetic-monitors.yaml
 ```
-#### Configurations
-Navigate, in gitea, the contents of `monaco/project-two`, and see which configurations will be applied automatically.
 
 #### Jenkins pipeline
-Using gitea, open the file [jenkins/exercise-two.Jenkinsfile](../../jenkins/exercise-two.Jenkinsfile)
+In Gitea, open the file [jenkins/exercise-two.Jenkinsfile](../../jenkins/exercise-two.Jenkinsfile)
+
 ```groovy
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
+ENVS_FILE = "monaco/02_exercise_two/environments.yaml"
 
 pipeline {
     agent {
@@ -73,7 +76,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects"
                     }
                 }
 			}
@@ -82,7 +85,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
+				        sh "monaco -v -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects"
                         sh "sleep 60"
                     }
                 }
@@ -92,7 +95,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE -p=perform monaco/02_exercise_two/projects"
                     }
                 }
 			}
@@ -101,7 +104,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/exercise-two/projects"
+				        sh "monaco -v -e=$ENVS_FILE -p=perform monaco/02_exercise_two/projects"
                     }
                 }
 			}
@@ -121,32 +124,33 @@ agent {
 container('monaco')
 ...
 ```
-This section refers to the `monaco-runner`, a container that was precreated by the Dynatrace ACE services team that can be used within a CI/CD pipeline.
+This section refers to the `monaco-runner`, a container that was provided by the Dynatrace ACE services team that can be used within a CI/CD pipeline.
 Within the `monaco` container, we now have the `monaco` CLI available. For more information, visit https://github.com/dynatrace-ace/monaco-runner.
 
-Go to **Manage Jenkins** >> **Configure System** >> **Cloud configuration page** (bottom of settings page) >> **Pod Templates** >> **Pod Template monaco-runner** >> **Pod Template details...** and look at the configuration.
-![](../../assets/images/pod_template.png).
+In Jenkins go to **Manage Jenkins** > **Configure System** > **Cloud configuration page** (bottom of settings page) > **Pod Templates** > **Pod Template monaco-runner** > **Pod Template details...** and look at the configuration.
 
-By using this pod template in our Jenkins pipeline, we make the `monaco` command from within the pod available within our pipeline.
+![](../../assets/images/pod_template.png)
+
+By using this pod template in our Jenkins pipeline, we make the pod's `monaco` command available within our pipeline.
 
 #### The environments.yaml file
 On the first line of the Jenkinsfile we find the following:
 ```
-ENVS_FILE = "monaco/exercise-two/environments.yaml"
+ENVS_FILE = "monaco/02_exercise_two/environments.yaml"
 ```
-This file looks like this (you can verify this using Gitea):
+This file looks like this (you can verify this in Gitea):
 ```yaml
 perform:
   - name: "perform"
   - env-url: "{{ .Env.DT_TENANT_URL }}" 
   - env-token-name: "DT_API_TOKEN" 
 ```
-We defined a Dynatrace environment for Monaco to handle called `perform`.
-The attributes `env-url` and `env-token-name` contain the names of **environment variable** that contain the environment url and API token respectively. Note the difference in notation. Within Monaco it is possible to use environment variables anywhere, by using the format `{{ .Env.YOUR_ENV_VAR_NAME }}`. For the token, it is slightly different as this was historically always the name of an environment variable, so here you just put the format `YOUR_ENV_VAR_NAME` to load your token.
+We defined a Dynatrace environment for Monaco called `perform`.
+The attributes `env-url` and `env-token-name` contain the names of environment variables that contain the environment url and API token respectively. Note the difference in notation. Within Monaco it is possible to use environment variables anywhere, by using the format `{{ .Env.YOUR_ENV_VAR_NAME }}`. For the token, it is slightly different as this was historically always the name of an environment variable, so here you just put the format `YOUR_ENV_VAR_NAME` to load your token.
 
 So the question is: **Where are those variables stored?**
 
-Jenkins always passes all environment variables that are defined in its system to all the pipelines that are running. If we open **Manage Jenkins** >> **Configure System** and we scroll down a bit we see all the environment variables that are defined, including the Dynatrace Environment URL and Dynatrace API Tokens:
+Jenkins always passes all environment variables that are defined in its system to all the pipelines that are running. If we open **Manage Jenkins** > **Configure System** and we scroll down a bit we see all the environment variables that are defined, including the Dynatrace Environment URL and Dynatrace API Tokens:
 ![](../../assets/images/jenkins_envvars.png).
 
 Monaco, when running, will load and replace all environment variables where it can. If an environment variable is not set, it will throw a validation error.
@@ -158,7 +162,7 @@ stage('Dynatrace global config - Validate') {
     steps {
         container('monaco') {
             script{
-                sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
+                sh "monaco -v -dry-run -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects"
             }
         }
     }
@@ -167,7 +171,7 @@ stage('Dynatrace global config - Deploy') {
     steps {
         container('monaco') {
             script {
-                sh "monaco -v -e=$ENVS_FILE -p=global monaco/exercise-two/projects"
+                sh "monaco -v -e=$ENVS_FILE -p=global monaco/02_exercise_two/projects"
                 sh "sleep 60"
             }
         }
@@ -204,6 +208,6 @@ As a last step, go to your Dynatrace environment and verify that Monaco created 
 
 ### Step 4 - Change configuration and re-apply
 
-Take one of the configuration items that were created and make a change in the JSON file (apart from the name!). Re-run the pipeline and see the changes taking effect in Dynatrace.
+Take one of the configuration items that were created and make a change in the json file (apart from the name!). Re-run the pipeline and see the changes taking effect in Dynatrace.
 
 ### That concludes this lab.
