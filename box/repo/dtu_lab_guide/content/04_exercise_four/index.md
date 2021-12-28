@@ -1,17 +1,17 @@
 ## Variables
 
-Exercise four builds on top of Exercise two - where we used a Jenkins pipeline to manage our Dynatrace configuration using Monaco.
+Exercise four builds on top of exercise two - where we used a Jenkins pipeline to manage our Dynatrace configuration using Monaco.
 
-Envision a scenario where you have similar application configurations multiple times - either in the same or in a different Dynatrace environment. You want to uniformily configure these applications so you use the same JSON template. How can you handle a requirement where one of the settings of this application should be different across all the instances of this template - for example UEM coverage percentage.
+Envision a scenario where you have similar application configurations multiple times - either in the same or in a different Dynatrace environment. You want to uniformily configure these applications so you use the same json template. How can you handle a requirement where one of the settings of this application should be different across instances of this template, e.g. user session coverage percentage?
 
-The goal of this exercise is to introduce variables in our JSON templates to manage this requirement.
+The goal of this exercise is to introduce variables in our json templates to manage this requirement.
 
 During this exercise we will apply a large amount of configuration to our Dynatrace environment using a Jenkins pipeline:
 
 
 ### Step 1 - Explore configuration
 #### Folder structure
-Using gitea, explore the contents of the `monaco/exercise-four` folder. It is the same as the structure of `monaco/exercise-two` looks like this:
+Using Gitea, explore the contents of the `monaco/04_exercise_four` folder. It is the same as the structure of `monaco/02_exercise_two` looks like this:
 ```
 |-- environments.yaml
 `-- projects
@@ -49,160 +49,14 @@ Using gitea, explore the contents of the `monaco/exercise-four` folder. It is th
             `-- synthetic-monitors.yaml
 ```
 #### Application configuration
-Navigate, in gitea, to the **application** definitions stored within the **perform** project in `monaco/exercise-four/projects/perform/application`.
-
-The `application.json` file or the **configuration template**:
-<details>
-<summary>Click to expand</summary>
-
-```json
-{
-    "name": "{{ .name }}",
-    "realUserMonitoringEnabled": true,
-    "costControlUserSessionPercentage": 10,
-    "loadActionKeyPerformanceMetric": "VISUALLY_COMPLETE",
-    "xhrActionKeyPerformanceMetric": "VISUALLY_COMPLETE",
-    "loadActionApdexSettings": {
-    "threshold": 1,
-    "toleratedThreshold": 1000,
-    "frustratingThreshold": 3000,
-    "toleratedFallbackThreshold": 1300,
-    "frustratingFallbackThreshold": 3300,
-    "considerJavaScriptErrors": true
-    },
-    "xhrActionApdexSettings": {
-    "threshold": 3,
-    "toleratedThreshold": 3000,
-    "frustratingThreshold": 12000,
-    "toleratedFallbackThreshold": 3000,
-    "frustratingFallbackThreshold": 12000,
-    "considerJavaScriptErrors": true
-    },
-    "customActionApdexSettings": {
-    "threshold": 3,
-    "toleratedThreshold": 3000,
-    "frustratingThreshold": 12000,
-    "toleratedFallbackThreshold": 3000,
-    "frustratingFallbackThreshold": 12000,
-    "considerJavaScriptErrors": true
-    },
-    "waterfallSettings": {
-    "uncompressedResourcesThreshold": 860,
-    "resourcesThreshold": 100000,
-    "resourceBrowserCachingThreshold": 50,
-    "slowFirstPartyResourcesThreshold": 200000,
-    "slowThirdPartyResourcesThreshold": 200000,
-    "slowCdnResourcesThreshold": 200000,
-    "speedIndexVisuallyCompleteRatioThreshold": 50
-    },
-    "monitoringSettings": {
-    "fetchRequests": true,
-    "xmlHttpRequest": true,
-    "javaScriptFrameworkSupport": {
-        "angular": true,
-        "dojo": false,
-        "extJS": false,
-        "icefaces": false,
-        "jQuery": false,
-        "mooTools": false,
-        "prototype": false,
-        "activeXObject": false
-    },
-    "contentCapture": {
-        "resourceTimingSettings": {
-        "w3cResourceTimings": true,
-        "nonW3cResourceTimings": false,
-        "nonW3cResourceTimingsInstrumentationDelay": 50,
-        "resourceTimingCaptureType": "CAPTURE_FULL_DETAILS",
-        "resourceTimingsDomainLimit": 10
-        },
-        "javaScriptErrors": true,
-        "timeoutSettings": {
-        "timedActionSupport": false,
-        "temporaryActionLimit": 0,
-        "temporaryActionTotalTimeout": 100
-        },
-        "visuallyCompleteAndSpeedIndex": true
-    },
-    "excludeXhrRegex": "",
-    "injectionMode": "JAVASCRIPT_TAG",
-    "libraryFileLocation": "",
-    "monitoringDataPath": "",
-    "customConfigurationProperties": "",
-    "serverRequestPathId": "",
-    "secureCookieAttribute": false,
-    "cookiePlacementDomain": "",
-    "cacheControlHeaderOptimizations": true,
-    "advancedJavaScriptTagSettings": {
-        "syncBeaconFirefox": false,
-        "syncBeaconInternetExplorer": false,
-        "instrumentUnsupportedAjaxFrameworks": false,
-        "specialCharactersToEscape": "",
-        "maxActionNameLength": 100,
-        "maxErrorsToCapture": 10,
-        "additionalEventHandlers": {
-        "userMouseupEventForClicks": false,
-        "clickEventHandler": false,
-        "mouseupEventHandler": false,
-        "blurEventHandler": false,
-        "changeEventHandler": false,
-        "toStringMethod": false,
-        "maxDomNodesToInstrument": 5000
-        },
-        "eventWrapperSettings": {
-        "click": false,
-        "mouseUp": false,
-        "change": false,
-        "blur": false,
-        "touchStart": false,
-        "touchEnd": false
-        },
-        "globalEventCaptureSettings": {
-        "mouseUp": true,
-        "mouseDown": true,
-        "click": true,
-        "doubleClick": true,
-        "keyUp": true,
-        "keyDown": true,
-        "scroll": true,
-        "additionalEventCapturedAsUserInput": ""
-        }
-    }
-    },
-    "userActionNamingSettings": {
-    "placeholders": [],
-    "loadActionNamingRules": [],
-    "xhrActionNamingRules": [],
-    "ignoreCase": true,
-    "splitUserActionsByDomain": true
-    },
-    "metaDataCaptureSettings": [],
-    "conversionGoals": []
-}
-```
-</details>
-
-The `application.yaml` file or the **configuration instances**:
-<details>
-<summary> Click to expand </summary>
-
-```yaml
-config:
-    - app-app-one: "application.json"
-    - app-app-two: "application.json"
-  
-app-app-one:
-    - name: "app-one"
-
-app-app-two:
-    - name: "app-two"
-```
-</details>
+In Gitea navigate to the **application** definitions stored within the **perform** project in `monaco/04_exercise_four/projects/perform/application`. You will find two files:
+- `application.json` is the **configuration template**
+- `application.yaml` defines **configuration instances**
 
 ### Step 2 - Introduce variable
-The first task to use variables into Monaco is by replacing the value in the JSON object that we want to turn into a variable with `{{ VARIABLE_NAME }}`. In our example, we want to turn UEM coverage percentage, represented in the `application.json` by the field `costControlUserSessionPercentage` in a variable called `uemPercentage`.
+In order to use variables in a Monaco configuration we must first replace it's value in the json object with `{{ VARIABLE_NAME }}`. In our example, we want to turn UEM coverage percentage, represented in the `application.json` by the field `costControlUserSessionPercentage` in a variable called `uemPercentage`.
 
-To do so, using gitea, find the file and edit it.
+To do so, using Gitea, find the file and edit it.
 
 On line 4, find the field `costControlUserSessionPercentage` and see that the value is hardcoded to `10`:
 
@@ -215,14 +69,16 @@ Turn the value of that field (`10`) into a variable:
 ```json
 "costControlUserSessionPercentage": "{{ .uemPercentage }}",
 ```
+
 **Note**: we need to surround the variable placeholders with double quotes `"`, even if it is not a string value.
+
 **Note**: the `.` in front of `uemPercentage` is required
 
 Commit the changes.
 
 ### Step 3 - Reference value and assign a value
 
-Now that we have defined our variable in the JSON template, we can assign values for it in the YAML file that contains the instances of the template to be created. Open the `application.yaml` file and for each instance of the application add the variable and assign a value to it:
+Now that we have defined our variable in the json template, we can assign values for it in the yaml file that contains the instances of the template to be created. Open the `application.yaml` file and for each instance of the application add the variable and assign a value to it:
 
 ```yaml
 config:
@@ -250,4 +106,4 @@ The pipeline will now update the two application configurations and will change 
 
 As a last step, go to your Dynatrace environment and verify that Monaco updated the application definition.
 
-### That concludes this lab.
+### This concludes exercise four.
