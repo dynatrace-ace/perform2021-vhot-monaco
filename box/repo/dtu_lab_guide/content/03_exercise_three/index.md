@@ -3,10 +3,10 @@
 In this exercise we will show you how you can use Monaco to download an existing environment's configuration. This is particularely handy if you already have a lot of configuration that you want to use to start storing it in a repository, or if you want to have some sample configuration.
 
 ### Step 1 - Create an environments.yaml file
-The first step is, like with **exercise-one**, is to create an `environments.yaml` file.
-Using gitea, navigage to `monaco/exercise-three` and open the `environments.yaml` file.
+The first step, similar to what we did in exercise one, is to create an `environments.yaml` file.
+In Gitea, navigate to `monaco/03_exercise_three` and open the `environments.yaml` file.
 
-Fill in the file as follows, or copy the contents of the `environments.yaml` file stored in `monaco/exercise-one`. Make sure to replace `YOUR_ENV_URL` with your Dynatrace environment URL.
+Fill in the file as follows, or copy the contents of the `environments.yaml` file stored in `monaco/01_exercise_one`. Make sure to replace `YOUR_ENV_URL` with your Dynatrace environment URL.
 
 ```yaml
 perform:
@@ -34,10 +34,10 @@ git pull
 
 Go to the exercise folder
 ```bash
-cd monaco/exercise-three
+cd monaco/03_exercise_three
 ```
 
-Set your Dynatrace API token as an environment variable (verify that it is no longer set from a previous exercise first):
+Set your Dynatrace API token as an environment variable (disregard, if still set from previous exercise):
 
 ```bash
 export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
@@ -47,7 +47,11 @@ echo $DT_API_TOKEN
 We will use the new experimental CLI that will allow us to download the Monaco config. We can activate it by supplying the environment variable `NEW_CLI=true` to the command. Execute the following command to get an overview of the options:
 ```bash
 NEW_CLI=true monaco
+```
 
+Will result in:
+
+```bash
 You are using the new CLI structure which is currently in Beta.
 
 Please provide feedback here:
@@ -145,11 +149,12 @@ We can now push this content back to our git repository:
 
 ```bash
 git add .
-git commit -m "my config"
+git commit -m "download new config snapshot"
 git push
 ```
 
-Check out in gitea the now uploaded Dynatrace config! GitOps is yet another step closer!
+Go to Gitea and inspect the newly uploaded Dynatrace config. GitOps is yet another step closer!
+
 ![](../../assets/images/downloaded_config.png)
 
-This concludes the exercise.
+This concludes exercise three.
