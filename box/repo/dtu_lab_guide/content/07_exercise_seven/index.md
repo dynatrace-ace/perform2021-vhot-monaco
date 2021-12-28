@@ -1,11 +1,11 @@
 ## Linking configs
 
-In this exercise we will show how we can link multiple configurations together without having to manually figure out the IDs of the configurations.
-We will reference them using Monaco config instances and let Monaco figure out the IDs, dependencies and priorities!
+This exercise will show how we can link multiple configurations without having to manually figure out the IDs of linked configurations. We will reference them using Monaco config instances and let Monaco figure out IDs, dependencies and priorities!
 
 ### Step 1 - Take a look at the project
-In gitea, navigate to `monaco/exercise-seven`.
-You will find a standard monaco setup:
+In Gitea, navigate to `monaco/07_exercise_seven`.
+You will find a standard Monaco setup:
+
 ```bash
 ├── Readme.md
 ├── environments.yaml
@@ -26,7 +26,8 @@ We have an `alerting-profile` that references a `management-zone` and a `notific
 It is up to us to complete the configurations so that Monaco can create all configurations in one go.
 
 ### Step 2 - Link the management-zone to the alerting-profile
-In gitea, open up `monaco/exercise-seven/projects/management-zone/zone.yaml`: 
+In Gitea, open `monaco/07_exercise_seven/projects/management-zone/zone.yaml`: 
+
 ```yaml
 config:
     - management-zone-app-one: "management-zone.json"
@@ -42,7 +43,7 @@ management-zone-app-two:
 ```
 We can see that there are two named configurations, called `management-zone-app-one` and `management-zone-app-two`. We will use those references in our `alerting-profile`.
 
-Open up `monaco/exercise-seven/projects/alerting-profile/profile.json`. Slightly dedacted, it contains at the bottom two variables that point to the management-zone ids:
+Open `monaco/07_exercise_seven/projects/alerting-profile/profile.json`. Slightly dedacted, it contains at the bottom two variables that point to the management-zone ids:
 ```json
 "managementZoneId": "{{.mzId}}",
 "mzId": "{{.mzId}}",
@@ -51,7 +52,8 @@ Open up `monaco/exercise-seven/projects/alerting-profile/profile.json`. Slightly
 
 No changes are needed in this file.
 
-In the `monaco/exercise-seven/projects/alerting-profile/profile.yaml`, we have already the definition of these variables created:
+In `monaco/07_exercise_seven/projects/alerting-profile/profile.yaml`, definitions of these variables have been created created:
+
 ```yaml
 config:
     - alerting-profile-app-one: "profile.json"
@@ -76,7 +78,7 @@ Where the fields mean the following:
 - `CONFIG_INSTANCE_NAME`: the name of the configuration instance (**NOT the name of the configuration as it is known in Dynatrace**), for us that would be `management-zone-app-one`
 - `id|name`: which field of that configuration - as it is known in Dynatrace - do you want to use, for us that would be `id`.
 
-So to summarize, for us `monaco/exercise-seven/projects/alerting-profile/profile.yaml` should look like this:
+So to summarize, for us `monaco/07_exercise_seven/projects/alerting-profile/profile.yaml` should look like this:
 
 ```yaml
 config:
