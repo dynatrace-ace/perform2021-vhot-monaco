@@ -1,9 +1,10 @@
 ## Delete
 
 ### Delete Configuration
-Configuration which is not needed anymore can also be deleted in automated fashion. This tool is looking for delete.yaml file located in projects root folder and deletes all configurations defined in this file after finishing deployment. In delete.yaml you have to specify then `name` (not id) of configuration to be deleted.
+Configuration which is not needed anymore can also be deleted in an automated fashion. Upon a successful deployment, Monaco looks for a delete.yaml file located in the project's root folder and deletes all specified configurations. In delete.yaml you have to specify to be deleted configurations by `name` (not id).
 
 Here is one example of delete.yaml with multiple configurations:
+
 ```yaml
 delete:
   - "auto-tag/app-one"
@@ -11,25 +12,26 @@ delete:
   - "management-zone/app-one"    
   - "calculated-metrics-service/simplenode.staging" 
 ```
-Warning: if the same name is used for the new config and config defined in delete.yaml, then config will be deleted right after deployment.
 
-During this exercise, we will run monaco command line to delete selected configuraiton (auto tag from exercise-one)
+Warning: If the same name is used for a new config and one defined in delete.yaml, the config will be deleted right after deployment.
+
+During this exercise, we will run the Monaco command line to delete a specific configuration (auto tag from exercise one).
 
 ### Prerequisites
 
-You have successfully completed exercise-one
-
+You have successfully completed exercise one.
 
 ### Step One - create a delete.yaml file
 
-
-1. create new delete.yaml file from gitea repo under perform/monaco/exercise-one/projects
+1. Create a new delete.yaml file within Gitea in perform/monaco/01\_exercise\_one/projects
     ![Owner delete yaml](../../assets/images/delete_yaml.png)
-2. add the following to delete.yaml file
+2. add the following content to delete.yaml
+   
     ```yaml
     delete:
       - "auto-tag/Owner"
     ```
+
 3. Commit your changes
 
 ### Step Two - Verify the target object ("owner" tagging rule) exist
@@ -42,11 +44,11 @@ You have successfully completed exercise-one
 ### Step Three - Pull delete.yaml file and execute Monaco command
 
 1. Open the Dynatrace University Terminal
-1. cd into the exercise-one directory
+2. cd into the exercise-one directory
     ```bash
-    $ cd ~/perform/monaco/exercise-one
+    $ cd ~/perform/monaco/01_exercise_one
     ```
-1. Execute the following command to pull down our changes from the remote repository.
+3. Execute the following command to pull down our changes from the remote repository.
     ```bash
     $ git pull
     ```
@@ -54,13 +56,13 @@ You have successfully completed exercise-one
 
     ![Owner git pull yaml](../../assets/images/git_pull.png)
 
-1. Set the `DT_API_TOKEN` env var
+4. Make sure the `DT_API_TOKEN` env var is set
 
     ```bash
     $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
     ```
 
-1. Run Monaco commandline
+5. Run Monaco commandline
 
     ```bash
     $ monaco -v -e projects/environments.yaml projects/
@@ -69,12 +71,6 @@ You have successfully completed exercise-one
 
     ![Owner git pull yaml](../../assets/images/delete_console.png)
 
-1. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
+6. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
 
-
-
-### ***Congratulations on completing Exercise-six!***
-
-
-
-
+### ***Congratulations on completing exercise six!***
