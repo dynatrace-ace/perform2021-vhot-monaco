@@ -125,6 +125,7 @@ container('monaco')
 ...
 ```
 This section refers to the `monaco-runner`, a container that was provided by the Dynatrace ACE services team that can be used within a CI/CD pipeline.
+
 Within the `monaco` container, we now have the `monaco` CLI available. For more information, visit https://github.com/dynatrace-ace/monaco-runner.
 
 In Jenkins go to **Manage Jenkins** > **Configure System** > **Cloud configuration page** (bottom of settings page) > **Pod Templates** > **Pod Template monaco-runner** > **Pod Template details...** and look at the configuration.
@@ -146,6 +147,7 @@ perform:
   - env-token-name: "DT_API_TOKEN" 
 ```
 We defined a Dynatrace environment for Monaco called `perform`.
+
 The attributes `env-url` and `env-token-name` contain the names of environment variables that contain the environment url and API token respectively. Note the difference in notation. Within Monaco it is possible to use environment variables anywhere, by using the format `{{ .Env.YOUR_ENV_VAR_NAME }}`. For the token, it is slightly different as this was historically always the name of an environment variable, so here you just put the format `YOUR_ENV_VAR_NAME` to load your token.
 
 So the question is: **Where are those variables stored?**
