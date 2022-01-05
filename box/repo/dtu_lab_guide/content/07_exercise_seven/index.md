@@ -26,7 +26,7 @@ We have an `alerting-profile` that references a `management-zone` and a `notific
 It is up to us to complete the configurations so that Monaco can create all configurations in one go.
 
 ### Step 2 - Link the management-zone to the alerting-profile
-In Gitea, open `monaco/07_exercise_seven/projects/management-zone/zone.yaml`: 
+In Gitea, open `monaco/07_exercise_seven/projects/perform/management-zone/zone.yaml`: 
 
 ```yaml
 config:

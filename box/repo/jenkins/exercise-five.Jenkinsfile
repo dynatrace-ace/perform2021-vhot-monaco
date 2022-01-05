@@ -1,4 +1,4 @@
-ENVS_FILE = "monaco/exercise-five/environments.yaml"
+ENVS_FILE = "monaco/05_exercise_five/environments.yaml"
 
 pipeline {
     agent {
@@ -9,7 +9,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script{
-                        sh "monaco -v -dry-run -e=$ENVS_FILE  monaco/exercise-five/template/"
+                        sh "monaco -v -dry-run -e=$ENVS_FILE  monaco/05_exercise_five/template/"
                     }
                 }
 			}
@@ -18,7 +18,7 @@ pipeline {
 			steps {
                 container('monaco') {
                     script {
-			sh "monaco -v -e=$ENVS_FILE monaco/exercise-five/template/"
+			sh "monaco -v -e=$ENVS_FILE monaco/05_exercise_five/template/"
                     }
                 }
 			}
