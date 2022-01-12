@@ -14,25 +14,33 @@ Dynatrace OneAgent is already installed to the VM and is monitoring 3 applicatio
     $ monaco
     ```
 
-  The expected output for this command will display available command usage.
+    The expected output for this command will display available command usage.
+
 7. Locate your VM's public IP address from the university page and open a new browser tab. Navigate to **dashboard.YOUR\_VM\_IP\_HERE.nip.io** this dashboard will provide links to a local Gitea server and Jenkins.
+
+    ![ACE Dashboard](../../assets/images/ace_dashboard.png)
+
+
 8. All lab instructions will be provided in this document but Monaco documentation can be found on [Github](https://github.com/dynatrace-oss/dynatrace-monitoring-as-code)
+
+
+
 
 ### Step One - Create Tagging Rule in Dynatrace UI
 
 First we will create a tag that identifies the owners of specific process groups.
 
 1. On the left hand navigation panel expand `Manage` and select `Settings`
-2. Navigate to Tags -> Automatically applied tags
+2. Navigate to `Tags` -> `Automatically applied tags`
 3. Select `Create Tag`
-4. Set tag name:
+4. Set `Tag name`:
   
     ```
     Owner
     ```
 
 5. Select `Add a new rule`
-6. Optional Tag value:
+6. Set `Optional tag value`:
    
     ```
     {ProcessGroup:Environment:owner}
@@ -52,7 +60,7 @@ You can now filter Process Groups by tag `Owner`
 
 We will review the monaco Project structure and will use Gitea to edit any necessary files in later exercises.
 1. Open your Monaco HOT dashboard and open Gitea if you haven't already.
-2. Open the `perform` repo and navigate to monaco -> 01\_exercise\_one, open the `projects` folder.
+2. Open the `perform` repo and navigate to `monaco` -> `01_exercise_one`, open the `projects` folder.
 3. Open and edit the `environments.yaml` file
     1. Environments are defined in the environments.yaml consisting of the environment url and the name of the environment variable to use for the API token. Multiple environments can be specified. Remove all content in `environments.yaml` and copy the block below and paste into the empty file:
     
@@ -65,7 +73,11 @@ We will review the monaco Project structure and will use Gitea to edit any neces
 
     2. For security reasons you should not place your environment token directly in a file.
     3. Update the env-url value to your Dynatrace Tenant address (ensure there is no trailing `/` at the end of the URL)
-    4. Commit the changes
+    4. Commit the changes. The file should now look like this:
+
+      ![Owner PG](../../assets/images/environmentsyaml_completed.png)
+    
+
 4. Return to the `projects` folder. Here you'll find a folder called `perform` (referenced in our environments.yaml) that contains another folder called `auto-tag` with two files `auto-tag.json` and `auto-tag.yaml`. 
     1. Both files contain only placeholders for the repository. We'll need to update them.
     2. The .json file is a template used for our API payload we plan to send for tagging.
@@ -89,8 +101,8 @@ A great way to start building your monaco project is based off existing Dynatrac
 4. Open your Dynatrace tenant. Select your profile icon and choose `Configuration API`
 5. Once in the Dynatrace Config API UI, select `Authorize`
     ![Tokenauth](../../assets/images/Tokenauth.png)
-6. Paste your token into the token field and authorize. Close the modal on success.
-7. Find the Automatically Applied Tags endpoint and select it to expand.
+6. Paste your token into the token field and click `Authorize`. Close the modal on success.
+7. Find the `Automatically Applied Tags` endpoint and select it to expand.
 
     ![Auto-tagendpoints](../../assets/images/autotagendpoints.png)
 
@@ -107,7 +119,7 @@ Next we'll use the GET for /autoTags/{id} endpoint
 
 1. Expand `GET /autoTags/{id}`
 2. Click `Try it out`
-3. Paste the id into the required id field
+3. Paste the id into the required `id` field
 4. Set the boolean flag `includeProcessGroupReferences` to `true`
 5. Click `Execute`
 6. Scroll down to the response body
@@ -115,7 +127,7 @@ Next we'll use the GET for /autoTags/{id} endpoint
     ![Tagconfigjson](../../assets/images/Tagconfigjson.png)
 
 7. Copy the entire response body to your clipboard.
-8. Open Gitea and navigate to monaco -> 01_exercise_one -> projects -> perform -> auto-tag and open the auto-tag.json file.
+8. Open Gitea and navigate to `monaco` -> `01_exercise_one` -> `projects` -> `perform` -> `auto-tag` and open the `auto-tag.json` file.
 9. Edit the file
 
     ![editjson](../../assets/images/Editjson.png)
@@ -162,8 +174,8 @@ Next we'll use the GET for /autoTags/{id} endpoint
 
 ### Step Four - Build the Config YAML
 
-1. In the same repo navigate to 01_exercise_one -> projects -> perform -> auto-tag
-2. Open and edit auto-tag.yaml
+1. In the same repo navigate to `01_exercise_one` -> `projects` -> `perform` -> `auto-tag`
+2. Open and edit `auto-tag.yaml`
 3. Remove the placeholder
 4. Copy the contents below and paste into the YAML file.
 
@@ -179,14 +191,16 @@ Next we'll use the GET for /autoTags/{id} endpoint
 
 5. Commit your changes
 
-The config yaml tells Monaco which configuration JSON to apply. You can supply addtional configuration names with seperate JSON files. Each config name has a set of properties to apply to the JSON template. In our case we're telling Monaco to use the auto-tag.json file for our tag-owner configuration. Then the tag-owner configuration has a value called name.
+The config yaml tells Monaco which configuration JSON to apply. You can supply addtional configuration names with seperate JSON files. 
+
+Each config name has a set of properties to apply to the JSON template. In our case we're telling Monaco to use the auto-tag.json file for our tag-owner configuration. Then the tag-owner configuration has a value called name.
 
 Next we will update our auto-tag.json file to be more dynamic and use environment variables to populate the tag name. This way we could structure our config yaml to iterate through multiple tag names and configurations. 
 
 
 ### Step Five - Modify Auto-Tag.json
 
-1. Open and edit the auto-tag.json file under monaco -> 01_exercise_one -> projects -> perform -> auto-tag
+1. Open and edit the `auto-tag.json` file under `monaco` -> `01_exercise_one` -> `projects` -> `perform` -> `auto-tag`
 2. On line 2 replace `Owner` with the snippet below. 
 
     ```json
@@ -237,7 +251,7 @@ Next we will update our auto-tag.json file to be more dynamic and use environmen
 Now that our project files are defined for a tagging rule we'll need to manually delete our existing tag rule in the Dynatrace UI. Then we'll clone our Gitea repo to our VM and exectute monaco from our project structure to re-apply our tag.
 
 1. Open the Dynatrace UI and navigate to `Settings`
-2. Open tags -> Automatically applied tags and delete the tag called `Owner`
+2. Open `Tags` -> `Automatically applied tags` and delete the tag called `Owner`
 3. Save changes
 4. Open the Dynatrace University Terminal
 5. cd into the peform directory
@@ -269,7 +283,7 @@ In case you need to get your API token again execute: (ensure not to copy the li
     $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
     ```
 
-1.  Execute Monaco dry run (-d is the dry run flag) which will validate our configuration before applying the configuration to the Dynatrace tenant. the -e flag tells Monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to explicitly specify a project directory.
+1.  Execute Monaco dry run (-d is the dry run flag) which will validate our configuration before applying the configuration to the Dynatrace tenant. The -e flag tells Monaco which environment we'd like to execute this config for. The project does not need to be specified as Monaco will automatically search the current directory for the project folder. Monaco does allow a -p flag to explicitly specify a project directory.
 
     ```bash
     $ monaco -d -e ./environments.yaml

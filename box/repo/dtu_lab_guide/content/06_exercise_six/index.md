@@ -3,7 +3,7 @@
 ### Delete Configuration
 Configuration which is not needed anymore can also be deleted in an automated fashion. Upon a successful deployment, Monaco looks for a delete.yaml file located in the project's root folder and deletes all specified configurations. In delete.yaml you have to specify to be deleted configurations by `name` (not id).
 
-Here is one example of delete.yaml with multiple configurations:
+Here is one example of `delete.yaml` with multiple configurations:
 
 ```yaml
 delete:
@@ -13,7 +13,7 @@ delete:
   - "calculated-metrics-service/simplenode.staging" 
 ```
 
-Warning: If the same name is used for a new config and one defined in delete.yaml, the config will be deleted right after deployment.
+**Warning: If the same name is used for a new config and one defined in delete.yaml, the config will be deleted right after deployment.**
 
 During this exercise, we will run the Monaco command line to delete a specific configuration (auto tag from exercise one).
 
@@ -23,9 +23,9 @@ You have successfully completed exercise one.
 
 ### Step One - create a delete.yaml file
 
-1. Create a new delete.yaml file within Gitea in perform/monaco/01\_exercise\_one/projects
+1. Create a new `delete.yaml` file within Gitea in `perform/monaco/01_exercise_one/projects`
     ![Owner delete yaml](../../assets/images/delete_yaml.png)
-2. add the following content to delete.yaml
+2. Add the following content to `delete.yaml`
    
     ```yaml
     delete:
@@ -35,9 +35,9 @@ You have successfully completed exercise one.
 3. Commit your changes
 
 ### Step Two - Verify the target object ("owner" tagging rule) exist
-1. Open the Dynatrace UI and navigate to settings
-2. Open tags -> automatically applied tags
-3. verify tagging rule "owner" exist
+1. Open the Dynatrace UI and navigate to `Settings`
+2. Open `Tags` -> `Automatically applied tags`
+3. Verify tagging rule `owner` exist
 
     ![Owner Tag](../../assets/images/Ownertagui.png)
 
@@ -56,7 +56,7 @@ You have successfully completed exercise one.
 
     ![Owner git pull yaml](../../assets/images/git_pull.png)
 
-4. Make sure the `DT_API_TOKEN` env var is set
+4. Make sure the `DT_API_TOKEN` env variable is set
 
     ```bash
     $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
