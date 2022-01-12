@@ -260,9 +260,9 @@ Now that our project files are defined for a tagging rule we'll need to manually
 
     ***We're now ready to see Monaco in action!***
 
-8. For the purposes of this training environment we'll use an environment variable to supply Monaco with our Dynatrace token. For security reasons this is not recommended in live enviornments. Consider storing the token safely such as a secret or credential vault.
+8. For the purposes of this training environment we'll use an environment variable to supply Monaco with our Dynatrace token. For security reasons this is not recommended in live environments. Consider storing the token safely such as a secret or credential vault.
 
-9. Create a local environment variable called DT_API_TOKEN and input your token value we created earlier.
+9. Create a local environment variable called `DT_API_TOKEN` and input your token value we created earlier.
 In case you need to get your API token again execute: (ensure not to copy the linux user)
 
     ```bash

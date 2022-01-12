@@ -151,7 +151,7 @@ The attributes `env-url` and `env-token-name` contain the names of environment v
 So the question is: **Where are those variables stored?**
 
 Jenkins always passes all environment variables that are defined in its system to all the pipelines that are running. If we open **Manage Jenkins** > **Configure System** and we scroll down a bit we see all the environment variables that are defined, including the Dynatrace Environment URL and Dynatrace API Tokens:
-![](../../assets/images/jenkins_envvars.png).
+![](../../assets/images/jenkins_envvars.png)
 
 Monaco, when running, will load and replace all environment variables where it can. If an environment variable is not set, it will throw a validation error.
 
@@ -208,6 +208,10 @@ As a last step, go to your Dynatrace environment and verify that Monaco created 
 
 ### Step 4 - Change configuration and re-apply
 
-Take one of the configuration items that were created and make a change in the json file (apart from the name!). Re-run the pipeline and see the changes taking effect in Dynatrace.
+Take one of the configuration items that were created and make a change in the json file (apart from the name!). You could for example change case sensitivity for a tagging rule in `monaco/02_exercise_two/projects/perform/auto-tag/tagging.json` but feel free to experiment yourself:
 
-### That concludes this lab.
+![](../../assets/images/gitea_exercise-two_tagging-rule-change.png)
+
+Re-run the pipeline and see the changes taking effect in Dynatrace.
+
+### This concludes lab two.
