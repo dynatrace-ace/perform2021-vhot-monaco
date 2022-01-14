@@ -61,7 +61,7 @@ If we take a look at the synthetic monitor, we can see it has a parameter "skipD
 
 It can also be checked by inspecting the Jenkins console output:
 
-```2021-01-27 10:45:31 INFO  			skipping deployment of health-check: monaco/exercise-five/template/synthetic-monitor/health-check-monitor.json```
+```2021-01-27 10:45:31 INFO  			skipping deployment of health-check: monaco/05_exercise_five/template/synthetic-monitor/health-check-monitor.json```
 
 ### 3. Managed or Un-managed Configuration
 
