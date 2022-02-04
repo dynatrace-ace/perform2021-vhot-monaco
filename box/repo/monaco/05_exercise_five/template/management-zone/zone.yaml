@@ -3,4 +3,4 @@ config:
 
 management-zone:
     - environment: "{{.Env.Kubernetes_Namespace}}"
-    - name: "mac-mz-{{.Env.Kubernetes_Namespace}}"
+    - name: "{{.Env.Kubernetes_Namespace}}"

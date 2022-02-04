@@ -4,11 +4,11 @@ config:
 
 email-app-one:
     - name: "email-app-one"
-    - recipient: ""
+    - recipient: "team-app-one@example.com"
     - alertingProfile: ""
 
 
 email-app-two:
     - name: "email-app-two"
-    - recipient: ""
+    - recipient: "team-app-two@example.com"
     - alertingProfile: ""

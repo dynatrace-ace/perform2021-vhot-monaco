@@ -1,9 +1,9 @@
-## Delete
+# Delete configuration
+In this exercise, we'll use Monaco to delete a specific configuration.
 
-### Delete Configuration
-Configuration which is not needed anymore can also be deleted in an automated fashion. Upon a successful deployment, Monaco looks for a delete.yaml file located in the project's root folder and deletes all specified configurations. In delete.yaml you have to specify to be deleted configurations by `name` (not id).
+Configurations which aren't needed anymore can also be deleted in an automated fashion. Upon a successful deployment, Monaco looks for a delete file located in the project's root folder and deletes all specified configurations. In this file named `delete.yaml`, you must specify configurations you like to delete by `name` (not ID).
 
-Here is one example of `delete.yaml` with multiple configurations:
+Here's one example of `delete.yaml` with multiple configurations:
 
 ```yaml
 delete:
@@ -12,65 +12,98 @@ delete:
   - "management-zone/app-one"    
   - "calculated-metrics-service/simplenode.staging" 
 ```
+## Step 1 - Verify existence of target object
+Since we'll be deleting the auto tagging rule created in exercise one, let's make sure the tag still exists. 
 
-**Warning: If the same name is used for a new config and one defined in delete.yaml, the config will be deleted right after deployment.**
+1. Open the Dynatrace web UI and navigate to `Manage` > `Settings`
 
-During this exercise, we will run the Monaco command line to delete a specific configuration (auto tag from exercise one).
+2. Open `Tags` > `Automatically applied tags`
 
-### Prerequisites
+3. Confirm that tag `Owner` still exist
 
-You have successfully completed exercise one.
+    ![Owner tag](../../assets/images/05_owner_tag_ui.png)
+    
+## Step 2 - Prepare the delete file
+1. In Gitea, copy the contents of file 
+`perform/monaco/01_exercise_one/environments.yaml` 
+and paste it into 
+`perform/monaco/06_exercise_six/environments.yaml` 
 
-### Step One - create a delete.yaml file
+    > **Tip:** Both files should be identical
 
-1. Create a new `delete.yaml` file within Gitea in `perform/monaco/01_exercise_one/projects`
-    ![Owner delete yaml](../../assets/images/delete_yaml.png)
-2. Add the following content to `delete.yaml`
+2. Commit the changes
+
+3. Still in Gitea, edit file `perform/monaco/06_exercise_six/delete.yaml` to make it look like the snippet below
    
     ```yaml
     delete:
       - "auto-tag/Owner"
     ```
 
-3. Commit your changes
+4. Commit the changes
 
-### Step Two - Verify the target object ("owner" tagging rule) exist
-1. Open the Dynatrace UI and navigate to `Settings`
-2. Open `Tags` -> `Automatically applied tags`
-3. Verify tagging rule `owner` exist
-
-    ![Owner Tag](../../assets/images/Ownertagui.png)
-
-### Step Three - Pull delete.yaml file and execute Monaco command
-
-1. Open the Dynatrace University Terminal
-2. cd into the exercise-one directory
-    ```bash
-    $ cd ~/perform/monaco/01_exercise_one
-    ```
-3. Execute the following command to pull down our changes from the remote repository.
-    ```bash
-    $ git pull
-    ```
-    Make sure delete.yaml is pulled into the current directory (for example:)
-
-    ![Owner git pull yaml](../../assets/images/git_pull.png)
-
-4. Make sure the `DT_API_TOKEN` env variable is set
+## Step 3 - Pull changes and run Monaco
+1. Open the SSH client that's connected to your VM and navigate into the directory of this exercise
 
     ```bash
-    $ export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
+    cd ~/perform/monaco/06_exercise_six
     ```
 
-5. Run Monaco commandline
+2. Execute the following command to pull down changes made in Gitea
 
     ```bash
-    $ monaco -v -e projects/environments.yaml projects/
+    git pull
     ```
-    Monaco should execute and you should not see any errors
 
-    ![Owner git pull yaml](../../assets/images/delete_console.png)
+    Confirm that both `environments.yaml` and `delete.yaml` are pulled into the current directory
 
-6. Check your Dynatrace environment make sure `Owner` tagging rule is deleted.
+    ```bash
+    From http://gitea.***.nip.io/perform/perform
+    2ce6288..0e6ff6e  master     -> origin/master
+    Updating 2ce6288..0e6ff6e
+    Fast-forward
+    monaco/06_exercise_six/delete.yaml       | 3 ++-
+    monaco/06_exercise_six/environments.yaml | 5 ++++-
+    2 files changed, 6 insertions(+), 2 deletions(-)
+    ```
 
-### ***Congratulations on completing exercise six!***
+3. Verify that the environment variable `DT_API_TOKEN` still exists
+
+    ```bash
+    echo $DT_API_TOKEN
+    ```
+    
+    If not, recreate it from the Kubernetes secret
+
+    ```bash
+    export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
+    ```
+
+4. Run Monaco
+
+    ```bash
+    monaco -v -e environments.yaml
+    ```
+    Monaco should execute and you shouldn't see any errors
+
+    ```bash
+    2022-02-04 12:04:10 DEBUG request log not activated
+    2022-02-04 12:04:10 DEBUG response log not activated
+    2022-02-04 12:04:10 INFO  Dynatrace Monitoring as Code v1.6.0
+    2022-02-04 12:04:10 DEBUG Reading projects...
+    2022-02-04 12:04:10 DEBUG Sorting projects...
+    2022-02-04 12:04:10 INFO  Executing projects in this order:
+    2022-02-04 12:04:10 INFO  Processing environment perform...
+    2022-02-04 12:04:10 INFO  Deployment summary:
+    2022-02-04 12:04:10 INFO  Deployment finished without errors
+    2022-02-04 12:04:10 INFO  Deleting 1 configs for environment perform...
+    2022-02-04 12:04:10 DEBUG 	Deleting config Owner (auto-tag)
+    ```
+
+5. Confirm in your Dynatrace tenant that the `Owner` tag doesn't exist anymore
+
+>**Note:** If a name is used for a new configuration and the same name is defined in `delete.yaml`, the configuration will be created by Monaco and then deleted right after the deployment.
+>
+>For example, if we placed our `delete.yaml` file in folder `perform/monaco/01_exercise_one/projects` and ran Monaco there, the end result will be the same as this exercise. However, you'll see in the Monaco output that the tag was first (re-)created and then deleted!
+
+### Congratulations on completing Exercise 6!

@@ -5,7 +5,7 @@ config:
 health-app-one:
     - name: "app-one-healthcheck"
     - url: "http://simplenode.app-one.{{ .Env.VM_IP }}.nip.io/api/invoke?url=https://www.dynatrace.com"
-    - description: "Health Check for app-one"
+    - description: "Health check for simplenode in app-one"
     - location: "/global/synthetic-location/acebox.id"
     - managementZoneId: "/perform/management-zone/management-zone-app-one.id"
     - tag: "/perform/auto-tag/tagging-app-one.name"
@@ -14,7 +14,7 @@ health-app-one:
 health-app-two:
     - name: "app-two-healthcheck"
     - url: "http://simplenode.app-two.{{ .Env.VM_IP }}.nip.io/api/invoke?url=https://www.dynatrace.com"
-    - description: "Health Check for app-two"
+    - description: "Health check for simplenode in app-two"
     - location: "/global/synthetic-location/acebox.id"
     - managementZoneId: "/perform/management-zone/management-zone-app-two.id"
     - tag: "/perform/auto-tag/tagging-app-two.name"

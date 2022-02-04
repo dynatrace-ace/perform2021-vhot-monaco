@@ -27,9 +27,9 @@ spec:
         image: dynatraceace/simplenodeservice:1.0.0
         env:
         - name: DT_TAGS
-          value: "event=Perform2021 owner=aceservices@dynatrace.com build=1"
+          value: "event=Perform2022 owner=aceservices@dynatrace.com build=1"
         - name: DT_CUSTOM_PROP
-          value: "event=Perform2021 owner=aceservices@dynatrace.com build=1 endpoint=simplenode.app-one.INGRESS_PLACEHOLDER"
+          value: "event=Perform2022 owner=aceservices@dynatrace.com build=1 endpoint=simplenode.app-one.INGRESS_PLACEHOLDER"
         resources:
           limits:
             cpu: 200m

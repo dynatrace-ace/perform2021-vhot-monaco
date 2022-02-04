@@ -2,9 +2,9 @@ config:
     - health-check: "health-check-monitor.json"
   
 health-check:
-    - name: "mac.simplenode.{{.Env.App_Name}}"
+    - name: "{{.Env.App_Name}}-healthcheck"
     - url: "{{.Env.Health_check_url}}"
-    - description: "Health Check for simplenode in app-three"
+    - description: "Health check for simplenode in {{.Env.App_Name}}"
     - location: "synthetic-location/acebox.id"
     - enabled: "true"
     - skipDeployment: "{{.Env.Skip_synthetic_monitor_deployment}}"
