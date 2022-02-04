@@ -3,11 +3,11 @@ config:
     - dashboard-app-two: "dashboard.json"
   
 dashboard-app-one:
-    - name: "MAC Dashboard App One"
+    - name: "Dashboard app-one"
     - managementZoneId: "/perform/management-zone/management-zone-app-one.id"
     - managementZoneName: "/perform/management-zone/management-zone-app-one.name"
 
 dashboard-app-two:
-    - name: "MAC Dashboard App Two"
+    - name: "Dashboard app-two"
     - managementZoneId: "/perform/management-zone/management-zone-app-two.id"
     - managementZoneName: "/perform/management-zone/management-zone-app-two.name"

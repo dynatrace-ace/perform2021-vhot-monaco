@@ -1,160 +1,178 @@
-## Download config
+## Ex 3: Download all configuration
 
-In this exercise we will show you how you can use Monaco to download an existing environment's configuration. This is particularely handy if you already have a lot of configuration that you want to use to start storing it in a repository, or if you want to have some sample configuration.
+In this exercise, we'll see how Monaco can be used to download an existing environment's configuration. This is particularly handy when there are numerous existing custom configurations. You can download your configuration and push it into a repository, or use it as a starting point for managed configuration changes through Monaco.
 
-### Step 1 - Create an environments.yaml file
+### Step 1 - Create an environments file
 The first step, similar to what we did in exercise one, is to create an `environments.yaml` file.
-In Gitea, navigate to `monaco/03_exercise_three` and open the `environments.yaml` file.
 
-Fill in the file as follows, or copy the contents of the `environments.yaml` file stored in `monaco/01_exercise_one`. Make sure to replace `YOUR_ENV_URL` with your Dynatrace environment URL.
+1. In Gitea, copy the contents of file 
+`perform/monaco/01_exercise_one/environments.yaml` 
+and paste it into 
+`perform/monaco/03_exercise_three/environments.yaml` 
 
-```yaml
-perform:
-  - name: "perform"
-  - env-url: "YOUR_ENV_URL" 
-  - env-token-name: "DT_API_TOKEN" 
-```
+   > **Tip:** Both files should be identical
 
-Commit this file.
+2. Commit the changes
 
 ### Step 2 - Download configuration
+1. Open up the SSH client that is connected to your VM and navigate into the `perform` folder in your home directory
 
-Open your ssh client and connect to the virtual machine that was provided to you, either via the web shell or via a dedicated ssh client.
+   ```bash
+   cd ~/perform
+   ```
 
-Go to the perform folder in your home directory:
-```bash
-cd ~/perform
-```
+2. Update the locally stored repo with all the changes made in Gitea
 
-Update the locally stored repo:
-```bash
-git pull
-```
-**Note:** You might need to execute this using `sudo`
+   ```bash
+   git pull
+   ```
 
-Go to the exercise folder
-```bash
-cd monaco/03_exercise_three
-```
+3. Verify that the environment variable `DT_API_TOKEN` still exists
 
-Set your Dynatrace API token as an environment variable (disregard, if still set from previous exercise):
+   ```bash
+   echo $DT_API_TOKEN
+   ```
 
-```bash
-export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
-echo $DT_API_TOKEN
-```
+   If not, recreate it from the Kubernetes secret
 
-We will use the new experimental CLI that will allow us to download the Monaco config. We can activate it by supplying the environment variable `NEW_CLI=true` to the command. Execute the following command to get an overview of the options:
-```bash
-NEW_CLI=true monaco
-```
+   ```bash
+   export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
+   ```
 
-Will result in:
+4. Navigate into this exercise's folder
 
-```bash
-You are using the new CLI structure which is currently in Beta.
+   ```bash
+   cd ~/perform/monaco/03_exercise_three
+   ```
 
-Please provide feedback here:
-  https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/issues/45.
+5. We'll use the new experimental CLI which allows us to download the Dynatrace configurations directly with Monaco. We can activate it by supplying the environment variable `NEW_CLI=true` to the `monaco` command.
 
-We plan to make this CLI GA in version 2.0.0
+   Execute the following command to get an overview of the options:
 
-2021-01-26 19:29:00 INFO  Dynatrace Monitoring as Code v1.2.0
-NAME:
-   monaco - Automates the deployment of Dynatrace Monitoring Configuration to one or multiple Dynatrace environments.
+   ```bash
+   NEW_CLI=true monaco
+   ```
 
-USAGE:
-   monaco [global options] command [command options] [arguments...]
+   This will result in:
 
-VERSION:
-   1.2.0
+   ```bash
+   You are using the new CLI structure which is currently in Beta.
 
-DESCRIPTION:
-   Tool used to deploy dynatrace configurations via the cli
-   
-   Examples:
-     Deploy a specific project inside a root config folder:
-       monaco deploy -p='project-folder' -e='environments.yaml' projects-root-folder
-   
-     Deploy a specific project to a specific tenant:
-       monaco deploy --environments environments.yaml --specific-environment dev --project myProject
+   Please provide feedback here:
+   https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/issues/45.
 
-COMMANDS:
-   deploy    deployes the given environment
-   download  download the given environment
-   help, h   Shows a list of commands or help for one command
+   We plan to make this CLI GA in version 2.0.0
 
-GLOBAL OPTIONS:
-   --help, -h  show help (default: false)
-   --version   print the version (default: false)
-```
+   NAME:
+      monaco - Automates the deployment of Dynatrace Monitoring Configuration to one or multiple Dynatrace environments.
 
-We now have access to a new option to download the configuration, let's try it out!
+   USAGE:
+      monaco [global options] command [command options] [arguments...]
 
-```bash
-NEW_CLI=true monaco download -e=environments.yaml
-```
+   VERSION:
+      1.6.0
 
-Monaco will now download the config:
-```bash
-You are using the new CLI structure which is currently in Beta.
+   DESCRIPTION:
+      Tool used to deploy dynatrace configurations via the cli
 
-Please provide feedback here:
-  https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/issues/45.
+      Examples:
+      Deploy a specific project inside a root config folder:
+         monaco deploy -p='project-folder' -e='environments.yaml' projects-root-folder
 
-We plan to make this CLI GA in version 2.0.0
+      Deploy a specific project to a specific tenant:
+         monaco deploy --environments environments.yaml --specific-environment dev --project myProject
 
-2021-01-26 19:33:00 INFO  Dynatrace Monitoring as Code v1.2.0
-2021-01-26 19:33:00 INFO  Creating base project name perform
-2021-01-26 19:33:00 WARN  You used an old token format. Please consider switching to the new 1.205+ token format.
-2021-01-26 19:33:00 WARN  More information: https://www.dynatrace.com/support/help/dynatrace-api/basics/dynatrace-api-authentication/#-dynatrace-version-1205--token-format
-2021-01-26 19:33:00 INFO   --- GETTING CONFIGS for aws-credentials
-2021-01-26 19:33:00 INFO  No elements for API aws-credentials
-2021-01-26 19:33:00 INFO   --- GETTING CONFIGS for calculated-metrics-service
-2021-01-26 19:33:00 INFO   --- GETTING CONFIGS for application
-2021-01-26 19:33:01 INFO   --- GETTING CONFIGS for conditional-naming-service
-2021-01-26 19:33:01 INFO  No elements for API conditional-naming-service
-2021-01-26 19:33:01 INFO   --- GETTING CONFIGS for request-attributes
-2021-01-26 19:33:01 INFO   --- GETTING CONFIGS for alerting-profile
-2021-01-26 19:33:01 INFO   --- GETTING CONFIGS for synthetic-location
-2021-01-26 19:33:02 INFO   --- GETTING CONFIGS for azure-credentials
-2021-01-26 19:33:02 INFO  No elements for API azure-credentials
-2021-01-26 19:33:02 INFO   --- GETTING CONFIGS for maintenance-window
-2021-01-26 19:33:02 INFO  No elements for API maintenance-window
-2021-01-26 19:33:02 INFO   --- GETTING CONFIGS for auto-tag
-2021-01-26 19:33:03 INFO   --- GETTING CONFIGS for management-zone
-2021-01-26 19:33:03 INFO   --- GETTING CONFIGS for dashboard
-2021-01-26 19:33:04 INFO   --- GETTING CONFIGS for app-detection-rule
-2021-01-26 19:33:04 INFO   --- GETTING CONFIGS for conditional-naming-processgroup
-2021-01-26 19:33:04 INFO  No elements for API conditional-naming-processgroup
-2021-01-26 19:33:04 INFO   --- GETTING CONFIGS for kubernetes-credentials
-2021-01-26 19:33:05 INFO  No elements for API kubernetes-credentials
-2021-01-26 19:33:05 INFO   --- GETTING CONFIGS for synthetic-monitor
-2021-01-26 19:33:05 INFO   --- GETTING CONFIGS for calculated-metrics-log
-2021-01-26 19:33:05 INFO  No elements for API calculated-metrics-log
-2021-01-26 19:33:05 INFO   --- GETTING CONFIGS for request-naming-service
-2021-01-26 19:33:05 INFO  No elements for API request-naming-service
-2021-01-26 19:33:05 INFO   --- GETTING CONFIGS for custom-service-java
-2021-01-26 19:33:05 INFO  No elements for API custom-service-java
-2021-01-26 19:33:05 INFO   --- GETTING CONFIGS for extension
-2021-01-26 19:33:08 INFO   --- GETTING CONFIGS for conditional-naming-host
-2021-01-26 19:33:08 INFO  No elements for API conditional-naming-host
-2021-01-26 19:33:08 INFO   --- GETTING CONFIGS for notification
-2021-01-26 19:33:08 INFO  No elements for API notification
-2021-01-26 19:33:08 INFO   --- GETTING CONFIGS for anomaly-detection-metrics
-2021-01-26 19:33:11 INFO  END downloading info perform
-```
+   COMMANDS:
+      deploy    deploys the given environment
+      download  download the given environment
+      help, h   Shows a list of commands or help for one command
 
-We can now push this content back to our git repository:
+   GLOBAL OPTIONS:
+      --help, -h  show help (default: false)
+      --version   print the version (default: false)
+   ```
 
-```bash
-git add .
-git commit -m "download new config snapshot"
-git push
-```
+6. We now have access to a new option to download the configuration, let's try it out with the command below:
 
-Go to Gitea and inspect the newly uploaded Dynatrace config. GitOps is yet another step closer!
+   ```bash
+   NEW_CLI=true monaco download -e=environments.yaml
+   ```
 
-![](../../assets/images/downloaded_config.png)
+   Monaco will now download the config:
+   ```bash
+   You are using the new CLI structure which is currently in Beta.
 
-This concludes exercise three.
+   Please provide feedback here:
+   https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/issues/45.
+
+   We plan to make this CLI GA in version 2.0.0
+
+   2022-02-04 11:30:48 INFO  Dynatrace Monitoring as Code v1.6.0
+   2022-02-04 11:30:48 INFO  Creating base project name perform
+   2022-02-04 11:30:48 INFO   --- GETTING CONFIGS for failure-detection-parametersets
+   2022-02-04 11:30:48 INFO  No elements for API failure-detection-parametersets
+   2022-02-04 11:30:48 INFO   --- GETTING CONFIGS for synthetic-monitor
+   2022-02-04 11:30:48 INFO   --- GETTING CONFIGS for request-attributes
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for credential-vault
+   2022-02-04 11:30:49 INFO  No elements for API credential-vault
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for failure-detection-rules
+   2022-02-04 11:30:49 INFO  No elements for API failure-detection-rules
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for conditional-naming-host
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for conditional-naming-processgroup
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for application
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for request-naming-service
+   2022-02-04 11:30:49 INFO  No elements for API request-naming-service
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for custom-service-dotnet
+   2022-02-04 11:30:49 INFO  No elements for API custom-service-dotnet
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for kubernetes-credentials
+   2022-02-04 11:30:49 INFO  No elements for API kubernetes-credentials
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for custom-service-go
+   2022-02-04 11:30:49 INFO  No elements for API custom-service-go
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for conditional-naming-service
+   2022-02-04 11:30:49 INFO  No elements for API conditional-naming-service
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for calculated-metrics-service
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for notification
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for azure-credentials
+   2022-02-04 11:30:49 INFO  No elements for API azure-credentials
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for app-detection-rule
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for slo
+   2022-02-04 11:30:49 INFO  No elements for API slo
+   2022-02-04 11:30:49 INFO   --- GETTING CONFIGS for dashboard
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for synthetic-location
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for application-web
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for alerting-profile
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for custom-service-php
+   2022-02-04 11:30:50 INFO  No elements for API custom-service-php
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for maintenance-window
+   2022-02-04 11:30:50 INFO   --- GETTING CONFIGS for management-zone
+   2022-02-04 11:30:51 INFO   --- GETTING CONFIGS for aws-credentials
+   2022-02-04 11:30:51 INFO  No elements for API aws-credentials
+   2022-02-04 11:30:51 INFO   --- GETTING CONFIGS for auto-tag
+   2022-02-04 11:30:51 INFO   --- GETTING CONFIGS for calculated-metrics-log
+   2022-02-04 11:30:51 INFO  No elements for API calculated-metrics-log
+   2022-02-04 11:30:51 INFO   --- GETTING CONFIGS for anomaly-detection-metrics
+   2022-02-04 11:30:51 INFO   --- GETTING CONFIGS for extension
+   2022-02-04 11:30:52 INFO   --- GETTING CONFIGS for custom-service-java
+   2022-02-04 11:30:52 INFO  No elements for API custom-service-java
+   2022-02-04 11:30:52 INFO   --- GETTING CONFIGS for custom-service-nodejs
+   2022-02-04 11:30:52 INFO  No elements for API custom-service-nodejs
+   2022-02-04 11:30:52 INFO   --- GETTING CONFIGS for application-mobile
+   2022-02-04 11:30:52 INFO  END downloading info perform
+   ```
+
+7. We can now push this content back to our git repository:
+
+   ```bash
+   git add .
+   git commit -m "downloaded config snapshot"
+   git push
+   ```
+
+   > Tip: If you get prompted for your Gitea credentials, remember that you can find them on your dashboard page.
+
+8. Go to Gitea and inspect the newly uploaded Dynatrace config in `perform/monaco/03_exercise_three/perform`
+
+
+   ![Downloaded configuration](../../assets/images/03_downloaded_config.png)
+
+### This concludes Exercise 3, GitOps is yet another step closer!

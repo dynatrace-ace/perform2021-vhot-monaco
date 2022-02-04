@@ -2,6 +2,6 @@ config:
     - dashboard-staging: "dashboard.json"
   
 dashboard-staging:
-    - name: "MAC Dashboard {{.Env.Kubernetes_Namespace}}"
+    - name: "Dashboard {{.Env.Kubernetes_Namespace}}"
     - managementZoneId: "management-zone/management-zone.id"
     - managementZoneName: "management-zone/management-zone.name"
