@@ -1,8 +1,8 @@
-# Download all configuration
+## Ex 3: Download all configuration
 
 In this exercise, we'll see how Monaco can be used to download an existing environment's configuration. This is particularly handy when there are numerous existing custom configurations. You can download your configuration and push it into a repository, or use it as a starting point for managed configuration changes through Monaco.
 
-## Step 1 - Create an environments file
+### Step 1 - Create an environments file
 The first step, similar to what we did in exercise one, is to create an `environments.yaml` file.
 
 1. In Gitea, copy the contents of file 
@@ -14,7 +14,7 @@ and paste it into
 
 2. Commit the changes
 
-## Step 2 - Download configuration
+### Step 2 - Download configuration
 1. Open up the SSH client that is connected to your VM and navigate into the `perform` folder in your home directory
 
    ```bash
@@ -29,15 +29,15 @@ and paste it into
 
 3. Verify that the environment variable `DT_API_TOKEN` still exists
 
-    ```bash
-    echo $DT_API_TOKEN
-    ```
-    
-    If not, recreate it from the Kubernetes secret
+   ```bash
+   echo $DT_API_TOKEN
+   ```
 
-    ```bash
-    export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
-    ```
+   If not, recreate it from the Kubernetes secret
+
+   ```bash
+   export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
+   ```
 
 4. Navigate into this exercise's folder
 
@@ -159,6 +159,7 @@ and paste it into
    2022-02-04 11:30:52 INFO   --- GETTING CONFIGS for application-mobile
    2022-02-04 11:30:52 INFO  END downloading info perform
    ```
+
 7. We can now push this content back to our git repository:
 
    ```bash
@@ -167,11 +168,11 @@ and paste it into
    git push
    ```
 
-   > Tip: If you get prompted for your Gitea credentials, remember that you can find them your dashboard page.
+   > Tip: If you get prompted for your Gitea credentials, remember that you can find them on your dashboard page.
 
 8. Go to Gitea and inspect the newly uploaded Dynatrace config in `perform/monaco/03_exercise_three/perform`
 
 
    ![Downloaded configuration](../../assets/images/03_downloaded_config.png)
 
-## This concludes Exercise 3, GitOps is yet another step closer!
+### This concludes Exercise 3, GitOps is yet another step closer!

@@ -1,4 +1,4 @@
-# Onboarding new apps
+## Ex 5: Onboarding new apps
 
 In this exercise, we'll use templates to onboard new applications and teams.
 
@@ -25,7 +25,7 @@ As part of this exercise, we'll create:
 
 >**Note:** Of course many more configuration types can be added as part of a deployment, e.g. alerting profile, problem notifications, etc.
 
-## Step 1 - Applying our first template
+### Step 1 - Applying our first template
 1. Go to Jenkins `Exercise 5 - Onboard app` and click on `Build with Parameters` and enter the following parameters:
 
     >**Note:** Don't forget to replace `<YOUR-IP-HERE>` with your VM's IP-address!
@@ -39,8 +39,7 @@ As part of this exercise, we'll create:
     ```
 
     ```
-    Application URL-pattern: 
-    simplenode.app-three.<YOUR-IP-HERE>.nip.io
+    Application URL-pattern: simplenode.app-three.<YOUR-IP-HERE>.nip.io
     ```
 
     ```
@@ -69,7 +68,7 @@ As part of this exercise, we'll create:
 
     >**Note:** It can take a minute or two for all the data to come in.
 
-## Step 2 - Optional configuration
+### Step 2 - Optional configuration
 Let's take a look at some of the configurations that we applied.
 
 1. First, let's look at the management zone. The `zone.yaml` file uses the environment variable `{{.Env.Kubernetes_Namespace}}` which we previously specified in the build pipeline. This is then setup to provide the name and apply the correct filter for the management zone in the management zone JSON file.
@@ -92,7 +91,7 @@ Let's take a look at some of the configurations that we applied.
     2022-02-04 11:45:31 INFO  			skipping deployment of health-check: monaco/05_exercise_five/template/synthetic-monitor/
     ```
 
-## Step 3 - Managed or un-managed configuration
+### Step 3 - Managed or un-managed configuration
 1. Change the RUM capture rate of app-three production to 10% by going to `Applications` > `app-three - Production` > Click on the three dots on the top right (`...`) > Click on `Edit`
 
     ![App settings](../../assets/images/05_app_settings.png)
@@ -109,4 +108,4 @@ Let's take a look at some of the configurations that we applied.
 
 We hope this exercise has made it clear that templates can save us a lot of time and effort when onboarding new applications and users into Dynatrace.
 
-## Congratulations on completing Exercise 5!
+### Congratulations on completing Exercise 5!

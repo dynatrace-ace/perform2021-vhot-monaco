@@ -1,6 +1,6 @@
-# Lab environment
+## Lab environment
 
-## Overview
+### Overview
 Each participant has a dedicated lab environment that includes: 
 * Dynatrace environment (a.k.a. Dynatrace tenant)
 * Kubernetes cluster
@@ -16,7 +16,7 @@ Each participant has a dedicated lab environment that includes:
 
 ![Lab environment](../../assets/images/00_lab_environment.png)
 
-## Connect
+### Connect
 1. Log in on `Dynatrace University`
     https://university.dynatrace.com
 
@@ -87,4 +87,4 @@ Each participant has a dedicated lab environment that includes:
 
 > **Note:** All further lab instructions will be provided in this repo itself. The Monaco documentation can be found on [GitHub](https://github.com/dynatrace-oss/dynatrace-monitoring-as-code).
 
-## We're now ready to kick off the lab!
+### We're now ready to kick off the lab!

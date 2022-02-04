@@ -1,13 +1,13 @@
-# Linking configurations
+## Ex 7: Linking configurations
 
 In this exercise, we'll see how we can link multiple configurations without having to figure out the IDs of those linked configurations. Instead, we'll reference them using Monaco configuration instances and let Monaco figure out the actual IDs, dependencies and priorities!
 
-## Step 1 - Take a look at the project
+### Step 1 - Take a look at the project
 In Gitea, navigate to `perform/monaco/07_exercise_seven`
 
 You will find a standard Monaco setup:
 
-```bash
+```
 ├── environments.yaml
 └── projects
     └── perform
@@ -27,7 +27,7 @@ We have the following configurations that are dependent on each other:
 
 It's up to us to link these configurations so that Monaco can create all of them in one go.
 
-## Step 2 - Link the alerting profile to the management zone
+### Step 2 - Link the alerting profile to the management zone
 1. In Gitea, open `perform/monaco/07_exercise_seven/projects/perform/management-zone/zone.yaml` 
 
     ```yaml
@@ -104,17 +104,17 @@ It's up to us to link these configurations so that Monaco can create all of them
 
 5. Commit the changes
 
-## Step 3 - Link the notification to the alerting profile
+### Step 3 - Link the notification to the alerting profile
 1. As in Step 2, go ahead and link `notification` to `alerting-profile`
 
-## Step 4 - Trigger the pipeline
+### Step 4 - Trigger the pipeline
 1. In Jenkins, trigger the pipeline
 
     `Exercise 7 - Linking configuration`
 
-## Step 5 - View results in Dynatrace
+### Step 5 - View results in Dynatrace
 1. Confirm in Dynatrace, that you do indeed have all the configurations and that they are correctly linked to each other in this way: 
 
     `notification` > `alerting-profile` > `management-zone`
 
-## This concludes the Exercise 7 and the lab!
+### This concludes the Exercise 7 and the lab!

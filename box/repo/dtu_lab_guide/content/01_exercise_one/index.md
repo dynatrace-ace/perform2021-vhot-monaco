@@ -1,8 +1,8 @@
-# Automatic tagging rule
+## Ex 1: Automatic tagging rule
 
 In this exercise we'll begin by creating an automatic tagging rule via the Dynatrace web UI. We'll then use the Dynatrace Configuration API to export the automatic tag configuration in JSON format. We'll then use this exported configuration to build our Monaco project files. Once our project structure is complete, we'll remove our automatic tag via the Dynatrace web UI and re-create it using Monaco!
 
-## Step 1 - Create an automatic tagging rule in Dynatrace
+### Step 1 - Create an automatic tagging rule in Dynatrace
 First, we'll create an automatic *key:value* tag that identifies the owners of process groups. The value of this tag will be extracted from custom metadata already present on process groups.
 
 1. Go to your Dynatrace tenant and on the left navigation panel expand `Manage` and select `Settings`
@@ -45,7 +45,7 @@ You can now filter **process groups** and **services** using the `Owner` tag!
 
 ![Owner tag filter](../../assets/images/01_owner_tag_filter.png)
 
-## Step 2 - Define a Dynatrace environment for Monaco
+### Step 2 - Define a Dynatrace environment for Monaco
 For Monaco, Dynatrace environments are defined in an environments file. This file named `environments.yaml` contains the environment URL and the name of an environment variable that contains the API token. Multiple environments can be specified.
 
 We'll use Gitea to edit files in our repository.
@@ -89,7 +89,7 @@ Both files contain only placeholders for the moment. We'll need to update them.
 
 The YAML file can contain multiple configurations instances that can build different tag names and rules as Monaco will iterate through each instance and apply it to the JSON configuration template. In this exercise, we're simply deploying a single automatic tagging rule called `Owner`.
 
-## Step 3 - Build a Monaco configuration template from the Dynatrace API
+### Step 3 - Build a Monaco configuration template from the Dynatrace API
 A great way to start building your Monaco project is by starting off from an existing Dynatrace configuration. Even if you're starting with a fresh Dynatrace environment, it may be worth creating a sample configuration in the web UI first. Then you can use the Dynatrace Configuration API to export the properties of the configuration in JSON for use in Monaco. From there, you can use your configuration YAML file to add additional configurations.
 
 1. To use the Dynatrace Swagger UI, we need to get our API token which is stored in a Kubernetes Secret. On your VM, execute the command below to retrieve your Dynatrace API token.
@@ -189,7 +189,7 @@ Next, we'll get the actual configuration of the `Owner` tag
 
 21. Commit the changes
 
-## Step 4 - Build the configuration YAML
+### Step 4 - Build the configuration YAML
 1. Now let's edit file `perform/monaco/01_exercise_one/projects/perform/auto-tag/auto-tag.yaml`
 
 2. Remove the placeholder and copy the contents below into the YAML file
@@ -210,7 +210,7 @@ Next, we'll get the actual configuration of the `Owner` tag
 
 3. Commit the changes
 
-## Step 5 - Make the Monaco JSON more dynamic
+### Step 5 - Make the Monaco JSON more dynamic
 Next, we'll update our JSON configuration file to be more dynamic and use variables to populate the tag name. This makes it possible to have our config YAML iterate through multiple tag names and configurations.
 
 1. Go to Gitea and edit file `perform/monaco/01_exercise_one/projects/perform/auto-tag/auto-tag.json`
@@ -261,7 +261,7 @@ Next, we'll update our JSON configuration file to be more dynamic and use variab
 
 3. Commit the changes
 
-## Step 6 - Delete the tagging rule in Dynatrace
+### Step 6 - Delete the tagging rule in Dynatrace
 Now that our project files are defined for a tagging rule, we'll manually delete the existing automatic tagging rule via the Dynatrace web UI so we can recreate it with Monaco.
 
 1. Open the Dynatrace web UI and navigate to `Settings` > `Tags` > `Automatically applied tags` 
@@ -270,7 +270,7 @@ Now that our project files are defined for a tagging rule, we'll manually delete
 
 3. Save changes
 
-## Step 7 - Clone repo to VM and run Monaco
+### Step 7 - Clone repo to VM and run Monaco
 We'll now update our local repo from Gitea and execute Monaco from our project structure to re-create the automatic tagging rule.
 
 1. Open the SSH client that is connected to your VM 
@@ -348,4 +348,4 @@ We'll now update our local repo from Gitea and execute Monaco from our project s
 
       ![Owner tag](../../assets/images/01_owner_tag_ui.png)
 
-## Congratulations on completing Exercise 1!
+### Congratulations on completing Exercise 1!

@@ -1,4 +1,4 @@
-# Delete configuration
+## Ex 6: Delete configuration
 In this exercise, we'll use Monaco to delete a specific configuration.
 
 Configurations which aren't needed anymore can also be deleted in an automated fashion. Upon a successful deployment, Monaco looks for a delete file located in the project's root folder and deletes all specified configurations. In this file named `delete.yaml`, you must specify configurations you like to delete by `name` (not ID).
@@ -12,7 +12,7 @@ delete:
   - "management-zone/app-one"    
   - "calculated-metrics-service/simplenode.staging" 
 ```
-## Step 1 - Verify existence of target object
+### Step 1 - Verify existence of target object
 Since we'll be deleting the auto tagging rule created in exercise one, let's make sure the tag still exists. 
 
 1. Open the Dynatrace web UI and navigate to `Manage` > `Settings`
@@ -23,7 +23,7 @@ Since we'll be deleting the auto tagging rule created in exercise one, let's mak
 
     ![Owner tag](../../assets/images/05_owner_tag_ui.png)
     
-## Step 2 - Prepare the delete file
+### Step 2 - Prepare the delete file
 1. In Gitea, copy the contents of file 
 `perform/monaco/01_exercise_one/environments.yaml` 
 and paste it into 
@@ -42,7 +42,7 @@ and paste it into
 
 4. Commit the changes
 
-## Step 3 - Pull changes and run Monaco
+### Step 3 - Pull changes and run Monaco
 1. Open the SSH client that's connected to your VM and navigate into the directory of this exercise
 
     ```bash
@@ -106,4 +106,4 @@ and paste it into
 >
 >For example, if we placed our `delete.yaml` file in folder `perform/monaco/01_exercise_one/projects` and ran Monaco there, the end result will be the same as this exercise. However, you'll see in the Monaco output that the tag was first (re-)created and then deleted!
 
-### Congratulations on completing Exercise 6!
+#### Congratulations on completing Exercise 6!

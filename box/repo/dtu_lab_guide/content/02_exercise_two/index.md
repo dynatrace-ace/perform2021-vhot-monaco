@@ -1,4 +1,4 @@
-# Apply many configurations using a pipeline
+## Ex 2: Monaco pipeline automation
 
 During this exercise, we'll apply a large number of configurations to our Dynatrace environment using a Jenkins pipeline.
 
@@ -6,12 +6,12 @@ During this exercise, we'll apply a large number of configurations to our Dynatr
 
 The pipeline includes two Monaco projects:
 
-1. A **Global** project that contains more generic configuration:
+1. A project **"global"** that contains more generic configuration:
     * Auto tagging rules
     * Request attributes
     * Synthetic locations
 
-2. A **Perform** project that contains configuration specific to our apps `app-one` and `app-two`:
+2. A project **"perform"** that contains configuration specific to our apps `app-one` and `app-two`:
     * Application definition
     * Application detection rules
     * Auto tagging rules
@@ -20,48 +20,48 @@ The pipeline includes two Monaco projects:
     * Management zones
     * Synthetic monitors
 
-## Step 1 - Explore configuration
-### Folder structure
+### Step 1 - Explore configuration
+#### Folder structure
 1. In Gitea, explore the contents of the `perform/monaco/02_exercise_two` folder. It looks like this:
 
     ```
-    |-- environments.yaml
-    `-- projects
-        |-- global
-        |   |-- auto-tag
-        |   |   |-- auto-tag.json
-        |   |   `-- auto-tag.yaml
-        |   |-- request-attributes
-        |   |   |-- request-attribute.json
-        |   |   `-- request-attribute.yaml
-        |   `-- synthetic-location
-        |       |-- private-synthetic.json
-        |       `-- synthetic-location.yaml
-        `-- perform
-            |-- app-detection-rule
-            |   |-- rule.json
-            |   `-- rules.yaml
-            |-- application
-            |   |-- application.json
-            |   `-- application.yaml
-            |-- auto-tag
-            |   |-- tagging.json
-            |   `-- tagging.yaml
-            |-- calculated-metrics-service
-            |   |-- csm.json
-            |   `-- csm.yaml
-            |-- dashboard
-            |   |-- dashboard.json
-            |   `-- dashboard.yaml
-            |-- management-zone
-            |   |-- management-zone.json
-            |   `-- zone.yaml
-            `-- synthetic-monitor
-                |-- health-check-monitor.json
-                `-- synthetic-monitors.yaml
+    │── environments.yaml
+    └── projects
+        │── global
+        │   │── auto─tag
+        │   │   │── auto─tag.json
+        │   │   └── auto─tag.yaml
+        │   │── request─attributes
+        │   │   │── request─attribute.json
+        │   │   └── request─attribute.yaml
+        │   └── synthetic─location
+        │       │── private─synthetic.json
+        │       └── synthetic─location.yaml
+        └── perform
+            │── app─detection─rule
+            │   │── rule.json
+            │   └── rules.yaml
+            │── application
+            │   │── application.json
+            │   └── application.yaml
+            │── auto─tag
+            │   │── tagging.json
+            │   └── tagging.yaml
+            │── calculated─metrics─service
+            │   │── csm.json
+            │   └── csm.yaml
+            │── dashboard
+            │   │── dashboard.json
+            │   └── dashboard.yaml
+            │── management─zone
+            │   │── management─zone.json
+            │   └── zone.yaml
+            └── synthetic─monitor
+                │── health─check─monitor.json
+                └── synthetic─monitors.yaml
     ```
 
-### Jenkins pipeline
+#### Jenkins pipeline
 2. In Gitea, open the file `perform/jenkins/exercise-two.Jenkinsfile`
 
     The file contents look like this:
@@ -138,7 +138,7 @@ The pipeline includes two Monaco projects:
 
     By using this pod template in Jenkins, we make the `monaco` command available within our pipeline.
 
-### The environments file
+#### The environments file
 5. Let's go back to Gitea and open file `perform/jenkins/exercise-two.Jenkinsfile`
 
     On the first line we can see a reference to a Monaco environments file:
@@ -174,7 +174,7 @@ Jenkins automatically passes all environment variables that are defined in its s
 
     When Monaco is running, it'll initialize all environment variables where it can. If an environment variable is not set, a validation error will be thrown.
 
-### Dry-run vs deploy
+#### Dry-run vs deploy
 7. For each project, notice that there are two pipeline stages:
 
     ```groovy
@@ -205,7 +205,7 @@ Jenkins automatically passes all environment variables that are defined in its s
     > * `terraform plan` on Terraform
     > * `kubectl --dry-run=client` on Kubernetes
 
-## Step 2 - Trigger pipeline
+### Step 2 - Trigger pipeline
 Now that we're familiar with the project structure and the contents, let's trigger our pipeline.
 
 1. Open your Jenkins Dashboard, then the pipeline `Exercise 2 - Apply all`, and click on `Build Now`
@@ -228,10 +228,10 @@ Now that we're familiar with the project structure and the contents, let's trigg
 
     ![Jenkins pipeline console output](../../assets/images/02_jenkins_console2.png)
 
-## Step 3 - View results in Dynatrace
+### Step 3 - View results in Dynatrace
 Now, go to your Dynatrace environment and verify that Monaco created all the configurations as described in the two Monaco projects.
 
-## Step 4 - Change configuration and re-apply
+### Step 4 - Change configuration and re-apply
 1. Take one of the configuration items that were created and make a change in the JSON file (apart from the name!).
 
     You could for example change case sensitivity for a tagging rule in `perform/monaco/02_exercise_two/projects/perform/auto-tag/tagging.json` but feel free to experiment yourself. 
@@ -240,4 +240,4 @@ Now, go to your Dynatrace environment and verify that Monaco created all the con
 
 2. Re-run the pipeline and see the changes taking effect in Dynatrace.
 
-## Congratulations on completing Exercise 2!
+### Congratulations on completing Exercise 2!
