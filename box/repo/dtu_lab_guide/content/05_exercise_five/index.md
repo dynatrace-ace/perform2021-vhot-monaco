@@ -28,7 +28,7 @@ As part of this exercise, we'll create:
 ### Step 1 - Applying our first template
 1. Go to Jenkins `Exercise 5 - Onboard app` and click on `Build with Parameters` and enter the following parameters:
 
-    >**Note:** Don't forget to replace `<YOUR-IP-HERE>` with your VM's IP-address!
+    >**Note:** Don't forget to replace `<VM_IP>` with your VM's IP-address!
 
     ```
     Environment: Production
@@ -39,7 +39,7 @@ As part of this exercise, we'll create:
     ```
 
     ```
-    Application URL-pattern: simplenode.app-three.<YOUR-IP-HERE>.nip.io
+    Application URL-pattern: http://simplenode.app-three.<VM_IP>.nip.io
     ```
 
     ```
@@ -47,8 +47,7 @@ As part of this exercise, we'll create:
     ```
 
     ```
-    health_check_url: 
-    http://simplenode.app-three.<YOUR-IP-HERE>.nip.io/api/invoke?url=https://www.dynatrace.com
+    health_check_url: http://simplenode.app-three.<VM_IP>.nip.io
     ```
 
     ```
