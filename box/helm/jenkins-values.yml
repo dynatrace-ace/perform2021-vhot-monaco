@@ -218,10 +218,10 @@ controller:
               pipelineJob('Exercise 5 - Onboard app') {
                 parameters {
                   choiceParam('Environment', ['Staging','Production'], '')
-                  stringParam('App_Name', 'demo-app', 'The name of the service to deploy.')
-                  stringParam('Application_URL_pattern', 'demo.app/v1/', 'The version of the service to deploy.')
-                  stringParam('Kubernetes_Namespace', 'demo-app-staging', 'The image of the service to deploy.')
-                  stringParam('Health_check_url', 'https://dynatrace.com', 'The version of the service to deploy.')
+                  stringParam('App_Name', 'demo-app', 'Name of the application to deploy')
+                  stringParam('Application_URL_pattern', 'http://demo.app/v1/', 'URL for application detection rule')
+                  stringParam('Kubernetes_Namespace', 'demo-app-staging', 'Kubernetes namespace of the app')
+                  stringParam('Health_check_url', 'https://dynatrace.com', 'URL for synthetic monitoring')
                   booleanParam('Skip_synthetic_monitor_deployment', false, 'Skip the deployment of the HTTP monitor')
                 }
                 definition {

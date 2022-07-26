@@ -15,17 +15,17 @@ and paste it into
 2. Commit the changes
 
 ### Step 2 - Download configuration
-1. Open up the SSH client that is connected to your VM and navigate into the `perform` folder in your home directory
+1. Open the SSH client that's connected to your VM and navigate into the directory of this exercise
 
-   ```bash
-   cd ~/perform
-   ```
+    ```bash
+    cd ~/perform/monaco/03_exercise_three
+    ```
 
-2. Update the locally stored repo with all the changes made in Gitea
+2. Execute the following command to pull down changes made in Gitea
 
-   ```bash
-   git pull
-   ```
+    ```bash
+    git pull
+    ```
 
 3. Verify that the environment variable `DT_API_TOKEN` still exists
 
@@ -39,13 +39,7 @@ and paste it into
    export DT_API_TOKEN=$(kubectl -n dynatrace get secret oneagent -o jsonpath='{.data.apiToken}' | base64 -d)
    ```
 
-4. Navigate into this exercise's folder
-
-   ```bash
-   cd ~/perform/monaco/03_exercise_three
-   ```
-
-5. We'll use the new experimental CLI which allows us to download the Dynatrace configurations directly with Monaco. We can activate it by supplying the environment variable `NEW_CLI=true` to the `monaco` command.
+4. We'll use the new experimental CLI which allows us to download the Dynatrace configurations directly with Monaco. We can activate it by supplying the environment variable `NEW_CLI=true` to the `monaco` command.
 
    Execute the following command to get an overview of the options:
 
@@ -92,13 +86,14 @@ and paste it into
       --version   print the version (default: false)
    ```
 
-6. We now have access to a new option to download the configuration, let's try it out with the command below:
+5. We now have access to a new option to download the configuration, let's try it out with the command below:
 
    ```bash
    NEW_CLI=true monaco download -e=environments.yaml
    ```
 
    Monaco will now download the config:
+
    ```bash
    You are using the new CLI structure which is currently in Beta.
 
@@ -160,17 +155,17 @@ and paste it into
    2022-02-04 11:30:52 INFO  END downloading info perform
    ```
 
-7. We can now push this content back to our git repository:
+6. We can now push this content back to our git repository:
 
    ```bash
    git add .
-   git commit -m "downloaded config snapshot"
+   sudo git commit -m "downloaded config snapshot"
    git push
    ```
 
-   > Tip: If you get prompted for your Gitea credentials, remember that you can find them on your dashboard page.
+   > Tip: If you get prompted for your VM or Gitea credentials, remember that you can find them on your dashboard page.
 
-8. Go to Gitea and inspect the newly uploaded Dynatrace config in `perform/monaco/03_exercise_three/perform`
+7. Go to Gitea and inspect the newly uploaded Dynatrace config in `perform/monaco/03_exercise_three/perform`
 
 
    ![Downloaded configuration](../../assets/images/03_downloaded_config.png)

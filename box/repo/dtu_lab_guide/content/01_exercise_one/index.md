@@ -270,7 +270,7 @@ Now that our project files are defined for a tagging rule, we'll manually delete
 
 3. Save changes
 
-### Step 7 - Clone repo to VM and run Monaco
+### Step 7 - Update local repo with all changes
 We'll now update our local repo from Gitea and execute Monaco from our project structure to re-create the automatic tagging rule.
 
 1. Open the SSH client that is connected to your VM 
