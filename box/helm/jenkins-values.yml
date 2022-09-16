@@ -1,6 +1,6 @@
 controller:
   image: "jenkins/jenkins"
-  tag: "lts"
+  tag: "2.319.3"
   adminPassword: "dynatrace"
   numExecutors: 2
   disableRememberMe: false
