@@ -190,22 +190,27 @@ helm install ingress-nginx ingress-nginx/ingress-nginx -n ingress-nginx --create
 ##############################
 
 echo "Gitea - Install using Helm"
-helm repo add k8s-land https://charts.k8s.land
+helm repo add gitea-charts https://dl.gitea.io/charts/
+helm repo update
 
-sed \
-    -e "s|INGRESS_PLACEHOLDER|$ingress_domain|"  \
-    $home_folder/$clone_folder/box/helm/gitea-values.yml > $home_folder/$clone_folder/box/helm/gitea-values-gen.yml
+helm upgrade gitea gitea-charts/gitea --install --version 6.0.5 \
+    --namespace gitea --create-namespace \
+    --wait --timeout 15m0s \
+    --set ingress.enabled=true \
+    --set ingress.hosts[0].host=gitea.$ingress_domain \
+    --set ingress.hosts[0].paths[0].path="/" \
+    --set ingress.hosts[0].paths[0].pathType=Prefix \
+    --set "ingress.annotations.nginx\.ingress\.kubernetes\.io/proxy-body-size=100m" \
+    --set gitea.admin.username=$git_user \
+    --set gitea.admin.password=$git_pwd \
+    --set gitea.admin.email=$git_email
 
-helm install gitea k8s-land/gitea -f $home_folder/$clone_folder/box/helm/gitea-values-gen.yml --namespace gitea --create-namespace
+echo "Gitea - Waiting for API"
+ingress_domain=$ingress_domain gitea_pat=$gitea_pat bash -c 'while [[ "$(curl -s -o /dev/null -w "%{http_code}" http://gitea.$ingress_domain/api/v1/version)" != "200" ]]; do sleep 5; done'
 
-kubectl -n gitea rollout status deployment gitea-gitea
-echo "Gitea - Sleeping for 60s"
-sleep 60
-
-echo "Gitea - Create initial user $git_user"
-kubectl exec -t $(kubectl -n gitea get po -l app=gitea-gitea -o jsonpath='{.items[0].metadata.name}') -n gitea -- bash -c 'su - git -c "/usr/local/bin/gitea --custom-path /data/gitea --config /data/gitea/conf/app.ini  admin create-user --username '$git_user' --password '$git_pwd' --email '$git_email' --admin --access-token"' > gitea_install.txt
-
-gitea_pat=$(grep -oP 'Access token was successfully created... \K(.*)' gitea_install.txt)
+echo "Gitea - Create user access token..."
+gitea_pat_name=$git_user-$(date +"%s")
+gitea_pat=$(curl -s -k -d '{"name":"'$gitea_pat_name'"}' -H "Content-Type: application/json" -X POST -u "$git_user:$git_pwd" "http://gitea.$ingress_domain/api/v1/users/$git_user/tokens" | jq -r '.sha1')
 
 echo "Gitea - PAT: $gitea_pat"
 echo "Gitea - URL: http://gitea.$ingress_domain"
